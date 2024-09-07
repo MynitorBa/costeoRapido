@@ -14,6 +14,10 @@ package paqueteInicioSesion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import java.io.IOException;
+
 public class LoginRegistroForm extends javax.swing.JFrame {
     
     
@@ -299,44 +303,60 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     private void registrarUsuarioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarUsuarioButtonActionPerformed
         // TODO add your handling code here:
         
-        String nombre = usuarioRegistroTextField1.getText();
-        String email = emailRegisterTextField.getText();
-        String contrasena = contrasenaEmailTextField.getText();
-        
-        if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
+        String nombre = usuarioRegistroTextField1.getText().trim();
+    String email = emailRegisterTextField.getText().trim();
+    String contrasena = contrasenaEmailTextField.getText().trim();
+    
+    if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    try {
         if (adminUsuario.registrarNuevoUsuario(nombre, email, contrasena)) {
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             limpiarCamposRegistro();
         } else {
-            JOptionPane.showMessageDialog(this, "Error al registrar usuario. El email ya puede estar en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo registrar el usuario. El email ya puede estar en uso.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
         
         
     }//GEN-LAST:event_registrarUsuarioButtonActionPerformed
 
     private void iniciarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionButtonActionPerformed
         // TODO add your handling code here:
-        String usuario = usuarioLoginTextField1.getText();
-    String contrasena = contrasenaLoginTextField.getText(); // Usando getText() para JTextField
+    String nombreUsuario = usuarioLoginTextField1.getText().trim();
+    String contrasena = contrasenaLoginTextField.getText().trim();
     
-    if (adminUsuario.iniciarSesion(usuario, contrasena)) {
-        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        
-        // Crear y mostrar el nuevo formulario
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+    
+    
+    if (nombreUsuario.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+
+    
+    try {
+        if (adminUsuario.iniciarSesion(nombreUsuario, contrasena)) {
+            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
+            // Abrir la ventana principal de la aplicación
+            java.awt.EventQueue.invokeLater(() -> {
                 new paquete1.Form2().setVisible(true);
-            }
-        });
-        
-        // Cerrar el formulario actual de inicio de sesión
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+            });
+            
+            this.dispose(); // Cerrar la ventana de login
+        } else {
+            JOptionPane.showMessageDialog(this, "Nombre de usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
     }//GEN-LAST:event_iniciarSesionButtonActionPerformed
 
