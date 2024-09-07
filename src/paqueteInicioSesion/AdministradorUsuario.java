@@ -12,7 +12,7 @@ import java.util.*;
  * @author mynit
  */
 public class AdministradorUsuario {
-    private static final String ARCHIVO_EXCEL = "usuarios.xlsx";
+    private static final String ARCHIVO_EXCEL = "resources/usuarios.xlsx";
     private static final String HOJA_USUARIOS = "Usuarios";
 
     public AdministradorUsuario() {
