@@ -197,6 +197,9 @@
                 </Property>
                 <Property name="label" type="java.lang.String" value="INICIAR SESI&#xd3;N"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iniciarSesionButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="olvidasteContrase&#xf1;aButton">
               <Properties>
@@ -211,6 +214,9 @@
                 </Property>
                 <Property name="defaultCapable" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="olvidasteContrase&#xf1;aButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -11,27 +11,31 @@ package paqueteInicioSesion;
  * 
  */
 
-import javax.swing.*;         
-import java.awt.*;             
-import java.awt.image.*;       
-import javax.imageio.*;        
-import java.io.*;              
-
-
-import javax.swing.ImageIcon;  
-import java.awt.Image;         
-import java.awt.Graphics2D;    
-import java.awt.RenderingHints;
-import java.awt.geom.*;        
-import java.net.URL;    
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 public class LoginRegistroForm extends javax.swing.JFrame {
+    
+    
+    private AdministradorUsuario adminUsuario;
+
+    public LoginRegistroForm() {
+        initComponents();
+        adminUsuario = new AdministradorUsuario();
+    }
+    
+     
+
+    private void limpiarCamposRegistro() {
+        usuarioRegistroTextField1.setText("");
+        emailRegisterTextField.setText("");
+        contrasenaEmailTextField.setText("");
+    }
 
     /**
      * Creates new form LoginRegistroForm
      */
-    public LoginRegistroForm() {
-        initComponents();
-    }
+
     
 
 
@@ -98,6 +102,11 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         iniciarSesionButton.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         iniciarSesionButton.setForeground(new java.awt.Color(39, 130, 39));
         iniciarSesionButton.setLabel("INICIAR SESIÓN");
+        iniciarSesionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iniciarSesionButtonActionPerformed(evt);
+            }
+        });
 
         olvidasteContraseñaButton.setForeground(new java.awt.Color(45, 161, 45));
         olvidasteContraseñaButton.setText("¿Olvidaste tu contraseña?");
@@ -105,6 +114,11 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         olvidasteContraseñaButton.setContentAreaFilled(false);
         olvidasteContraseñaButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         olvidasteContraseñaButton.setDefaultCapable(false);
+        olvidasteContraseñaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                olvidasteContraseñaButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout inicioSesionPanelLayout = new javax.swing.GroupLayout(inicioSesionPanel);
         inicioSesionPanel.setLayout(inicioSesionPanelLayout);
@@ -284,7 +298,57 @@ public class LoginRegistroForm extends javax.swing.JFrame {
 
     private void registrarUsuarioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarUsuarioButtonActionPerformed
         // TODO add your handling code here:
+        
+        String nombre = usuarioRegistroTextField1.getText();
+        String email = emailRegisterTextField.getText();
+        String contrasena = contrasenaEmailTextField.getText();
+        
+        if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (adminUsuario.registrarNuevoUsuario(nombre, email, contrasena)) {
+            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCamposRegistro();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar usuario. El email ya puede estar en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
     }//GEN-LAST:event_registrarUsuarioButtonActionPerformed
+
+    private void iniciarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionButtonActionPerformed
+        // TODO add your handling code here:
+        String usuario = usuarioLoginTextField1.getText();
+    String contrasena = contrasenaLoginTextField.getText(); // Usando getText() para JTextField
+    
+    if (adminUsuario.iniciarSesion(usuario, contrasena)) {
+        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Crear y mostrar el nuevo formulario
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new paquete1.Form2().setVisible(true);
+            }
+        });
+        
+        // Cerrar el formulario actual de inicio de sesión
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_iniciarSesionButtonActionPerformed
+
+    private void olvidasteContraseñaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_olvidasteContraseñaButtonActionPerformed
+        // TODO add your handling code here:
+        String email = JOptionPane.showInputDialog(this, "Ingresa tu email para recuperar la contraseña:");
+        if (email != null && !email.isEmpty()) {
+            // Aquí implementarías la lógica para recuperar la contraseña
+            // Por ahora, solo mostraremos un mensaje
+            JOptionPane.showMessageDialog(this, "Se ha enviado un correo de recuperación a " + email, "Recuperación de contraseña", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_olvidasteContraseñaButtonActionPerformed
 
     /**
      * @param args the command line arguments
