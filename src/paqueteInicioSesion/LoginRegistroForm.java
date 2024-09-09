@@ -33,7 +33,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     private void limpiarCamposRegistro() {
         usuarioRegistroTextField1.setText("");
         emailRegisterTextField.setText("");
-        contrasenaEmailTextField.setText("");
+        contrasenaEmailPasswordField.setText("");
     }
 
     /**
@@ -58,21 +58,21 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        contrasenaLoginTextField = new javax.swing.JTextField();
         usuarioLoginTextField1 = new javax.swing.JTextField();
         iniciarSesionButton = new java.awt.Button();
         olvidasteContraseñaButton = new javax.swing.JButton();
+        contrasenaLoginPasswordField = new javax.swing.JPasswordField();
         registroPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        contrasenaEmailTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         usuarioRegistroTextField1 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         emailRegisterTextField = new javax.swing.JTextField();
         registrarUsuarioButton = new java.awt.Button();
+        contrasenaEmailPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -95,9 +95,6 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("USUARIO:");
-
-        contrasenaLoginTextField.setBackground(new java.awt.Color(69, 67, 67));
-        contrasenaLoginTextField.setForeground(new java.awt.Color(255, 255, 255));
 
         usuarioLoginTextField1.setBackground(new java.awt.Color(69, 67, 67));
         usuarioLoginTextField1.setForeground(new java.awt.Color(255, 255, 255));
@@ -124,6 +121,14 @@ public class LoginRegistroForm extends javax.swing.JFrame {
             }
         });
 
+        contrasenaLoginPasswordField.setBackground(new java.awt.Color(69, 67, 67));
+        contrasenaLoginPasswordField.setForeground(new java.awt.Color(255, 255, 255));
+        contrasenaLoginPasswordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contrasenaLoginPasswordFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout inicioSesionPanelLayout = new javax.swing.GroupLayout(inicioSesionPanel);
         inicioSesionPanel.setLayout(inicioSesionPanelLayout);
         inicioSesionPanelLayout.setHorizontalGroup(
@@ -134,24 +139,20 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                         .addGap(138, 138, 138)
                         .addComponent(jLabel2))
                     .addGroup(inicioSesionPanelLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(usuarioLoginTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4)
-                                .addGroup(inicioSesionPanelLayout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addGroup(inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(contrasenaLoginTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(inicioSesionPanelLayout.createSequentialGroup()
-                                            .addGap(6, 6, 6)
-                                            .addComponent(olvidasteContraseñaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addGroup(inicioSesionPanelLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addComponent(iniciarSesionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addComponent(iniciarSesionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inicioSesionPanelLayout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inicioSesionPanelLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(olvidasteContraseñaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(contrasenaLoginPasswordField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usuarioLoginTextField1, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         inicioSesionPanelLayout.setVerticalGroup(
             inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,16 +164,16 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(usuarioLoginTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usuarioLoginTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contrasenaLoginTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(contrasenaLoginPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(olvidasteContraseñaButton)
                 .addGap(34, 34, 34)
                 .addComponent(iniciarSesionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inicio de Sesión", inicioSesionPanel);
@@ -192,9 +193,6 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("EMAIL:");
-
-        contrasenaEmailTextField.setBackground(new java.awt.Color(69, 67, 67));
-        contrasenaEmailTextField.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -220,10 +218,32 @@ public class LoginRegistroForm extends javax.swing.JFrame {
             }
         });
 
+        contrasenaEmailPasswordField.setBackground(new java.awt.Color(69, 67, 67));
+        contrasenaEmailPasswordField.setForeground(new java.awt.Color(255, 255, 255));
+        contrasenaEmailPasswordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contrasenaEmailPasswordFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout registroPanelLayout = new javax.swing.GroupLayout(registroPanel);
         registroPanel.setLayout(registroPanelLayout);
         registroPanelLayout.setHorizontalGroup(
             registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(registroPanelLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addGroup(registroPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(contrasenaEmailPasswordField)
+                            .addComponent(usuarioRegistroTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel10)
+                            .addComponent(emailRegisterTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                            .addComponent(registrarUsuarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 76, Short.MAX_VALUE))
             .addGroup(registroPanelLayout.createSequentialGroup()
                 .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(registroPanelLayout.createSequentialGroup()
@@ -235,25 +255,8 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                                 .addComponent(jLabel6))))
                     .addGroup(registroPanelLayout.createSequentialGroup()
                         .addGap(63, 63, 63)
-                        .addComponent(jLabel7))
-                    .addGroup(registroPanelLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addGroup(registroPanelLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(contrasenaEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(emailRegisterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(registrarUsuarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(45, Short.MAX_VALUE))
-            .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registroPanelLayout.createSequentialGroup()
-                    .addContainerGap(49, Short.MAX_VALUE)
-                    .addComponent(usuarioRegistroTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(46, 46, 46)))
+                        .addComponent(jLabel7)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         registroPanelLayout.setVerticalGroup(
             registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,22 +269,19 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
-                .addGap(71, 71, 71)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(usuarioRegistroTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emailRegisterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(contrasenaEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addComponent(contrasenaEmailPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(registrarUsuarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
-            .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(registroPanelLayout.createSequentialGroup()
-                    .addGap(247, 247, 247)
-                    .addComponent(usuarioRegistroTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(280, Short.MAX_VALUE)))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Registro", registroPanel);
@@ -305,7 +305,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         
         String nombre = usuarioRegistroTextField1.getText().trim();
     String email = emailRegisterTextField.getText().trim();
-    String contrasena = contrasenaEmailTextField.getText().trim();
+    String contrasena = contrasenaEmailPasswordField.getText().trim();
     
     if (nombre.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
@@ -330,7 +330,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     private void iniciarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionButtonActionPerformed
         // TODO add your handling code here:
     String nombreUsuario = usuarioLoginTextField1.getText().trim();
-    String contrasena = contrasenaLoginTextField.getText().trim();
+    String contrasena = contrasenaLoginPasswordField.getText().trim();
     
     
     
@@ -370,6 +370,14 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_olvidasteContraseñaButtonActionPerformed
 
+    private void contrasenaLoginPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenaLoginPasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contrasenaLoginPasswordFieldActionPerformed
+
+    private void contrasenaEmailPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenaEmailPasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contrasenaEmailPasswordFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -406,8 +414,8 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField contrasenaEmailTextField;
-    private javax.swing.JTextField contrasenaLoginTextField;
+    private javax.swing.JPasswordField contrasenaEmailPasswordField;
+    private javax.swing.JPasswordField contrasenaLoginPasswordField;
     private javax.swing.JTextField emailRegisterTextField;
     private java.awt.Button iniciarSesionButton;
     private javax.swing.JPanel inicioSesionPanel;
