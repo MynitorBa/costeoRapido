@@ -331,7 +331,7 @@ public class costeoform1 extends javax.swing.JFrame {
                 }
             }
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(Form2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         }
 
         /* Create and display the form */
