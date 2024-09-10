@@ -347,7 +347,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
             
             // Abrir la ventana principal de la aplicación
             java.awt.EventQueue.invokeLater(() -> {
-                new paquete1.costeofinal().setVisible(true);
+                new paquete1.costeoform1().setVisible(true);
             });
             
             this.dispose(); // Cerrar la ventana de login
