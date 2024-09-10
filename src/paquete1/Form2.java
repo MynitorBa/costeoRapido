@@ -16,6 +16,47 @@ public class Form2 extends javax.swing.JFrame {
     public Form2() {
         initComponents();
     }
+    
+        private void setupAdditionalComponents() {
+        // Asignamos el evento al botón de costeo rápido
+        jButtonCosteoRapido.addActionListener(e -> calcularCosteo());
+    }
+
+    private void calcularCosteo() {
+        try {
+            // Obtener valores de los campos de texto
+            double costoFob = Double.parseDouble(jTextFieldCostoFob.getText());
+            double flete = Double.parseDouble(jTextFieldFlete.getText());
+            double dai = Double.parseDouble(jTextFieldDai.getText());
+            double margenVenta = Double.parseDouble(jTextFieldMargenVenta.getText()) / 100;
+
+            // Realizar cálculos
+            double costoTotal = costoFob + flete + dai;
+            double precioVenta = costoTotal / (1 - margenVenta);
+            double iva = precioVenta * 0.12; // Asumimos un IVA del 12%
+            double precioFinal = precioVenta + iva;
+
+            // Mostrar los resultados en un popup
+            mostrarResultados(costoTotal, precioVenta, iva, precioFinal);
+        } catch (NumberFormatException ex) {
+            // En caso de error, mostrar un mensaje de error
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos en todos los campos.");
+        }
+    }
+
+    private void mostrarResultados(double costoTotal, double precioVenta, double iva, double precioFinal) {
+        // Formateamos los resultados para mostrarlos en el popup
+        String mensaje = String.format(
+            "Resultados del Costeo Rápido:\n\n" +
+            "Costo Total: $%.2f\n" +
+            "Precio de Venta (sin IVA): $%.2f\n" +
+            "IVA: $%.2f\n" +
+            "Precio Final: $%.2f",
+            costoTotal, precioVenta, iva, precioFinal
+        );
+        // Mostramos un cuadro de diálogo con los resultados
+        JOptionPane.showMessageDialog(this, mensaje, "Resultados del Costeo", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,7 +110,68 @@ public class Form2 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jTextFieldCostoFob = new javax.swing.JTextField();
+        jTextFieldFlete = new javax.swing.JTextField();
+        jTextFieldDai = new javax.swing.JTextField();
+        jTextFieldMargenVenta = new javax.swing.JTextField();
+        jButtonCosteoRapido = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Costeo Rápido");
+
+        jButtonCosteoRapido.setText("Calcular Costeo");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonCosteoRapido)
+                    .addComponent(jTextFieldMargenVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldDai, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldFlete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldCostoFob, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(20, 20, 20)
+                .addComponent(jTextFieldCostoFob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jTextFieldFlete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jTextFieldDai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jTextFieldMargenVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jButtonCosteoRapido)
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }
     /**
      * @param args the command line arguments
      */
@@ -96,6 +198,17 @@ public class Form2 extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Form2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Form2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
