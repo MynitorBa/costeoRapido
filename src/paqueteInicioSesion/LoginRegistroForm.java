@@ -152,7 +152,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                                 .addComponent(olvidasteContraseñaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(contrasenaLoginPasswordField, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usuarioLoginTextField1, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         inicioSesionPanelLayout.setVerticalGroup(
             inicioSesionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,7 +243,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                             .addComponent(jLabel10)
                             .addComponent(emailRegisterTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
                             .addComponent(registrarUsuarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 76, Short.MAX_VALUE))
+                .addGap(0, 53, Short.MAX_VALUE))
             .addGroup(registroPanelLayout.createSequentialGroup()
                 .addGroup(registroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(registroPanelLayout.createSequentialGroup()
@@ -290,7 +290,7 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
