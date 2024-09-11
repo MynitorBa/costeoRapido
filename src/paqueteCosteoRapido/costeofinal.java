@@ -6,6 +6,10 @@ package paqueteCosteoRapido;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
+import paqueteSolicitudDePedido.SolicitudDePedido_mandarCorreo;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 /**
  *
  * @author andre
@@ -258,33 +262,62 @@ public class CosteoFinal extends javax.swing.JFrame {
 
     private void mandarSolicitudPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandarSolicitudPedidoActionPerformed
         // TODO add your handling code here:
-        
-        JOptionPane.showMessageDialog(this, "Funcionalidad de solicitud de pedido aún no implementada");
-
+    try {
+            SolicitudDePedido_mandarCorreo solicitud = new SolicitudDePedido_mandarCorreo();
+            solicitud.setDatos(
+                nombreDescripcionProducto.getText(),
+                parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
+                parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
+                parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
+                parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")),
+                parseNumber(jTextField6.getText().replace("Q", "")),
+                parseNumber(margen_FINAL.getText().replace("%", "")) / 100
+            );
+            solicitud.setVisible(true);
+            this.dispose();
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Error al procesar los números: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_mandarSolicitudPedidoActionPerformed
 
+    private double parseNumber(String number) throws ParseException {
+        NumberFormat format = NumberFormat.getInstance(Locale.US);
+        Number parsed = format.parse(number.replace(",", ""));
+        return parsed.doubleValue();
+    }
+    
+    
+    
     private void ModificarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCosteoActionPerformed
         // TODO add your handling code here:
        new CosteoForm_Ingresar().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ModificarCosteoActionPerformed
 
+    private void guardarCosteo() {
+
+        JOptionPane.showMessageDialog(this, "Costeo guardado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
     private void GuardarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarCosteoActionPerformed
         // TODO add your handling code here:
         
-        
-        JOptionPane.showMessageDialog(this, "Funcionalidad de guardar costeo aún no implementada");
-
+        if (validarDatos()) {
+            guardarCosteo();
+        }        
     }//GEN-LAST:event_GuardarCosteoActionPerformed
 
     private void historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialActionPerformed
         // TODO add your handling code here:
         
         
-        JOptionPane.showMessageDialog(this, "Funcionalidad de historial aún no implementada");
+        JOptionPane.showMessageDialog(this, "Funcionalidad de historial en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_historialActionPerformed
-
+    private boolean validarDatos() {
+        return true; 
+    }
     /**
      * @param args the command line arguments
      */

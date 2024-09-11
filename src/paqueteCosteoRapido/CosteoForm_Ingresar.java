@@ -43,6 +43,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         nombreDescripcionProducto = new javax.swing.JTextField();
         ClasificacionDAI_elegir = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,6 +82,8 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 
         jLabel1.setText("Costo Fob USD$");
 
+        jButton1.setText("Reset");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,11 +110,12 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                             .addComponent(ClasificacionDAI_elegir, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(flete_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(costoFobUSD$_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(CosteoRapido_calcular)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(CosteoRapido_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,9 +138,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(MargenVenta_Ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
-                .addGap(33, 33, 33)
-                .addComponent(CosteoRapido_calcular)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CosteoRapido_calcular)
+                    .addComponent(jButton1))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -149,13 +155,17 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     
     private void CosteoRapido_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CosteoRapido_calcularActionPerformed
         // TODO add your handling code here:
-        calcularCosteo();
-
+        if (validarEntradas()) {
+            calcularCosteo();
+        }
     }//GEN-LAST:event_CosteoRapido_calcularActionPerformed
 
 
    private void calcularCosteo() {
         // Obtener los valores ingresados por el usuario
+        try{
+            
+        
         String nombre = nombreDescripcionProducto.getText();
         double costoFob = Double.parseDouble(costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", ""));
         double fletePercent = Double.parseDouble(flete_Ingresar.getText().replace("%", "")) / 100.0;
@@ -170,10 +180,13 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         double precioConIVA = precioVenta * 1.12;  // Asumiendo un IVA del 12%
 
         // Crear y mostrar el formulario CosteoFinal con los resultados
-        CosteoFinal costeoFinal = new CosteoFinal();
-        costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
-        costeoFinal.setVisible(true);
-        this.setVisible(false);
+            CosteoFinal costeoFinal = new CosteoFinal();
+            costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
+            costeoFinal.setVisible(true);
+            this.dispose(); // Cierra la ventana actual
+        } catch (Exception e) {
+            mostrarError("Error al calcular el costeo: " + e.getMessage());
+        }
     }
 
 
@@ -192,7 +205,31 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         }
     }     
     
-    
+        private boolean validarEntradas() {
+        try {
+            if (nombreDescripcionProducto.getText().trim().isEmpty()) {
+                mostrarError("Por favor, ingrese un nombre o descripción del producto.");
+                return false;
+            }
+            
+            double costoFob = Double.parseDouble(costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", ""));
+            double flete = Double.parseDouble(flete_Ingresar.getText().replace("%", ""));
+            double margenVenta = Double.parseDouble(MargenVenta_Ingresar.getText().replace("%", ""));
+            
+            if (costoFob <= 0 || flete < 0 || margenVenta < 0) {
+                mostrarError("Los valores deben ser positivos.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            mostrarError("Por favor, ingrese valores numéricos válidos.");
+            return false;
+        }
+        return true;
+    }
+        
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
     
     private void costoFobUSD$_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoFobUSD$_IngresarActionPerformed
         // TODO add your handling code here:
@@ -244,6 +281,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JTextField MargenVenta_Ingresar;
     private javax.swing.JTextField costoFobUSD$_Ingresar;
     private javax.swing.JTextField flete_Ingresar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

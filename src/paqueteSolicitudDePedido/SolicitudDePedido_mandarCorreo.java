@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package paqueteSolicitudDePedido;
-
+    
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -238,7 +238,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
     }
 
     private void actualizarCampos() {
-        DecimalFormat df = new DecimalFormat("#,##0.00");
+       DecimalFormat df = new DecimalFormat("#,##0.00");
         
         nombreDescripcionProductoFINAL.setText(nombreProducto);
         costoFOBUSD$_FINAL.setText("$" + df.format(costoFobUSD));
@@ -250,48 +250,47 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
     }
     
     
-private void enviarCorreo(String destinatario) {
-    Properties props = new Properties();
-    props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", "smtp.gmail.com");
-    props.put("mail.smtp.port", "587");
+    private void enviarCorreo(String destinatario) {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
 
         final String username = "stylematezelda@gmail.com"; 
         final String password = "ucom vaej vocj tdvc"; 
 
-    Session session = Session.getInstance(props,
-      new javax.mail.Authenticator() {
-        protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(username, password);
-        }
-      });
-
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+          });
     try {
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(username));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-        message.setSubject("Detalles del Costeo: " + nombreProducto);
-        
-        String contenido = "Producto: " + nombreProducto + "\n" +
-                           "Costo FOB USD: " + costoFOBUSD$_FINAL.getText() + "\n" +
-                           "Costo USD: " + CostoUSD$_FINAL.getText() + "\n" +
-                           "Costo en Quetzales: " + costoQuetzales_FINAL.getText() + "\n" +
-                           "Precio de Venta: " + PrecioVenta_FINAL.getText() + "\n" +
-                           "Precio con IVA: " + ConIVA_FINAL.getText() + "\n" +
-                           "Margen: " + margen_FINAL.getText();
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+            message.setSubject("Detalles del Costeo: " + nombreProducto);
+            
+            String contenido = "Producto: " + nombreProducto + "\n" +
+                               "Costo FOB USD: " + costoFOBUSD$_FINAL.getText() + "\n" +
+                               "Costo USD: " + CostoUSD$_FINAL.getText() + "\n" +
+                               "Costo en Quetzales: " + costoQuetzales_FINAL.getText() + "\n" +
+                               "Precio de Venta: " + PrecioVenta_FINAL.getText() + "\n" +
+                               "Precio con IVA: " + ConIVA_FINAL.getText() + "\n" +
+                               "Margen: " + margen_FINAL.getText();
 
-        message.setText(contenido);
+            message.setText(contenido);
 
-        Transport.send(message);
+            Transport.send(message);
 
-        JOptionPane.showMessageDialog(this, "Correo enviado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-    } catch (MessagingException e) {
-        e.printStackTrace(); // Imprime el stack trace para debug
-        JOptionPane.showMessageDialog(this, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Correo enviado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (MessagingException e) {
+            JOptionPane.showMessageDialog(this, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
-}
+
     
     
     
@@ -310,15 +309,31 @@ private void enviarCorreo(String destinatario) {
     private void enviarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarCorreoActionPerformed
         // TODO add your handling code here:
         
-         String destinatario = recibirCorreo.getText();
-        if (destinatario != null && !destinatario.isEmpty()) {
-            enviarCorreo(destinatario);
+       String destinatario = recibirCorreo.getText();
+        if (validarCorreo(destinatario)) {
+            if (confirmarEnvio()) {
+                enviarCorreo(destinatario);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese una dirección de correo válida.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
     }//GEN-LAST:event_enviarCorreoActionPerformed
 
+    private boolean validarCorreo(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(regex);
+    }
+    
+   private boolean confirmarEnvio() {
+        int opcion = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro que desea enviar el correo?", 
+            "Confirmar envío", 
+            JOptionPane.YES_NO_OPTION);
+        return opcion == JOptionPane.YES_OPTION;
+    }
+    
+    
+    
     private void guardar_al_historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_al_historialActionPerformed
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "Funcionalidad de guardar aún no implementada");
