@@ -64,9 +64,11 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         historial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Solicitud de Pedido");
 
+        nombreDescripcionProductoFINAL.setEditable(false);
         nombreDescripcionProductoFINAL.setText("Nombre o descripción del producto");
         nombreDescripcionProductoFINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,16 +88,24 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
 
         recibirCorreo.setText("ejemplo@gmail.com");
 
+        costoQuetzales_FINAL.setEditable(false);
         costoQuetzales_FINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 costoQuetzales_FINALActionPerformed(evt);
             }
         });
 
+        costoFOBUSD$_FINAL.setEditable(false);
+
+        CostoUSD$_FINAL.setEditable(false);
+
         jLabel7.setText("Precio de Venta");
+
+        PrecioVenta_FINAL.setEditable(false);
 
         jLabel8.setText("Con IVA");
 
+        ConIVA_FINAL.setEditable(false);
         ConIVA_FINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConIVA_FINALActionPerformed(evt);
@@ -103,6 +113,8 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         });
 
         jLabel9.setText("Margen");
+
+        margen_FINAL.setEditable(false);
 
         enviarCorreo.setText("Enviar");
         enviarCorreo.addActionListener(new java.awt.event.ActionListener() {
@@ -150,11 +162,11 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel4)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(34, 34, 34))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

@@ -52,9 +52,11 @@ public class CosteoFinal extends javax.swing.JFrame {
         historial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("COSTEO FINAL");
 
+        nombreDescripcionProducto.setEditable(false);
         nombreDescripcionProducto.setText("Nombre o descripción del producto");
         nombreDescripcionProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +66,7 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         jLabel3.setText("Costo Fob USD$");
 
+        costoFobUSD$_FINAL.setEditable(false);
         costoFobUSD$_FINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 costoFobUSD$_FINALActionPerformed(evt);
@@ -72,10 +75,15 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         jLabel4.setText("Costo USD$");
 
+        CostoUSD$_FINAL.setEditable(false);
+
         jLabel5.setText("Costo en Quetzales");
+
+        CostoQuetzales_FINAL.setEditable(false);
 
         jLabel6.setText("Precio de venta");
 
+        PrecioVenta_FINAL.setEditable(false);
         PrecioVenta_FINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PrecioVenta_FINALActionPerformed(evt);
@@ -84,6 +92,7 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         ConIVA_FINAL.setText("Con IVA");
 
+        jTextField6.setEditable(false);
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
@@ -92,6 +101,7 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         jLabel8.setText("Margen");
 
+        margen_FINAL.setEditable(false);
         margen_FINAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 margen_FINALActionPerformed(evt);
