@@ -2,13 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package paquete1;
+package paqueteSolicitudDePedido;
+
+
+import javax.swing.*;
+import java.awt.event.*;
+import java.text.DecimalFormat;
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
 
 /**
  *
  * @author andre
  */
 public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
+    
+    private String nombreProducto;
+    private double costoFobUSD;
+    private double costoUSD;
+    private double costoQuetzales;
+    private double precioVenta;
+    private double precioConIVA;
+    private double margen;
 
     /**
      * Creates new form SolicitudDePedido_mandarCorreo
@@ -44,8 +60,8 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         margen_FINAL = new javax.swing.JTextField();
         enviarCorreo = new javax.swing.JButton();
-        historial = new javax.swing.JButton();
         guardar_al_historial = new javax.swing.JButton();
+        historial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,14 +111,14 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
             }
         });
 
-        historial.setText("Historial");
-
         guardar_al_historial.setText("Guardar");
         guardar_al_historial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardar_al_historialActionPerformed(evt);
             }
         });
+
+        historial.setText("Historial");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,6 +224,77 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    public void setDatos(String nombre, double costoFob, double costoUSD, double costoQuetzales, double precioVenta, double precioConIVA, double margen) {
+        this.nombreProducto = nombre;
+        this.costoFobUSD = costoFob;
+        this.costoUSD = costoUSD;
+        this.costoQuetzales = costoQuetzales;
+        this.precioVenta = precioVenta;
+        this.precioConIVA = precioConIVA;
+        this.margen = margen;
+
+        actualizarCampos();
+    }
+
+    private void actualizarCampos() {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        
+        nombreDescripcionProductoFINAL.setText(nombreProducto);
+        costoFOBUSD$_FINAL.setText("$" + df.format(costoFobUSD));
+        CostoUSD$_FINAL.setText("$" + df.format(costoUSD));
+        costoQuetzales_FINAL.setText("Q" + df.format(costoQuetzales));
+        PrecioVenta_FINAL.setText("Q" + df.format(precioVenta));
+        ConIVA_FINAL.setText("Q" + df.format(precioConIVA));
+        margen_FINAL.setText(df.format(margen * 100) + "%");
+    }
+    
+    
+private void enviarCorreo(String destinatario) {
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+
+        final String username = "stylematezelda@gmail.com"; 
+        final String password = "ucom vaej vocj tdvc"; 
+
+    Session session = Session.getInstance(props,
+      new javax.mail.Authenticator() {
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(username, password);
+        }
+      });
+
+    try {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+        message.setSubject("Detalles del Costeo: " + nombreProducto);
+        
+        String contenido = "Producto: " + nombreProducto + "\n" +
+                           "Costo FOB USD: " + costoFOBUSD$_FINAL.getText() + "\n" +
+                           "Costo USD: " + CostoUSD$_FINAL.getText() + "\n" +
+                           "Costo en Quetzales: " + costoQuetzales_FINAL.getText() + "\n" +
+                           "Precio de Venta: " + PrecioVenta_FINAL.getText() + "\n" +
+                           "Precio con IVA: " + ConIVA_FINAL.getText() + "\n" +
+                           "Margen: " + margen_FINAL.getText();
+
+        message.setText(contenido);
+
+        Transport.send(message);
+
+        JOptionPane.showMessageDialog(this, "Correo enviado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (MessagingException e) {
+        e.printStackTrace(); // Imprime el stack trace para debug
+        JOptionPane.showMessageDialog(this, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+    
+    
     private void nombreDescripcionProductoFINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreDescripcionProductoFINALActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreDescripcionProductoFINALActionPerformed
@@ -222,12 +309,25 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
 
     private void enviarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarCorreoActionPerformed
         // TODO add your handling code here:
+        
+         String destinatario = recibirCorreo.getText();
+        if (destinatario != null && !destinatario.isEmpty()) {
+            enviarCorreo(destinatario);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una dirección de correo válida.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_enviarCorreoActionPerformed
 
     private void guardar_al_historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_al_historialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_guardar_al_historialActionPerformed
+        JOptionPane.showMessageDialog(this, "Funcionalidad de guardar aún no implementada");
 
+    }//GEN-LAST:event_guardar_al_historialActionPerformed
+    private void historialActionPerformed(java.awt.event.ActionEvent evt) {
+        
+        JOptionPane.showMessageDialog(this, "Funcionalidad de historial aún no implementada");
+    }
     /**
      * @param args the command line arguments
      */
