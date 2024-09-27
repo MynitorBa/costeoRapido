@@ -130,19 +130,18 @@ public class AdministradorUsuario {
         return false;
     }
 
-    private boolean emailExiste(String email) {
+    public boolean emailExiste(String email) {
         try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
              Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Skip header
-                Cell emailCell = row.getCell(1);
-                if (emailCell != null && emailCell.getStringCellValue().equals(email)) {
+                if (row.getRowNum() == 0) continue; // Saltar la fila de encabezado
+                Cell emailCell = row.getCell(1); // Asumiendo que el email está en la segunda columna
+                if (emailCell != null && emailCell.getStringCellValue().trim().equalsIgnoreCase(email.trim())) {
                     return true;
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error al verificar email: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -184,20 +183,66 @@ public class AdministradorUsuario {
         }
     }
 
-    public void imprimirContenidoExcel() {
+  
+    private Map<String, String> codigosRecuperacion = new HashMap<>();
+
+    public String generarCodigoRecuperacion(String email) {
+        Random random = new Random();
+        String codigo = String.format("%08d", random.nextInt(100000000));
+        codigosRecuperacion.put(codigo, email);
+        return codigo;
+    }
+
+    public boolean validarCodigoRecuperacion(String codigo, String email) {
+        String emailAsociado = codigosRecuperacion.remove(codigo);
+        return email.equals(emailAsociado);
+    }
+
+    private boolean cambiarContrasenaUsuario(String email, String nuevaContrasena) {
         try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
              Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
             for (Row row : sheet) {
-                for (Cell cell : row) {
-                    System.out.print(getCellValueAsString(cell) + "\t");
+                if (row.getRowNum() == 0) continue; // Saltar la fila de encabezado
+                Cell emailCell = row.getCell(1);
+                if (emailCell != null && emailCell.getStringCellValue().equals(email)) {
+                    Cell passwordCell = row.getCell(2);
+                    passwordCell.setCellValue(nuevaContrasena); // Aquí deberías aplicar el hash a la nueva contraseña
+                    try (FileOutputStream outputStream = new FileOutputStream(ARCHIVO_EXCEL)) {
+                        workbook.write(outputStream);
+                    }
+                    return true;
                 }
-                System.out.println();
             }
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo Excel: " + e.getMessage());
             e.printStackTrace();
         }
+        return false;
+    }
+    
+    public boolean cambiarContrasena(String email, String nuevaContrasena) {
+        try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
+             Workbook workbook = WorkbookFactory.create(fis)) {
+            Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Saltar la fila de encabezado
+                Cell emailCell = row.getCell(1);
+                if (emailCell != null && emailCell.getStringCellValue().trim().equalsIgnoreCase(email.trim())) {
+                    // Encontramos el usuario, cambiamos la contraseña
+                    Cell passwordCell = row.getCell(2); // Asumiendo que la contraseña está en la tercera columna
+                    passwordCell.setCellValue(nuevaContrasena); // Aquí deberías aplicar un hash a la contraseña antes de guardarla
+                    
+                    // Guardar los cambios en el archivo
+                    try (FileOutputStream outputStream = new FileOutputStream(ARCHIVO_EXCEL)) {
+                        workbook.write(outputStream);
+                    }
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
 }

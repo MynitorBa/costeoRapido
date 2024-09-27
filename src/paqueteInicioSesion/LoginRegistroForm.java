@@ -15,8 +15,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import javax.swing.JOptionPane;
-import java.io.IOException;
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
+import java.util.UUID;
+import java.text.DecimalFormat;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.*;
+import java.util.*;
 
 public class LoginRegistroForm extends javax.swing.JFrame {
     
@@ -35,6 +42,45 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         emailRegisterTextField.setText("");
         contrasenaEmailPasswordField.setText("");
     }
+    
+    private boolean enviarCorreoCambioContrasena(String destinatario, String codigo) {
+     Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+
+    final String username = "stylematezelda@gmail.com";
+    final String password = "ucom vaej vocj tdvc";
+
+    Session session = Session.getInstance(props,
+        new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+    try {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+        message.setSubject("Código para cambio de contraseña");
+        
+        String contenido = "Tu código para cambiar la contraseña es: " + codigo + "\n\n" +
+                           "Ingresa este código de 8 dígitos en la aplicación para establecer tu nueva contraseña.";
+
+        message.setText(contenido);
+
+        Transport.send(message);
+
+        return true;
+    } catch (MessagingException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+    
+
 
     /**
      * Creates new form LoginRegistroForm
@@ -362,12 +408,55 @@ public class LoginRegistroForm extends javax.swing.JFrame {
 
     private void olvidasteContraseñaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_olvidasteContraseñaButtonActionPerformed
         // TODO add your handling code here:
-        String email = JOptionPane.showInputDialog(this, "Ingresa tu email para recuperar la contraseña:");
-        if (email != null && !email.isEmpty()) {
-            // Aquí implementarías la lógica para recuperar la contraseña
-            // Por ahora, solo mostraremos un mensaje
-            JOptionPane.showMessageDialog(this, "Se ha enviado un correo de recuperación a " + email, "Recuperación de contraseña", JOptionPane.INFORMATION_MESSAGE);
+        String email = JOptionPane.showInputDialog(this, "Ingresa tu email para cambiar la contraseña:");
+    if (email != null && !email.isEmpty()) {
+        if (adminUsuario.emailExiste(email)) {
+            String codigo = adminUsuario.generarCodigoRecuperacion(email);
+            
+            // Enviar correo electrónico con el código
+            if (enviarCorreoCambioContrasena(email, codigo)) {
+                JOptionPane.showMessageDialog(this, "Se ha enviado un correo con un código de 8 dígitos para cambiar tu contraseña.", "Correo enviado", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Crear un panel personalizado para el diálogo
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                JTextField codigoField = new JTextField(10);
+                JPasswordField newPasswordField = new JPasswordField(10);
+                JPasswordField confirmPasswordField = new JPasswordField(10);
+                
+                panel.add(new JLabel("Ingresa el código de 8 dígitos recibido por correo:"));
+                panel.add(codigoField);
+                panel.add(new JLabel("Nueva contraseña:"));
+                panel.add(newPasswordField);
+                panel.add(new JLabel("Confirma la nueva contraseña:"));
+                panel.add(confirmPasswordField);
+
+                int result = JOptionPane.showConfirmDialog(null, panel, 
+                    "Cambio de contraseña", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                
+                if (result == JOptionPane.OK_OPTION) {
+                    String inputCodigo = codigoField.getText();
+                    String newPassword = new String(newPasswordField.getPassword());
+                    String confirmPassword = new String(confirmPasswordField.getPassword());
+                    
+                    if (!newPassword.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else if (adminUsuario.validarCodigoRecuperacion(inputCodigo, email)) {
+                        if (adminUsuario.cambiarContrasena(email, newPassword)) {
+                            JOptionPane.showMessageDialog(this, "Tu contraseña ha sido cambiada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Hubo un problema al cambiar la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "El código ingresado es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Hubo un problema al enviar el correo. Por favor, intenta nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró una cuenta asociada a ese email.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
     }//GEN-LAST:event_olvidasteContraseñaButtonActionPerformed
 
     private void contrasenaLoginPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenaLoginPasswordFieldActionPerformed
