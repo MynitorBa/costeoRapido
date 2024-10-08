@@ -421,14 +421,19 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Se ha enviado un correo con un código de 8 dígitos para cambiar tu contraseña.", "Correo enviado", JOptionPane.INFORMATION_MESSAGE);
                     
                     boolean contraseñaCambiada = false;
+                    boolean codigoValidado = false;
+                    String inputCodigo = "";
+
                     while (!contraseñaCambiada) {
                         JPanel panel = new JPanel(new GridLayout(0, 1));
                         JTextField codigoField = new JTextField(10);
                         JPasswordField newPasswordField = new JPasswordField(10);
                         JPasswordField confirmPasswordField = new JPasswordField(10);
                         
-                        panel.add(new JLabel("Ingresa el código de 8 dígitos recibido por correo:"));
-                        panel.add(codigoField);
+                        if (!codigoValidado) {
+                            panel.add(new JLabel("Ingresa el código de 8 dígitos recibido por correo:"));
+                            panel.add(codigoField);
+                        }
                         panel.add(new JLabel("Nueva contraseña:"));
                         panel.add(newPasswordField);
                         panel.add(new JLabel("Confirma la nueva contraseña:"));
@@ -438,13 +443,21 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                             "Cambio de contraseña", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                         
                         if (result == JOptionPane.OK_OPTION) {
-                            String inputCodigo = codigoField.getText();
+                            if (!codigoValidado) {
+                                inputCodigo = codigoField.getText();
+                                if (!adminUsuario.validarCodigoRecuperacion(inputCodigo, email)) {
+                                    JOptionPane.showMessageDialog(this, "El código ingresado es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    continue;
+                                }
+                                codigoValidado = true;
+                            }
+
                             String newPassword = new String(newPasswordField.getPassword());
                             String confirmPassword = new String(confirmPasswordField.getPassword());
                             
                             if (!newPassword.equals(confirmPassword)) {
                                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
-                            } else if (adminUsuario.validarCodigoRecuperacion(inputCodigo, email)) {
+                            } else {
                                 String mensajeValidacion = adminUsuario.verificarContrasena(newPassword);
                                 if (mensajeValidacion == null) {
                                     if (adminUsuario.cambiarContrasena(email, newPassword)) {
@@ -456,8 +469,6 @@ public class LoginRegistroForm extends javax.swing.JFrame {
                                 } else {
                                     JOptionPane.showMessageDialog(this, mensajeValidacion, "Contraseña insegura", JOptionPane.ERROR_MESSAGE);
                                 }
-                            } else {
-                                JOptionPane.showMessageDialog(this, "El código ingresado es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
                         } else {
                             // El usuario canceló el proceso
