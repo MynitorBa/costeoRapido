@@ -13,17 +13,9 @@ package paqueteInicioSesion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
-import java.util.UUID;
-import java.text.DecimalFormat;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.*;
-import java.util.*;
 
 public class LoginRegistroForm extends javax.swing.JFrame {
     
@@ -42,6 +34,12 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         emailRegisterTextField.setText("");
         contrasenaEmailPasswordField.setText("");
     }
+    
+    private boolean esContraseñaSegura(String contrasena) {
+    return contrasena.length() >= 7 &&
+           contrasena.matches(".*[A-Z].*") &&
+           contrasena.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
+}
     
     private boolean enviarCorreoCambioContrasena(String destinatario, String codigo) {
      Properties props = new Properties();
@@ -358,6 +356,12 @@ public class LoginRegistroForm extends javax.swing.JFrame {
         return;
     }
     
+    // Validación de contraseña segura
+    if (!esContraseñaSegura(contrasena)) {
+        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 7 caracteres, incluir una mayúscula y un carácter especial", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
     try {
         if (adminUsuario.registrarNuevoUsuario(nombre, email, contrasena)) {
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -409,54 +413,65 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     private void olvidasteContraseñaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_olvidasteContraseñaButtonActionPerformed
         // TODO add your handling code here:
         String email = JOptionPane.showInputDialog(this, "Ingresa tu email para cambiar la contraseña:");
-    if (email != null && !email.isEmpty()) {
-        if (adminUsuario.emailExiste(email)) {
-            String codigo = adminUsuario.generarCodigoRecuperacion(email);
-            
-            // Enviar correo electrónico con el código
-            if (enviarCorreoCambioContrasena(email, codigo)) {
-                JOptionPane.showMessageDialog(this, "Se ha enviado un correo con un código de 8 dígitos para cambiar tu contraseña.", "Correo enviado", JOptionPane.INFORMATION_MESSAGE);
+        if (email != null && !email.isEmpty()) {
+            if (adminUsuario.emailExiste(email)) {
+                String codigo = adminUsuario.generarCodigoRecuperacion(email);
                 
-                // Crear un panel personalizado para el diálogo
-                JPanel panel = new JPanel(new GridLayout(0, 1));
-                JTextField codigoField = new JTextField(10);
-                JPasswordField newPasswordField = new JPasswordField(10);
-                JPasswordField confirmPasswordField = new JPasswordField(10);
-                
-                panel.add(new JLabel("Ingresa el código de 8 dígitos recibido por correo:"));
-                panel.add(codigoField);
-                panel.add(new JLabel("Nueva contraseña:"));
-                panel.add(newPasswordField);
-                panel.add(new JLabel("Confirma la nueva contraseña:"));
-                panel.add(confirmPasswordField);
-
-                int result = JOptionPane.showConfirmDialog(null, panel, 
-                    "Cambio de contraseña", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                
-                if (result == JOptionPane.OK_OPTION) {
-                    String inputCodigo = codigoField.getText();
-                    String newPassword = new String(newPasswordField.getPassword());
-                    String confirmPassword = new String(confirmPasswordField.getPassword());
+                if (enviarCorreoCambioContrasena(email, codigo)) {
+                    JOptionPane.showMessageDialog(this, "Se ha enviado un correo con un código de 8 dígitos para cambiar tu contraseña.", "Correo enviado", JOptionPane.INFORMATION_MESSAGE);
                     
-                    if (!newPassword.equals(confirmPassword)) {
-                        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else if (adminUsuario.validarCodigoRecuperacion(inputCodigo, email)) {
-                        if (adminUsuario.cambiarContrasena(email, newPassword)) {
-                            JOptionPane.showMessageDialog(this, "Tu contraseña ha sido cambiada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    boolean contraseñaCambiada = false;
+                    while (!contraseñaCambiada) {
+                        JPanel panel = new JPanel(new GridLayout(0, 1));
+                        JTextField codigoField = new JTextField(10);
+                        JPasswordField newPasswordField = new JPasswordField(10);
+                        JPasswordField confirmPasswordField = new JPasswordField(10);
+                        
+                        panel.add(new JLabel("Ingresa el código de 8 dígitos recibido por correo:"));
+                        panel.add(codigoField);
+                        panel.add(new JLabel("Nueva contraseña:"));
+                        panel.add(newPasswordField);
+                        panel.add(new JLabel("Confirma la nueva contraseña:"));
+                        panel.add(confirmPasswordField);
+
+                        int result = JOptionPane.showConfirmDialog(null, panel, 
+                            "Cambio de contraseña", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        
+                        if (result == JOptionPane.OK_OPTION) {
+                            String inputCodigo = codigoField.getText();
+                            String newPassword = new String(newPasswordField.getPassword());
+                            String confirmPassword = new String(confirmPasswordField.getPassword());
+                            
+                            if (!newPassword.equals(confirmPassword)) {
+                                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+                            } else if (adminUsuario.validarCodigoRecuperacion(inputCodigo, email)) {
+                                String mensajeValidacion = adminUsuario.verificarContrasena(newPassword);
+                                if (mensajeValidacion == null) {
+                                    if (adminUsuario.cambiarContrasena(email, newPassword)) {
+                                        JOptionPane.showMessageDialog(this, "Tu contraseña ha sido cambiada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                                        contraseñaCambiada = true;
+                                    } else {
+                                        JOptionPane.showMessageDialog(this, "Hubo un problema al cambiar la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(this, mensajeValidacion, "Contraseña insegura", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(this, "El código ingresado es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(this, "Hubo un problema al cambiar la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+                            // El usuario canceló el proceso
+                            break;
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "El código ingresado es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Hubo un problema al enviar el correo. Por favor, intenta nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Hubo un problema al enviar el correo. Por favor, intenta nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se encontró una cuenta asociada a ese email.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró una cuenta asociada a ese email.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    
     }//GEN-LAST:event_olvidasteContraseñaButtonActionPerformed
 
     private void contrasenaLoginPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenaLoginPasswordFieldActionPerformed

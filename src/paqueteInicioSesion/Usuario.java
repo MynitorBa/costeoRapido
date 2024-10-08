@@ -6,6 +6,7 @@ package paqueteInicioSesion;
 import java.util.Date;
 import java.util.UUID;
 import java.util.Base64;
+import java.security.SecureRandom;
 /**
  *
  * @author mynit

@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.util.*;
+import java.security.SecureRandom;
 /**
  *
  * @author mynit
@@ -184,21 +185,31 @@ public class AdministradorUsuario {
     }
 
   
-    private Map<String, String> codigosRecuperacion = new HashMap<>();
+     private Map<String, String> codigosRecuperacion = new HashMap<>();
+    private static final String CARACTERES_ALFANUMERICOS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int LONGITUD_CODIGO = 8;
 
     public String generarCodigoRecuperacion(String email) {
-        Random random = new Random();
-        String codigo = String.format("%08d", random.nextInt(100000000));
-        codigosRecuperacion.put(codigo, email);
-        return codigo;
+        SecureRandom random = new SecureRandom();
+        StringBuilder codigo = new StringBuilder(LONGITUD_CODIGO);
+        for (int i = 0; i < LONGITUD_CODIGO; i++) {
+            codigo.append(CARACTERES_ALFANUMERICOS.charAt(random.nextInt(CARACTERES_ALFANUMERICOS.length())));
+        }
+        String codigoGenerado = codigo.toString();
+        codigosRecuperacion.put(codigoGenerado, email);
+        return codigoGenerado;
     }
 
     public boolean validarCodigoRecuperacion(String codigo, String email) {
         String emailAsociado = codigosRecuperacion.remove(codigo);
         return email.equals(emailAsociado);
     }
+    public boolean cambiarContrasena(String email, String nuevaContrasena) {
+        if (!esContrasenaSegura(nuevaContrasena)) {
+            System.out.println("La nueva contraseña no cumple con los requisitos de seguridad.");
+            return false;
+        }
 
-    private boolean cambiarContrasenaUsuario(String email, String nuevaContrasena) {
         try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
              Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
@@ -219,30 +230,34 @@ public class AdministradorUsuario {
         }
         return false;
     }
-    
-    public boolean cambiarContrasena(String email, String nuevaContrasena) {
-        try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
-             Workbook workbook = WorkbookFactory.create(fis)) {
-            Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Saltar la fila de encabezado
-                Cell emailCell = row.getCell(1);
-                if (emailCell != null && emailCell.getStringCellValue().trim().equalsIgnoreCase(email.trim())) {
-                    // Encontramos el usuario, cambiamos la contraseña
-                    Cell passwordCell = row.getCell(2); // Asumiendo que la contraseña está en la tercera columna
-                    passwordCell.setCellValue(nuevaContrasena); // Aquí deberías aplicar un hash a la contraseña antes de guardarla
-                    
-                    // Guardar los cambios en el archivo
-                    try (FileOutputStream outputStream = new FileOutputStream(ARCHIVO_EXCEL)) {
-                        workbook.write(outputStream);
-                    }
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+     private boolean esContrasenaSegura(String contrasena) {
+        // Verifica que la contraseña tenga al menos 7 caracteres, una mayúscula y un carácter especial
+        return contrasena.length() >= 7 &&
+               contrasena.matches(".*[A-Z].*") &&
+               contrasena.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
     }
+     
+     
+     public String verificarContrasena(String contrasena) {
+        StringBuilder mensaje = new StringBuilder("La contraseña debe cumplir las siguientes condiciones:");
+        boolean faltaCondicion = false;
+
+        if (contrasena.length() < 7) {
+            mensaje.append("\n- Tener al menos 7 caracteres");
+            faltaCondicion = true;
+        }
+        if (!contrasena.matches(".*[A-Z].*")) {
+            mensaje.append("\n- Incluir al menos una letra mayúscula");
+            faltaCondicion = true;
+        }
+        if (!contrasena.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            mensaje.append("\n- Incluir al menos un carácter especial");
+            faltaCondicion = true;
+        }
+
+        return faltaCondicion ? mensaje.toString() : null;
+    }
+    
+    
     
 }
