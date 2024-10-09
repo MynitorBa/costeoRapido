@@ -5,17 +5,21 @@
 package GUI;
 
 
+import BuscadorInteligente.BuscadorInteligente;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import paqueteInicioSesion.LoginRegistroForm;
 /**
  *
  * @author mynit
  */
+
 public class GuiPrincipal extends javax.swing.JFrame {
 
-    
+    private BuscadorInteligente buscador;
+    private JPopupMenu sugerenciasPopup;
     private JPopupMenu popupMenu;
     /**
      * Creates new form GuiPrincipal
@@ -23,7 +27,117 @@ public class GuiPrincipal extends javax.swing.JFrame {
     public GuiPrincipal() {
         initComponents();
         customizeComponents();
+        buscador = new BuscadorInteligente();
+        configurarBuscadorInteligente();
     }
+    
+    private void configurarBuscadorInteligente() {
+        sugerenciasPopup = new JPopupMenu();
+        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+        });
+
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    realizarBusqueda();
+                }
+            }
+        });
+
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                realizarBusqueda();
+            }
+        });
+    }
+
+    private void actualizarSugerencias() {
+        SwingUtilities.invokeLater(() -> {
+            String texto = searchField.getText();
+            List<String> sugerencias = buscador.obtenerSugerencias(texto);
+            mostrarSugerencias(sugerencias);
+        });
+    }
+
+    private void mostrarSugerencias(List<String> sugerencias) {
+        sugerenciasPopup.removeAll();
+        for (String sugerencia : sugerencias) {
+            JMenuItem item = new JMenuItem(sugerencia);
+            item.addActionListener(e -> {
+                searchField.setText(sugerencia);
+                realizarBusqueda();
+            });
+            sugerenciasPopup.add(item);
+        }
+        if (!sugerencias.isEmpty()) {
+            sugerenciasPopup.show(searchField, 0, searchField.getHeight());
+        } else {
+            sugerenciasPopup.setVisible(false);
+        }
+    }
+
+    private void realizarBusqueda() {
+        String consulta = searchField.getText();
+        List<String[]> resultados = buscador.procesarConsulta(consulta);
+        resultados = buscador.filtrarResultados(resultados, ""); // Puedes agregar filtros adicionales aquí
+        resultados = buscador.ordenarResultados(resultados, consulta);
+        mostrarResultados(resultados);
+    }
+
+    private void mostrarResultados(List<String[]> resultados) {
+    JPanel resultPanel = new JPanel();
+    resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+
+    for (String[] producto : resultados) {
+        JPanel productoPanel = new JPanel();
+        productoPanel.setLayout(new BorderLayout());
+        productoPanel.setBorder(BorderFactory.createEtchedBorder());
+
+        JLabel nombreLabel = new JLabel(producto[1]);
+        nombreLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        productoPanel.add(nombreLabel, BorderLayout.NORTH);
+
+        JLabel detallesLabel = new JLabel(String.format("Tipo: %s, Marca: %s, Precio: %s", producto[5], producto[6], producto[2]));
+        productoPanel.add(detallesLabel, BorderLayout.CENTER);
+
+        JButton verMasButton = new JButton("Ver más");
+        verMasButton.addActionListener(e -> mostrarDetallesProducto(producto));
+        productoPanel.add(verMasButton, BorderLayout.EAST);
+
+        resultPanel.add(productoPanel);
+        resultPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    JScrollPane scrollPane = new JScrollPane(resultPanel);
+    scrollPane.setPreferredSize(new Dimension(400, 300));
+
+    JOptionPane.showMessageDialog(this, scrollPane, "Resultados de la búsqueda", JOptionPane.PLAIN_MESSAGE);
+}
+    private void mostrarDetallesProducto(String[] producto) {
+    StringBuilder detalles = new StringBuilder();
+    detalles.append("ID: ").append(producto[0]).append("\n");
+    detalles.append("Nombre: ").append(producto[1]).append("\n");
+    detalles.append("Precio USD: ").append(producto[2]).append("\n");
+    detalles.append("Precio Quetzales: ").append(producto[3]).append("\n");
+    detalles.append("Cantidad: ").append(producto[4]).append("\n");
+    detalles.append("Tipo: ").append(producto[5]).append("\n");
+    detalles.append("Marca: ").append(producto[6]).append("\n");
+    detalles.append("Etiquetas: ").append(producto[7]);
+
+    JTextArea textArea = new JTextArea(detalles.toString());
+    textArea.setEditable(false);
+    textArea.setWrapStyleWord(true);
+    textArea.setLineWrap(true);
+
+    JScrollPane scrollPane = new JScrollPane(textArea);
+    scrollPane.setPreferredSize(new Dimension(300, 200));
+
+    JOptionPane.showMessageDialog(this, scrollPane, "Detalles del Producto", JOptionPane.INFORMATION_MESSAGE);
+}
+    
     
     
 
@@ -365,6 +479,8 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        realizarBusqueda();
+
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
