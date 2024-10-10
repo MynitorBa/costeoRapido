@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import GUI.GuiPrincipal;
+import paqueteCosteoRapido.CosteoForm_Ingresar;
 /**
  *
  * @author andre
@@ -54,7 +55,58 @@ public class Gui extends javax.swing.JFrame {
     Eliminar.addActionListener(e -> mostrarDialogoEliminar());
     Buscar.addActionListener(e -> mostrarDialogoBuscar());
     guardar.addActionListener(e -> guardarCambios());
+    costear.addActionListener(e -> mostrarDialogoCostear());
 }
+    private void mostrarDialogoCostear() {
+    JDialog dialogo = new JDialog(this, "Seleccionar Producto para Costear", true);
+    dialogo.setLayout(new BorderLayout());
+
+    // Crear una tabla con los productos actuales
+    JTable tablaProductos = new JTable(modeloTabla);
+    JScrollPane scrollPane = new JScrollPane(tablaProductos);
+    dialogo.add(scrollPane, BorderLayout.CENTER);
+
+    JButton botonCostear = new JButton("Costear Producto Seleccionado");
+    botonCostear.addActionListener(e -> {
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            String[] productoSeleccionado = new String[modeloTabla.getColumnCount()];
+            for (int i = 0; i < modeloTabla.getColumnCount(); i++) {
+                productoSeleccionado[i] = modeloTabla.getValueAt(filaSeleccionada, i).toString();
+            }
+            dialogo.dispose();
+            abrirVentanaCosteoIngresar(productoSeleccionado);
+        } else {
+            JOptionPane.showMessageDialog(dialogo, "Por favor, seleccione un producto para costear.");
+        }
+    });
+    dialogo.add(botonCostear, BorderLayout.SOUTH);
+
+    dialogo.setSize(600, 400);
+    dialogo.setLocationRelativeTo(this);
+    dialogo.setVisible(true);
+}
+    
+    private void abrirVentanaCosteoIngresar(String[] producto) {
+    SwingUtilities.invokeLater(() -> {
+        try {
+            String nombre = producto[1];
+            double costoFob = Double.parseDouble(producto[2].replace("$", ""));
+            // Asumimos que el flete y el margen de venta no están en el producto,
+            // así que los inicializamos en 0
+            double flete = 0;
+            double margenVenta = 0;
+
+            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(nombre, costoFob, flete, margenVenta);
+            costeoForm.setVisible(true);
+            this.dispose(); // Cierra la ventana actual de Gui
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al procesar los datos del producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    });
+}
+    
+    
     private void guardarCambios() {
     int fila = jTable1.getSelectedRow();
     if (fila != -1) {
@@ -225,21 +277,23 @@ public class Gui extends javax.swing.JFrame {
 
     private void mostrarDialogoBuscar() {
         String criterioBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre o ID del producto a buscar:");
-        if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
-            String[] producto = null;
-            try {
-                int id = Integer.parseInt(criterioBusqueda);
-                producto = gestorProductos.buscarProductoPorId(id);
-            } catch (NumberFormatException e) {
-                producto = gestorProductos.buscarProductoPorNombre(criterioBusqueda);
-            }
-
-            if (producto != null) {
-                mostrarDetallesProducto(producto);
-            } else {
-                JOptionPane.showMessageDialog(this, "Producto no encontrado.");
-            }
+    if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
+        String[] producto = null;
+        try {
+            int id = Integer.parseInt(criterioBusqueda);
+            producto = gestorProductos.buscarProductoPorId(id);
+        } catch (NumberFormatException e) {
+            producto = gestorProductos.buscarProductoPorNombre(criterioBusqueda);
         }
+
+        if (producto != null) {
+            modeloTabla.setRowCount(0);
+            modeloTabla.addRow(producto);
+            JOptionPane.showMessageDialog(this, "Producto encontrado y mostrado en la tabla.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Producto no encontrado.");
+        }
+    }
     }
 
     /**
@@ -260,6 +314,7 @@ public class Gui extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         guardar = new javax.swing.JButton();
         botonRegresarGUIPrincipal = new javax.swing.JButton();
+        costear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -296,6 +351,8 @@ public class Gui extends javax.swing.JFrame {
             }
         });
 
+        costear.setText("Costear");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -307,21 +364,23 @@ public class Gui extends javax.swing.JFrame {
                         .addComponent(botonRegresarGUIPrincipal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(156, 156, 156))
+                        .addGap(153, 153, 153))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(Agregar)
-                                .addGap(25, 25, 25)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Editar)
-                                .addGap(31, 31, 31)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Eliminar)
-                                .addGap(26, 26, 26)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Buscar)
-                                .addGap(18, 18, 18)
-                                .addComponent(guardar)))
-                        .addContainerGap(18, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(guardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(costear)))
+                        .addContainerGap(16, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,13 +390,13 @@ public class Gui extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(botonRegresarGUIPrincipal))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Agregar)
                     .addComponent(Editar)
                     .addComponent(Eliminar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Buscar)
-                        .addComponent(guardar)))
+                    .addComponent(Buscar)
+                    .addComponent(guardar)
+                    .addComponent(costear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -400,6 +459,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton Editar;
     private javax.swing.JButton Eliminar;
     private javax.swing.JButton botonRegresarGUIPrincipal;
+    private javax.swing.JButton costear;
     private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

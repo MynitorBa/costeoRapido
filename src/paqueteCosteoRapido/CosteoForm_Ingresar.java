@@ -7,36 +7,148 @@ package paqueteCosteoRapido;
 
 
 
+import BuscadorInteligente.BuscadorInteligente;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import GUI.GuiPrincipal;
+import java.util.List;
 /**
  *
  * @author andre
  */
 public class CosteoForm_Ingresar extends javax.swing.JFrame {
+    
+    private BuscadorInteligente buscador;
+    private JPopupMenu popupMenu;
 
     /**
      * Creates new form CosteoForm
      */
     public CosteoForm_Ingresar() {
+    this("", 0, 0, 0);
+}
+    public CosteoForm_Ingresar(String nombre, double costoFob, double flete, double margenVenta) {
         initComponents();
+        buscador = new BuscadorInteligente();
+        popupMenu = new JPopupMenu();
+        
         jButton1.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            resetearCampos();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetearCampos();
+            }
+        });
+    searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
+            }
+        });
+    
+    // Inicializar los campos con los valores recibidos
+        nombreDescripcionProducto.setText(nombre);
+        costoFobUSD$_Ingresar.setText(String.format("$%.2f", costoFob));
+        flete_Ingresar.setText(String.format("%.2f%%", flete * 100));
+        MargenVenta_Ingresar.setText(String.format("%.2f%%", margenVenta * 100));
+
+        // Seleccionar la clasificación DAI apropiada (puedes ajustar esto según tus necesidades)
+        ClasificacionDAI_elegir.setSelectedIndex(0);
+    }
+    
+    private void handleSearch() {
+        String query = searchField.getText().trim();
+        List<String> sugerencias = buscador.obtenerSugerencias(query);
+        
+        if (!sugerencias.isEmpty()) {
+            String[] sugerenciasArray = sugerencias.toArray(new String[0]);
+            String seleccion = (String) JOptionPane.showInputDialog(
+                this,
+                "Seleccione un producto:",
+                "Resultados de búsqueda",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                sugerenciasArray,
+                sugerenciasArray[0]
+            );
+            
+            if (seleccion != null) {
+                llenarCamposProducto(seleccion);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontraron productos que coincidan con la búsqueda.");
         }
-    });
+    }
+    
+    private void llenarCamposProducto(String nombreProducto) {
+        List<String[]> resultados = buscador.procesarConsulta(nombreProducto);
+        if (!resultados.isEmpty()) {
+            String[] producto = resultados.get(0);
+            nombreDescripcionProducto.setText(producto[1]);
+            costoFobUSD$_Ingresar.setText(producto[2].replace("$", ""));
+            // Asumiendo que el flete y el margen de venta no están en el producto, los dejamos como están
+            // Si tienes esta información en el producto, ajusta los índices según corresponda
+            // flete_Ingresar.setText(...);
+            // MargenVenta_Ingresar.setText(...);
+            
+            // Para ClasificacionDAI_elegir, selecciona la opción más cercana basada en el DAI del producto
+            String daiProducto = producto[5]; // Asumiendo que el DAI está en el índice 5
+            String[] opciones = {"Cámara 0%", "Acceso 0%", "Metal 15%", "Grabador 15%", "Aluminio 10%"};
+            String opcionMasCercana = opciones[0];
+            for (String opcion : opciones) {
+                if (opcion.contains(daiProducto)) {
+                    opcionMasCercana = opcion;
+                    break;
+                }
+            }
+            ClasificacionDAI_elegir.setSelectedItem(opcionMasCercana);
+        }
+    }
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {
+        String query = searchField.getText().trim();
+        if (query.length() >= 2) {
+            List<String> sugerencias = buscador.obtenerSugerencias(query);
+            mostrarSugerencias(sugerencias);
+        } else {
+            popupMenu.setVisible(false);
+        }
+    }
+    
+    private void mostrarSugerencias(List<String> sugerencias) {
+        popupMenu.removeAll();
+        for (String sugerencia : sugerencias) {
+            JMenuItem item = new JMenuItem(sugerencia);
+            item.addActionListener(e -> seleccionarSugerencia(sugerencia));
+            popupMenu.add(item);
+        }
+        if (!sugerencias.isEmpty()) {
+            popupMenu.show(searchField, 0, searchField.getHeight());
+        } else {
+            popupMenu.setVisible(false);
+        }
+    }
+
+    private void seleccionarSugerencia(String sugerencia) {
+        searchField.setText(sugerencia);
+        popupMenu.setVisible(false);
+        llenarCamposProducto(sugerencia);
     }
     
     private void resetearCampos() {
-    nombreDescripcionProducto.setText("Nombre o descripción del producto");
-    costoFobUSD$_Ingresar.setText("$0.00");
-    flete_Ingresar.setText("0%");
+    if (nombreDescripcionProducto.getText().equals("Nombre o descripción del producto")) {
+        nombreDescripcionProducto.setText("Nombre o descripción del producto");
+    }
+    if (costoFobUSD$_Ingresar.getText().equals("$0.00")) {
+        costoFobUSD$_Ingresar.setText("$0.00");
+    }
+    if (flete_Ingresar.getText().equals("0%")) {
+        flete_Ingresar.setText("0%");
+    }
+    if (MargenVenta_Ingresar.getText().equals("0%")) {
+        MargenVenta_Ingresar.setText("0%");
+    }
     ClasificacionDAI_elegir.setSelectedIndex(0);
-    MargenVenta_Ingresar.setText("0%");
 }
     
     
@@ -64,6 +176,8 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         CosteoRapido_calcular = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        searchField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -119,31 +233,30 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(MargenVenta_Ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(ClasificacionDAI_elegir, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(flete_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(costoFobUSD$_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(CosteoRapido_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton1)
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(MargenVenta_Ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(ClasificacionDAI_elegir, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(flete_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(costoFobUSD$_Ingresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(CosteoRapido_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addGap(0, 66, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,6 +289,14 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel4.setText("Costeo Rápido");
 
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Buscar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,12 +306,18 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonRegresarGUIPrincipal)
                         .addGap(28, 28, 28)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                         .addGap(32, 32, 32))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,14 +325,17 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
-                        .addComponent(botonRegresarGUIPrincipal)
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(botonRegresarGUIPrincipal))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                        .addComponent(jLabel4)))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -213,6 +343,8 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 
     
     
+
+
     
     
     
@@ -315,6 +447,12 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
 
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        // TODO add your handling code here:
+    handleSearch();
+
+    }//GEN-LAST:event_searchFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -364,7 +502,9 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nombreDescripcionProducto;
+    private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 }
