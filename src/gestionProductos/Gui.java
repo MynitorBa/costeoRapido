@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import GUI.GuiPrincipal;
 /**
  *
  * @author andre
@@ -25,6 +26,11 @@ public class Gui extends javax.swing.JFrame {
         inicializarTabla();
         cargarProductos();
         configurarBotones();
+        botonRegresarGUIPrincipal.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            botonRegresarGUIPrincipalActionPerformed(evt);
+        }
+        });
     }
     
     
@@ -253,6 +259,7 @@ public class Gui extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         guardar = new javax.swing.JButton();
+        botonRegresarGUIPrincipal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -282,6 +289,13 @@ public class Gui extends javax.swing.JFrame {
 
         guardar.setText("Guardar");
 
+        botonRegresarGUIPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/left_arrow (1).png"))); // NOI18N
+        botonRegresarGUIPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegresarGUIPrincipalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -289,28 +303,33 @@ public class Gui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Agregar)
-                        .addGap(25, 25, 25)
-                        .addComponent(Editar)
-                        .addGap(31, 31, 31)
-                        .addComponent(Eliminar)
-                        .addGap(26, 26, 26)
-                        .addComponent(Buscar)
-                        .addGap(18, 18, 18)
-                        .addComponent(guardar)))
-                .addContainerGap(18, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(156, 156, 156))
+                        .addComponent(botonRegresarGUIPrincipal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(156, 156, 156))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Agregar)
+                                .addGap(25, 25, 25)
+                                .addComponent(Editar)
+                                .addGap(31, 31, 31)
+                                .addComponent(Eliminar)
+                                .addGap(26, 26, 26)
+                                .addComponent(Buscar)
+                                .addGap(18, 18, 18)
+                                .addComponent(guardar)))
+                        .addContainerGap(18, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(botonRegresarGUIPrincipal))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Agregar)
@@ -326,6 +345,19 @@ public class Gui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonRegresarGUIPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarGUIPrincipalActionPerformed
+        // TODO add your handling code here:
+        botonRegresarGUIPrincipal.setEnabled(false);
+
+    // Cerrar la ventana actual (GUI de productos)
+    this.dispose();
+    
+    // Crear y mostrar la GUI principal
+    java.awt.EventQueue.invokeLater(() -> {
+        new GuiPrincipal().setVisible(true);
+    });
+    }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,6 +399,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton Buscar;
     private javax.swing.JButton Editar;
     private javax.swing.JButton Eliminar;
+    private javax.swing.JButton botonRegresarGUIPrincipal;
     private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 import paqueteInicioSesion.LoginRegistroForm;
+import paqueteCosteoRapido.CosteoForm_Ingresar;
+import gestionProductos.Gui;
 /**
  *
  * @author mynit
@@ -621,7 +623,6 @@ public class GuiPrincipal extends javax.swing.JFrame {
         popupMenu = new JPopupMenu();
         popupMenu.setBackground(Color.WHITE);
         popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-
         // Añadir campo de búsqueda al menú
         JTextField searchField = new JTextField(15);
         searchField.setBorder(BorderFactory.createCompoundBorder(
@@ -631,39 +632,49 @@ public class GuiPrincipal extends javax.swing.JFrame {
         popupMenu.addSeparator();
 
         // Añadir elementos del menú
-        addMenuItem("Perfil", "\uD83D\uDC64"); // Icono de perfil
-        addMenuItem("Costeo Rápido", "\uD83D\uDCB0"); // Icono de dinero
-        addMenuItem("Productos", "\uD83D\uDCE6"); // Icono de paquete
-        addMenuItem("Favoritos", "\u2764"); // Icono de corazón
-        addMenuItem("Historial", "\uD83D\uDCC3"); // Icono de portapapeles
-        addMenuItem("Configuración", "\u2699"); // Icono de engranaje
+        addMenuItem("Perfil", "\uD83D\uDC64");
+        addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
+        addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
+        addMenuItem("Favoritos", "\u2764");
+        addMenuItem("Historial", "\uD83D\uDCC3");
+        addMenuItem("Configuración", "\u2699");
         
         popupMenu.addSeparator();
-        addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", true); // Ícono de puerta para "Log out"
+        addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
     }
 
     private void addMenuItem(String text, String icon) {
-        addMenuItem(text, icon, false);
+        addMenuItem(text, icon, null);
     }
 
-    private void addMenuItem(String text, String icon, boolean isLogout) {
+    private void addMenuItem(String text, String icon, ActionListener listener) {
         JMenuItem menuItem = new JMenuItem(icon + " " + text);
         menuItem.setFont(new Font("Arial", Font.PLAIN, 14));
         menuItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         menuItem.setOpaque(true);
         menuItem.setBackground(Color.WHITE);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isLogout) {
-                    logout();
-                } else {
-                    System.out.println(text + " seleccionado");
-                }
-            }
-        });
+        if (listener != null) {
+            menuItem.addActionListener(listener);
+        } else {
+            menuItem.addActionListener(e -> System.out.println(text + " seleccionado"));
+        }
         popupMenu.add(menuItem);
     }
+    
+    private void abrirCosteoRapido() {
+        SwingUtilities.invokeLater(() -> {
+            new CosteoForm_Ingresar().setVisible(true);
+        });
+        this.dispose();
+    }
+
+    private void abrirGestionProductos() {
+        SwingUtilities.invokeLater(() -> {
+            new Gui().setVisible(true);
+        });
+        this.dispose();
+    }
+
     private void logout() {
         int confirm = JOptionPane.showConfirmDialog(
             this,
@@ -673,12 +684,9 @@ public class GuiPrincipal extends javax.swing.JFrame {
         );
         
         if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose(); // Cierra la ventana actual
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new LoginRegistroForm().setVisible(true);
-                }
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new LoginRegistroForm().setVisible(true);
             });
         }
     }
