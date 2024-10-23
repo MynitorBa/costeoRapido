@@ -4,9 +4,16 @@
  */
 package paqueteSolicitudDePedido;
     
-
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 import java.text.DecimalFormat;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -262,46 +269,80 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
     }
     
     
-    private void enviarCorreo(String destinatario) {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        final String username = "stylematezelda@gmail.com"; 
-        final String password = "ucom vaej vocj tdvc"; 
-
-        Session session = Session.getInstance(props,
-          new javax.mail.Authenticator() {
+private void enviarCorreo(String destinatario) {
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+    props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+    props.put("mail.debug", "true");
+    props.put("javax.net.debug", "ssl,handshake");
+    
+    final String username = "stylematezelda@gmail.com"; 
+    final String password = "ucom vaej vocj tdvc"; 
+    
+    Session session = Session.getInstance(props,
+        new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
-          });
+        });
+        
     try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject("Detalles del Costeo: " + nombreProducto);
-            
-            String contenido = "Producto: " + nombreProducto + "\n" +
-                               "Costo FOB USD: " + costoFOBUSD$_FINAL.getText() + "\n" +
-                               "Costo USD: " + CostoUSD$_FINAL.getText() + "\n" +
-                               "Costo en Quetzales: " + costoQuetzales_FINAL.getText() + "\n" +
-                               "Precio de Venta: " + PrecioVenta_FINAL.getText() + "\n" +
-                               "Precio con IVA: " + ConIVA_FINAL.getText() + "\n" +
-                               "Margen: " + margen_FINAL.getText();
-
-            message.setText(contenido);
-
-            Transport.send(message);
-
-            JOptionPane.showMessageDialog(this, "Correo enviado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (MessagingException e) {
-            JOptionPane.showMessageDialog(this, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+        message.setSubject("Costeo Rápido Generado");
+        
+        // Crear el contenedor multipart
+        Multipart multipart = new MimeMultipart();
+        
+        // Primera parte - el texto con HTML
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String contenido = "<html><body>" +
+                        "<h2><strong>Detalles de su solicitud de pedido:</h2>" +
+                        "<p><strong>Producto:</strong> " + nombreProducto + "</p>" +
+                        "<p><strong>Costo FOB USD:</strong> " + costoFOBUSD$_FINAL.getText() + "</p>" +
+                        "<p><strong>Costo USD:</strong> " + CostoUSD$_FINAL.getText() + "</p>" +
+                        "<p><strong>Costo en Quetzales:</strong> " + costoQuetzales_FINAL.getText() + "</p>" +
+                        "<p><strong>Precio de Venta:</strong> " + PrecioVenta_FINAL.getText() + "</p>" +
+                        "<p><strong>Precio con IVA:</strong> " + ConIVA_FINAL.getText() + "</p>" +
+                        "<p><strong>Margen:</strong> " + margen_FINAL.getText() + "</p>" +
+                        "<img src='cid:imagen'>" +
+                        "</body></html>";
+        messageBodyPart.setContent(contenido, "text/html");
+        multipart.addBodyPart(messageBodyPart);
+        
+        // Segunda parte - la imagen embebida
+        messageBodyPart = new MimeBodyPart();
+        // Corregir el path de la imagen
+        String rutaImagen = "src\\Imagenes\\Gray Modern Digital Marketing Linkedln Article Cover Image (1).png";
+        
+        // Verificar si el archivo existe antes de intentar adjuntarlo
+        File imageFile = new File(rutaImagen);
+        if (!imageFile.exists()) {
+            throw new MessagingException("La imagen no se encuentra en la ruta especificada: " + rutaImagen);
         }
+        
+        DataSource source = new FileDataSource(imageFile);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setHeader("Content-ID", "<imagen>");
+        multipart.addBodyPart(messageBodyPart);
+        
+        // Establecer el contenido completo del mensaje
+        message.setContent(multipart);
+        
+        Transport.send(message);
+        JOptionPane.showMessageDialog(this, "Correo enviado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
+    } catch (MessagingException e) {
+        String errorMessage = "Error al enviar el correo: " + e.getMessage();
+        JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
+}
+    
 
     
     
