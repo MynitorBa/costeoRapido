@@ -16,12 +16,14 @@ import paqueteCosteoRapido.CosteoForm_Ingresar;
 public class Gui extends javax.swing.JFrame {
     private DefaultTableModel modeloTabla;
     private GestorProductos2 gestorProductos;
+    private String currentUser;
     
 
     /**
      * Creates new form Gui
      */
-    public Gui() {
+    public Gui(String username) {
+        this.currentUser = username;
         initComponents();
         gestorProductos = new GestorProductos2();
         inicializarTabla();
@@ -92,14 +94,12 @@ public class Gui extends javax.swing.JFrame {
         try {
             String nombre = producto[1];
             double costoFob = Double.parseDouble(producto[2].replace("$", ""));
-            // Asumimos que el flete y el margen de venta no están en el producto,
-            // así que los inicializamos en 0
             double flete = 0;
             double margenVenta = 0;
 
-            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(nombre, costoFob, flete, margenVenta);
+            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(currentUser, nombre, costoFob, flete, margenVenta);
             costeoForm.setVisible(true);
-            this.dispose(); // Cierra la ventana actual de Gui
+            this.dispose();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error al procesar los datos del producto.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -413,9 +413,11 @@ public class Gui extends javax.swing.JFrame {
     this.dispose();
     
     // Crear y mostrar la GUI principal
-    java.awt.EventQueue.invokeLater(() -> {
-        new GuiPrincipal().setVisible(true);
-    });
+    botonRegresarGUIPrincipal.setEnabled(false);
+        this.dispose();
+        java.awt.EventQueue.invokeLater(() -> {
+            new GuiPrincipal(currentUser).setVisible(true);
+        });
     }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
 
     /**
@@ -446,9 +448,9 @@ public class Gui extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+       java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui().setVisible(true);
+                new Gui("admin").setVisible(true); // Usar un valor por defecto para pruebas
             }
         });
     }

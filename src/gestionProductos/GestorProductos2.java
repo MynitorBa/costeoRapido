@@ -15,8 +15,8 @@ import java.nio.file.StandardCopyOption;
  * @author andre
  */
 public class GestorProductos2 {
-     private static final String ARCHIVO_EXCEL = "C:\\Users\\andre\\OneDrive\\Documents\\nruhhhh\\costeoRapido\\resources\\productos.xlsx";
-    private static final String ARCHIVO_TEMPORAL = "C:\\Users\\andre\\OneDrive\\Documents\\nruhhhh\\costeoRapido\\resources\\productos_temp.xlsx";
+     private static final String ARCHIVO_EXCEL = "resources\\productos.xlsx";
+    private static final String ARCHIVO_TEMPORAL = "resources\\productos_temp.xlsx";
     private static final String HOJA_PRODUCTOS = "Productos";
     private static final double TASA_CAMBIO = 7.8; // 1 USD = 7.8 Quetzales
 

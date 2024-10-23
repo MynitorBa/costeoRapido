@@ -78,6 +78,9 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     }
 }
     
+    
+    
+    
 
 
     /**
@@ -86,6 +89,10 @@ public class LoginRegistroForm extends javax.swing.JFrame {
 
     
 
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -382,25 +389,21 @@ public class LoginRegistroForm extends javax.swing.JFrame {
     String nombreUsuario = usuarioLoginTextField1.getText().trim();
     String contrasena = contrasenaLoginPasswordField.getText().trim();
     
-    
-    
     if (nombreUsuario.isEmpty() || contrasena.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
     
-
-    
     try {
         if (adminUsuario.iniciarSesion(nombreUsuario, contrasena)) {
             JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             
-            // Abrir la ventana principal de la aplicación
+            // Abrir la ventana principal pasando el nombre de usuario
             java.awt.EventQueue.invokeLater(() -> {
-                new GUI.GuiPrincipal().setVisible(true);
+                new GUI.GuiPrincipal(nombreUsuario).setVisible(true);
             });
             
-            this.dispose(); // Cerrar la ventana de login
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Nombre de usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }

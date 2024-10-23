@@ -13,6 +13,7 @@ import java.util.List;
 import paqueteInicioSesion.LoginRegistroForm;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 import gestionProductos.Gui;
+import gerstionUsuarios.GestionUsuarios;
 /**
  *
  * @author mynit
@@ -23,10 +24,12 @@ public class GuiPrincipal extends javax.swing.JFrame {
     private BuscadorInteligente buscador;
     private JPopupMenu sugerenciasPopup;
     private JPopupMenu popupMenu;
+    private String currentUser;
     /**
      * Creates new form GuiPrincipal
      */
-    public GuiPrincipal() {
+    public GuiPrincipal(String username) {
+        this.currentUser = username;
         initComponents();
         customizeComponents();
         buscador = new BuscadorInteligente();
@@ -472,10 +475,9 @@ public class GuiPrincipal extends javax.swing.JFrame {
     private void costeoRapidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costeoRapidoButtonActionPerformed
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(() -> {
-        new paqueteCosteoRapido.CosteoForm_Ingresar().setVisible(true);
-
-        });
-        this.dispose();
+        new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
+    });
+    this.dispose();
         
     }//GEN-LAST:event_costeoRapidoButtonActionPerformed
 
@@ -620,28 +622,41 @@ public class GuiPrincipal extends javax.swing.JFrame {
     }
      
      private void createPopupMenu() {
-        popupMenu = new JPopupMenu();
-        popupMenu.setBackground(Color.WHITE);
-        popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-        // Añadir campo de búsqueda al menú
-        JTextField searchField = new JTextField(15);
-        searchField.setBorder(BorderFactory.createCompoundBorder(
-            searchField.getBorder(), 
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        popupMenu.add(searchField);
-        popupMenu.addSeparator();
+    popupMenu = new JPopupMenu();
+    popupMenu.setBackground(Color.WHITE);
+    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+    
+    JTextField searchField = new JTextField(15);
+    searchField.setBorder(BorderFactory.createCompoundBorder(
+        searchField.getBorder(), 
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    popupMenu.add(searchField);
+    popupMenu.addSeparator();
 
-        // Añadir elementos del menú
-        addMenuItem("Perfil", "\uD83D\uDC64");
-        addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
-        addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
-        addMenuItem("Favoritos", "\u2764");
-        addMenuItem("Historial", "\uD83D\uDCC3");
-        addMenuItem("Configuración", "\u2699");
-        
-        popupMenu.addSeparator();
-        addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+    addMenuItem("Perfil", "\uD83D\uDC64");
+    addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
+    addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
+    
+    // Agregar opción de Gestión de Usuarios solo si es admin
+    if ("admin".equals(currentUser)) {
+        addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
     }
+    
+    addMenuItem("Favoritos", "\u2764");
+    addMenuItem("Historial", "\uD83D\uDCC3");
+    addMenuItem("Configuración", "\u2699");
+    
+    popupMenu.addSeparator();
+    addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+}
+     
+     
+     private void abrirGestionUsuarios() {
+    SwingUtilities.invokeLater(() -> {
+        new GestionUsuarios(currentUser).setVisible(true);
+    });
+    this.dispose();
+}
 
     private void addMenuItem(String text, String icon) {
         addMenuItem(text, icon, null);
@@ -662,18 +677,18 @@ public class GuiPrincipal extends javax.swing.JFrame {
     }
     
     private void abrirCosteoRapido() {
-        SwingUtilities.invokeLater(() -> {
-            new CosteoForm_Ingresar().setVisible(true);
-        });
-        this.dispose();
-    }
+    SwingUtilities.invokeLater(() -> {
+        new CosteoForm_Ingresar(currentUser).setVisible(true);
+    });
+    this.dispose();
+}
 
-    private void abrirGestionProductos() {
-        SwingUtilities.invokeLater(() -> {
-            new Gui().setVisible(true);
-        });
-        this.dispose();
-    }
+private void abrirGestionProductos() {
+    SwingUtilities.invokeLater(() -> {
+        new Gui(currentUser).setVisible(true);
+    });
+    this.dispose();
+}
 
     private void logout() {
         int confirm = JOptionPane.showConfirmDialog(
@@ -720,8 +735,9 @@ public class GuiPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiPrincipal().setVisible(true);
-            }
+            // Al iniciar desde main, usamos "invitado" o redirigimos al login
+            new LoginRegistroForm().setVisible(true);
+        }
         });
     }
 
