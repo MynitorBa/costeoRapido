@@ -46,11 +46,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
     
    private void setupTable() {
-    String[] columnNames = {"Usuario", "Email", "Contraseña", "Acciones"};
+    String[] columnNames = {"Usuario", "Email", "Contraseña"}; // Quitamos "Acciones"
     tableModel = new DefaultTableModel(columnNames, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
-            return column == 3; // Solo la columna de acciones es editable
+            return false; // Ninguna columna es editable
         }
         
         @Override
@@ -90,13 +90,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
             tableModel.addRow(new Object[]{
                 usuario[0], 
                 usuario[1], 
-                "********", // Contraseña oculta
-                "Acciones"
+                "********" // Contraseña oculta
             });
         }
     }
 }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
