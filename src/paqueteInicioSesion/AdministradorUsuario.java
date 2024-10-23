@@ -258,6 +258,135 @@ public class AdministradorUsuario {
         return faltaCondicion ? mensaje.toString() : null;
     }
     
+     
+     
+     public boolean actualizarUsuario(String usuarioOriginal, String nuevoUsuario, String nuevoEmail) {
+    try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
+         Workbook workbook = WorkbookFactory.create(fis)) {
+        Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
+        boolean usuarioActualizado = false;
+        
+        // Proteger al usuario admin
+        if ("admin".equals(usuarioOriginal)) {
+            System.out.println("No se puede modificar el usuario administrador");
+            return false;
+        }
+
+        // Verificar si el nuevo nombre de usuario ya existe (si está cambiando el nombre)
+        if (!usuarioOriginal.equals(nuevoUsuario)) {
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Saltar encabezado
+                Cell userCell = row.getCell(0);
+                if (userCell != null && userCell.getStringCellValue().trim().equals(nuevoUsuario)) {
+                    System.out.println("El nuevo nombre de usuario ya existe");
+                    return false;
+                }
+            }
+        }
+        
+        // Verificar si el nuevo email ya existe (si está cambiando el email)
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue; // Saltar encabezado
+            Cell emailCell = row.getCell(1);
+            Cell userCell = row.getCell(0);
+            if (emailCell != null && emailCell.getStringCellValue().trim().equals(nuevoEmail) &&
+                !userCell.getStringCellValue().trim().equals(usuarioOriginal)) {
+                System.out.println("El nuevo email ya está en uso");
+                return false;
+            }
+        }
+
+        // Realizar la actualización
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue; // Saltar encabezado
+            
+            Cell userCell = row.getCell(0);
+            if (userCell != null && userCell.getStringCellValue().trim().equals(usuarioOriginal)) {
+                // Actualizar usuario
+                userCell.setCellValue(nuevoUsuario);
+                
+                // Actualizar email
+                Cell emailCell = row.getCell(1);
+                if (emailCell == null) {
+                    emailCell = row.createCell(1);
+                }
+                emailCell.setCellValue(nuevoEmail);
+                
+                usuarioActualizado = true;
+                break;
+            }
+        }
+
+        if (usuarioActualizado) {
+            // Guardar los cambios en el archivo
+            try (FileOutputStream outputStream = new FileOutputStream(ARCHIVO_EXCEL)) {
+                workbook.write(outputStream);
+                System.out.println("Usuario actualizado exitosamente");
+                return true;
+            }
+        }
+        
+        return false;
+    } catch (IOException e) {
+        System.err.println("Error al actualizar usuario: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
+
+public boolean eliminarUsuario(String usuario) {
+    try (FileInputStream fis = new FileInputStream(ARCHIVO_EXCEL);
+         Workbook workbook = WorkbookFactory.create(fis)) {
+        Sheet sheet = workbook.getSheet(HOJA_USUARIOS);
+        
+        // Proteger al usuario admin
+        if ("admin".equals(usuario)) {
+            System.out.println("No se puede eliminar el usuario administrador");
+            return false;
+        }
+
+        int rowToRemove = -1;
+        int lastRow = sheet.getLastRowNum();
+
+        // Encontrar la fila del usuario a eliminar
+        for (int i = 1; i <= lastRow; i++) {
+            Row row = sheet.getRow(i);
+            if (row != null) {
+                Cell userCell = row.getCell(0);
+                if (userCell != null && userCell.getStringCellValue().trim().equals(usuario)) {
+                    rowToRemove = i;
+                    break;
+                }
+            }
+        }
+
+        if (rowToRemove > 0) {
+            // Si es la última fila, simplemente la removemos
+            if (rowToRemove == lastRow) {
+                Row removingRow = sheet.getRow(rowToRemove);
+                if (removingRow != null) {
+                    sheet.removeRow(removingRow);
+                }
+            } else {
+                // Si no es la última fila, desplazamos las filas siguientes hacia arriba
+                sheet.shiftRows(rowToRemove + 1, lastRow, -1);
+            }
+
+            // Guardar los cambios en el archivo
+            try (FileOutputStream outputStream = new FileOutputStream(ARCHIVO_EXCEL)) {
+                workbook.write(outputStream);
+                System.out.println("Usuario eliminado exitosamente");
+                return true;
+            }
+        }
+        
+        return false;
+    } catch (IOException e) {
+        System.err.println("Error al eliminar usuario: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
     
     
 }

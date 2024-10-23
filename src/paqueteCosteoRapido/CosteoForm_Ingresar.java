@@ -22,14 +22,16 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     
     private BuscadorInteligente buscador;
     private JPopupMenu popupMenu;
+    private String currentUser;
 
     /**
      * Creates new form CosteoForm
      */
-    public CosteoForm_Ingresar() {
-    this("", 0, 0, 0);
+    public CosteoForm_Ingresar(String username) {
+    this(username, "", 0, 0, 0);
 }
-    public CosteoForm_Ingresar(String nombre, double costoFob, double flete, double margenVenta) {
+    public CosteoForm_Ingresar(String username, String nombre, double costoFob, double flete, double margenVenta) {
+        this.currentUser = username;
         initComponents();
         buscador = new BuscadorInteligente();
         popupMenu = new JPopupMenu();
@@ -46,11 +48,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
             }
         });
     
-    // Inicializar los campos con los valores recibidos
-        nombreDescripcionProducto.setText(nombre);
+    nombreDescripcionProducto.setText(nombre);
         costoFobUSD$_Ingresar.setText(String.format("$%.2f", costoFob));
         flete_Ingresar.setText(String.format("%.2f%%", flete * 100));
         MargenVenta_Ingresar.setText(String.format("%.2f%%", margenVenta * 100));
+        ClasificacionDAI_elegir.setSelectedIndex(0);
 
         // Seleccionar la clasificación DAI apropiada (puedes ajustar esto según tus necesidades)
         ClasificacionDAI_elegir.setSelectedIndex(0);
@@ -436,14 +438,10 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 
     private void botonRegresarGUIPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarGUIPrincipalActionPerformed
         // TODO add your handling code here:
-        botonRegresarGUIPrincipal.setEnabled(false);
-
-        // Cerrar la ventana actual (GUI de productos)
+      botonRegresarGUIPrincipal.setEnabled(false);
         this.dispose();
-
-        // Crear y mostrar la GUI principal
-        java.awt.EventQueue.invokeLater(() -> {
-            new GuiPrincipal().setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            new GuiPrincipal(currentUser).setVisible(true);
         });
     }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
 
@@ -482,9 +480,9 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CosteoForm_Ingresar().setVisible(true);
+                new CosteoForm_Ingresar("admin").setVisible(true); // Usar un valor por defecto para pruebas
             }
         });
     }

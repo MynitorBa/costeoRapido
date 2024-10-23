@@ -16,11 +16,17 @@ import java.util.Locale;
  */
 public class CosteoFinal extends javax.swing.JFrame {
     
+    
+    private String currentUser;
     /**
      * Creates new form CosteoFinal
      */
-    public CosteoFinal() {
+    public CosteoFinal(String username) {
+        this.currentUser = username;
         initComponents();
+    }
+     public CosteoFinal() {
+        this("admin"); // Valor por defecto
     }
 
     /**
@@ -301,21 +307,26 @@ public class CosteoFinal extends javax.swing.JFrame {
     private void ModificarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCosteoActionPerformed
         // TODO add your handling code here:
        try {
-        String nombre = nombreDescripcionProducto.getText();
-        double costoFob = parseNumber(costoFobUSD$_FINAL.getText().replace("$", ""));
-        double costoConDAI = parseNumber(CostoUSD$_FINAL.getText().replace("$", ""));
-        double precioVenta = parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8; // Convertir de quetzales a USD
-        double margenVenta = parseNumber(margen_FINAL.getText().replace("%", "")) / 100;
-        
-        // Calcular el flete (asumiendo que es la diferencia entre costoConDAI y costoFob)
-        double flete = (costoConDAI - costoFob) / costoFob;
-        
-        CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(nombre, costoFob, flete, margenVenta);
-        costeoForm.setVisible(true);
-        this.dispose();
-    } catch (ParseException e) {
-        JOptionPane.showMessageDialog(this, "Error al procesar los números: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
+            String nombre = nombreDescripcionProducto.getText();
+            double costoFob = parseNumber(costoFobUSD$_FINAL.getText().replace("$", ""));
+            double costoConDAI = parseNumber(CostoUSD$_FINAL.getText().replace("$", ""));
+            double precioVenta = parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8;
+            double margenVenta = parseNumber(margen_FINAL.getText().replace("%", "")) / 100;
+            
+            // Calcular el flete
+            double flete = (costoConDAI - costoFob) / costoFob;
+            
+            // Pasar el currentUser al crear la nueva instancia
+            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
+                currentUser, nombre, costoFob, flete, margenVenta);
+            costeoForm.setVisible(true);
+            this.dispose();
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al procesar los números: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_ModificarCosteoActionPerformed
 
     private void guardarCosteo() {
@@ -370,10 +381,8 @@ public class CosteoFinal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CosteoFinal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new CosteoFinal("admin").setVisible(true);
         });
     }
 
