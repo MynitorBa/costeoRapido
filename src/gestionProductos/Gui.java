@@ -29,11 +29,7 @@ public class Gui extends javax.swing.JFrame {
         inicializarTabla();
         cargarProductos();
         configurarBotones();
-        botonRegresarGUIPrincipal.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            botonRegresarGUIPrincipalActionPerformed(evt);
-        }
-        });
+        
     }
     
     
