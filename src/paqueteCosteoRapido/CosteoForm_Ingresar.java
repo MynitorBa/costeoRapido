@@ -167,7 +167,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        searchField = new javax.swing.JTextField();
         botonRegresarGUIPrincipal = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -180,8 +179,15 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         CosteoRapido_calcular = new javax.swing.JButton();
         costoFobUSD$_Ingresar = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         nombreDescripcionProducto = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        flechaIzquierda = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
+        recargar = new javax.swing.JButton();
+        menuButton = new javax.swing.JButton();
+        bookmarkButton = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        flechaDerecha = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -191,12 +197,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 102, 0));
         jLabel4.setText("Costeo Rápido");
-
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
 
         botonRegresarGUIPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/left_arrow (1).png"))); // NOI18N
         botonRegresarGUIPrincipal.addActionListener(new java.awt.event.ActionListener() {
@@ -304,10 +304,79 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addGap(25, 25, 25))
         );
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
-
         nombreDescripcionProducto.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         nombreDescripcionProducto.setText("Nombre o descripción del producto");
+
+        flechaIzquierda.setText("←");
+        flechaIzquierda.setToolTipText("");
+
+        searchButton.setText("🔍");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
+        recargar.setText("🔄");
+
+        menuButton.setText("☰");
+        menuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuButtonActionPerformed(evt);
+            }
+        });
+
+        bookmarkButton.setText("🔖");
+        bookmarkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookmarkButtonActionPerformed(evt);
+            }
+        });
+
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
+
+        flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        flechaDerecha.setText("→");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(flechaIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(flechaDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(recargar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bookmarkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(115, 115, 115))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bookmarkButton)
+                    .addComponent(menuButton)
+                    .addComponent(flechaIzquierda)
+                    .addComponent(searchButton)
+                    .addComponent(flechaDerecha)
+                    .addComponent(recargar))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -315,11 +384,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addComponent(jLabel4))
@@ -330,17 +394,18 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(botonRegresarGUIPrincipal)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(35, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchField))
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -467,10 +532,20 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
 
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButtonActionPerformed
+
+    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookmarkButtonActionPerformed
+
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
-    handleSearch();
-
     }//GEN-LAST:event_searchFieldActionPerformed
 
     /**
@@ -513,8 +588,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ClasificacionDAI_elegir;
     private javax.swing.JButton CosteoRapido_calcular;
     private javax.swing.JTextField MargenVenta_Ingresar;
+    private javax.swing.JButton bookmarkButton;
     private javax.swing.JButton botonRegresarGUIPrincipal;
     private javax.swing.JTextField costoFobUSD$_Ingresar;
+    private javax.swing.JButton flechaDerecha;
+    private javax.swing.JButton flechaIzquierda;
     private javax.swing.JTextField flete_Ingresar;
     private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
@@ -523,10 +601,13 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton menuButton;
     private javax.swing.JTextField nombreDescripcionProducto;
+    private javax.swing.JButton recargar;
+    private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 }
