@@ -646,7 +646,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
         
         addMenuItem("Favoritos", "\u2764");
         addMenuItem("Historial", "\uD83D\uDCC3");
-        addMenuItem("Configuración", "\u2699");
+        
         
         popupMenu.addSeparator();
         addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
