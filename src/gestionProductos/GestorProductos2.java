@@ -15,14 +15,10 @@ import java.nio.file.StandardCopyOption;
  * @author andre
  */
 public class GestorProductos2 {
-     private static final String ARCHIVO_EXCEL = "resources\\productos.xlsx";
+    private static final String ARCHIVO_EXCEL = "resources\\productos.xlsx";
     private static final String ARCHIVO_TEMPORAL = "resources\\productos_temp.xlsx";
     private static final String HOJA_PRODUCTOS = "Productos";
-    private static final double TASA_CAMBIO = 7.8; // 1 USD = 7.8 Quetzales
-
-    public GestorProductos2() {
-        inicializarArchivoExcel();
-    }
+    private static final double TASA_CAMBIO = 7.8;
 
     private void inicializarArchivoExcel() {
         File archivo = new File(ARCHIVO_EXCEL);
@@ -30,7 +26,7 @@ public class GestorProductos2 {
             try (Workbook libro = new XSSFWorkbook()) {
                 Sheet hoja = libro.createSheet(HOJA_PRODUCTOS);
                 Row encabezado = hoja.createRow(0);
-                String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas"};
+                String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas", "Otros"};
                 for (int i = 0; i < columnas.length; i++) {
                     encabezado.createCell(i).setCellValue(columnas[i]);
                 }
@@ -39,6 +35,17 @@ public class GestorProductos2 {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private String obtenerEmojiPorTipo(String tipo) {
+        return switch (tipo.toUpperCase()) {
+            case "CAMARA" -> "\uD83D\uDCF7";
+            case "SISTEMA DE ALMACENAMIENTO" -> "\uD83D\uDCBE";
+            case "ACCESORIO CCTV" -> "\uD83D\uDD0C";
+            case "CONTROL DE ACCESO Y SEGURIDAD" -> "\uD83D\uDD12";
+            case "SISTEMAS DE RED" -> "\uD83C\uDF10";
+            default -> "";
+        };
     }
 
     private void guardarLibro(Workbook libro, String rutaArchivo) throws IOException {
@@ -50,42 +57,41 @@ public class GestorProductos2 {
     }
     
     public void agregarProducto(String nombre, double precioUSD, double precioQuetzales, int cantidad, String tipo, String marca, String etiquetas) {
-    try {
-        Workbook libro = cargarLibro();
-        Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
-        int ultimaFila = hoja.getLastRowNum();
-        Row nuevaFila = hoja.createRow(ultimaFila + 1);
-        
-        // Calcular el siguiente ID
-        int nuevoId = 1; // ID por defecto si no hay productos
-        if (ultimaFila > 0) {
-            // Buscar el ID más alto actual y sumar 1
-            for (Row fila : hoja) {
-                if (fila.getRowNum() == 0) continue; // Saltar encabezado
-                Cell idCell = fila.getCell(0);
-                if (idCell != null) {
-                    int currentId = getCellValueAsInt(idCell);
-                    if (currentId >= nuevoId) {
-                        nuevoId = currentId + 1;
+        try {
+            Workbook libro = cargarLibro();
+            Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
+            int ultimaFila = hoja.getLastRowNum();
+            Row nuevaFila = hoja.createRow(ultimaFila + 1);
+            
+            int nuevoId = 1;
+            if (ultimaFila > 0) {
+                for (Row fila : hoja) {
+                    if (fila.getRowNum() == 0) continue;
+                    Cell idCell = fila.getCell(0);
+                    if (idCell != null) {
+                        int currentId = getCellValueAsInt(idCell);
+                        if (currentId >= nuevoId) {
+                            nuevoId = currentId + 1;
+                        }
                     }
                 }
             }
+
+            nuevaFila.createCell(0).setCellValue(nuevoId);
+            nuevaFila.createCell(1).setCellValue(nombre);
+            nuevaFila.createCell(2).setCellValue(precioUSD);
+            nuevaFila.createCell(3).setCellValue(precioQuetzales);
+            nuevaFila.createCell(4).setCellValue(cantidad);
+            nuevaFila.createCell(5).setCellValue(tipo);
+            nuevaFila.createCell(6).setCellValue(marca);
+            nuevaFila.createCell(7).setCellValue(etiquetas);
+            nuevaFila.createCell(8).setCellValue(obtenerEmojiPorTipo(tipo));
+
+            guardarLibro(libro, ARCHIVO_EXCEL);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        nuevaFila.createCell(0).setCellValue(nuevoId); // ID autogenerado
-        nuevaFila.createCell(1).setCellValue(nombre);
-        nuevaFila.createCell(2).setCellValue(precioUSD);
-        nuevaFila.createCell(3).setCellValue(precioQuetzales);
-        nuevaFila.createCell(4).setCellValue(cantidad);
-        nuevaFila.createCell(5).setCellValue(tipo);
-        nuevaFila.createCell(6).setCellValue(marca);
-        nuevaFila.createCell(7).setCellValue(etiquetas);
-
-        guardarLibro(libro, ARCHIVO_EXCEL);
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
 
     public void editarProducto(int id, String nombre, double precioUSD, double precioQuetzales, int cantidad, String tipo, String marca, String etiquetas) {
         try {
@@ -100,6 +106,7 @@ public class GestorProductos2 {
                     fila.getCell(5).setCellValue(tipo);
                     fila.getCell(6).setCellValue(marca);
                     fila.getCell(7).setCellValue(etiquetas);
+                    fila.getCell(8).setCellValue(obtenerEmojiPorTipo(tipo));
                     break;
                 }
             }
@@ -206,15 +213,15 @@ public class GestorProductos2 {
     }
 
     private String[] extraerDatosProducto(Row fila) {
-        String[] producto = new String[8];
-        for (int i = 0; i < 8; i++) {
+        String[] producto = new String[9]; // Aumentado a 9 para incluir la columna "Otros"
+        for (int i = 0; i < 9; i++) {
             Cell celda = fila.getCell(i);
             if (celda != null) {
                 switch (celda.getCellType()) {
                     case NUMERIC:
-                        if (i == 2) { // Precio USD
+                        if (i == 2) {
                             producto[i] = String.format("$%.2f", celda.getNumericCellValue());
-                        } else if (i == 3) { // Precio Quetzales
+                        } else if (i == 3) {
                             producto[i] = String.format("Q%.2f", celda.getNumericCellValue());
                         } else {
                             producto[i] = String.valueOf((int) celda.getNumericCellValue());
@@ -258,4 +265,6 @@ public class GestorProductos2 {
     public double convertirQuetzalesAUSD(double quetzales) {
         return quetzales / TASA_CAMBIO;
     }
+
+    
 }

@@ -8,7 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import GUI.GuiPrincipal;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 /**
  *
@@ -35,9 +41,9 @@ public class Gui extends javax.swing.JFrame {
     
     
     private void inicializarTabla() {
-        String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas"};
-        modeloTabla = new DefaultTableModel(columnas, 0);
-        jTable1.setModel(modeloTabla);
+        String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas", "Otros"};
+    modeloTabla = new DefaultTableModel(columnas, 0);
+    jTable1.setModel(modeloTabla);
     }
 
     private void cargarProductos() {
@@ -63,12 +69,13 @@ public class Gui extends javax.swing.JFrame {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(5, 5, 5, 5);
     
-    // ComboBox para el criterio de búsqueda
-    String[] criterios = {"ID", "Nombre", "Tipo", "Marca"};
-    JComboBox<String> comboCriterio = new JComboBox<>(criterios);
-    
     // Campo de texto para la búsqueda
-    JTextField campoBusqueda = new JTextField(20);
+    JTextField campoBusqueda = new JTextField(30);
+    campoBusqueda.setText("Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
+    campoBusqueda.setForeground(Color.GRAY);
+    
+    // Placeholder behavior
+    configurarPlaceholder(campoBusqueda, "Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
     
     // Botón de búsqueda
     JButton botonBuscar = new JButton("Buscar");
@@ -76,86 +83,22 @@ public class Gui extends javax.swing.JFrame {
     // Añadir componentes al diálogo
     gbc.gridx = 0;
     gbc.gridy = 0;
-    dialogo.add(new JLabel("Buscar por:"), gbc);
-    
-    gbc.gridx = 1;
-    dialogo.add(comboCriterio, gbc);
-    
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    dialogo.add(new JLabel("Criterio:"), gbc);
+    dialogo.add(new JLabel("Buscar:"), gbc);
     
     gbc.gridx = 1;
     dialogo.add(campoBusqueda, gbc);
     
     gbc.gridx = 0;
-    gbc.gridy = 2;
+    gbc.gridy = 1;
     gbc.gridwidth = 2;
     gbc.anchor = GridBagConstraints.CENTER;
     dialogo.add(botonBuscar, gbc);
     
     botonBuscar.addActionListener(e -> {
-        String criterio = comboCriterio.getSelectedItem().toString();
-        String valorBusqueda = campoBusqueda.getText().trim();
-        
-        if (!valorBusqueda.isEmpty()) {
-            modeloTabla.setRowCount(0);
-            List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
-            List<String[]> resultados = new ArrayList<>();
-            
-            for (String[] producto : productos) {
-                boolean coincide = false;
-                switch (criterio) {
-                    case "ID":
-                        try {
-                            int id = Integer.parseInt(valorBusqueda);
-                            coincide = producto[0].equals(String.valueOf(id));
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(dialogo, 
-                                "Por favor, ingrese un ID válido (número entero).", 
-                                "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        break;
-                    case "Nombre":
-                        coincide = producto[1].toLowerCase()
-                                  .contains(valorBusqueda.toLowerCase());
-                        break;
-                    case "Tipo":
-                        coincide = producto[5].toLowerCase()
-                                  .contains(valorBusqueda.toLowerCase());
-                        break;
-                    case "Marca":
-                        coincide = producto[6].toLowerCase()
-                                  .contains(valorBusqueda.toLowerCase());
-                        break;
-                }
-                
-                if (coincide) {
-                    resultados.add(producto);
-                }
-            }
-            
-            if (!resultados.isEmpty()) {
-                for (String[] resultado : resultados) {
-                    modeloTabla.addRow(resultado);
-                }
-                dialogo.dispose();
-            } else {
-                JOptionPane.showMessageDialog(dialogo,
-                    "No se encontraron productos con ese criterio.",
-                    "Sin resultados",
-                    JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(dialogo,
-                "Por favor, ingrese un valor para buscar.",
-                "Campo vacío",
-                JOptionPane.WARNING_MESSAGE);
-        }
+        buscarYMostrarResultados(campoBusqueda.getText().trim(), modeloTabla);
+        dialogo.dispose();
     });
     
-    // Configurar el diálogo
     dialogo.pack();
     dialogo.setLocationRelativeTo(this);
     dialogo.setVisible(true);
@@ -205,7 +148,8 @@ public class Gui extends javax.swing.JFrame {
 }
     
     private void mostrarDialogoAgregar() {
-    JDialog dialogo = new JDialog(this, "Agregar Producto", true);
+        
+        JDialog dialogo = new JDialog(this, "Agregar Producto", true);
     dialogo.setLayout(new GridLayout(8, 2));
 
     // Crear los componentes
@@ -214,7 +158,6 @@ public class Gui extends javax.swing.JFrame {
     JComboBox<String> comboMoneda = new JComboBox<>(new String[]{"USD", "Quetzales"});
     JTextField campoCantidad = new JTextField();
     
-    // Crear el ComboBox para tipos de producto
     String[] tiposProducto = {
         "CAMARA",
         "SISTEMA DE ALMACENAMIENTO",
@@ -272,30 +215,176 @@ public class Gui extends javax.swing.JFrame {
     dialogo.setVisible(true);
 }
     
-    
-
 
     private void mostrarDialogoEditar() {
-        String[] nombresProductos = gestorProductos.obtenerTodosLosProductos().stream()
-                .map(p -> p[1])
-                .toArray(String[]::new);
-
-        String productoSeleccionado = (String) JOptionPane.showInputDialog(
-                this,
-                "Seleccione un producto para editar:",
-                "Editar Producto",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                nombresProductos,
-                nombresProductos[0]);
-
-        if (productoSeleccionado != null) {
-            String[] producto = gestorProductos.buscarProductoPorNombre(productoSeleccionado);
-            if (producto != null) {
-                mostrarDetallesProducto(producto);
+    JDialog dialogoSeleccion = new JDialog(this, "Seleccionar Producto para Editar", true);
+    dialogoSeleccion.setLayout(new BorderLayout(10, 10));
+    dialogoSeleccion.setSize(500, 400);
+    
+    // Panel de búsqueda
+    JPanel panelBusqueda = new JPanel(new BorderLayout(5, 5));
+    JTextField campoBusqueda = new JTextField(30);
+    configurarPlaceholder(campoBusqueda, "Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
+    panelBusqueda.add(campoBusqueda, BorderLayout.CENTER);
+    panelBusqueda.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+    
+    // Lista de productos
+    DefaultListModel<ProductoListItem> modeloLista = new DefaultListModel<>();
+    JList<ProductoListItem> listaProductos = new JList<>(modeloLista);
+    JScrollPane scrollPane = new JScrollPane(listaProductos);
+    
+    // Cargar productos iniciales
+    cargarProductosEnLista(modeloLista);
+    
+    // Configurar búsqueda en tiempo real
+    campoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+        private void searchProduct() {
+            actualizarListaProductos(campoBusqueda.getText(), modeloLista);
+        }
+        
+        @Override
+        public void insertUpdate(DocumentEvent e) { searchProduct(); }
+        @Override
+        public void removeUpdate(DocumentEvent e) { searchProduct(); }
+        @Override
+        public void changedUpdate(DocumentEvent e) { searchProduct(); }
+    });
+    
+    // Doble clic para editar
+    listaProductos.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                ProductoListItem item = listaProductos.getSelectedValue();
+                if (item != null) {
+                    String[] producto = gestorProductos.buscarProductoPorId(item.getId());
+                    dialogoSeleccion.dispose();
+                    mostrarDialogoEdicionProducto(producto);
+                }
             }
         }
-    }
+    });
+    
+    dialogoSeleccion.add(panelBusqueda, BorderLayout.NORTH);
+    dialogoSeleccion.add(scrollPane, BorderLayout.CENTER);
+    dialogoSeleccion.setLocationRelativeTo(this);
+    dialogoSeleccion.setVisible(true);
+}
+
+    
+    
+    private void mostrarDialogoEdicionProducto(String[] producto) {
+    JDialog dialogo = new JDialog(this, "Editar Producto", true);
+    dialogo.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.anchor = GridBagConstraints.WEST;
+
+    // Crear los componentes
+    JTextField campoNombre = new JTextField(20);
+    JTextField campoPrecio = new JTextField(20);
+    JComboBox<String> comboMoneda = new JComboBox<>(new String[]{"USD", "Quetzales"});
+    JTextField campoCantidad = new JTextField(20);
+    String[] tiposProducto = {
+        "CAMARA",
+        "SISTEMA DE ALMACENAMIENTO",
+        "ACCESORIO CCTV",
+        "CONTROL DE ACCESO Y SEGURIDAD",
+        "SISTEMAS DE RED"
+    };
+    JComboBox<String> comboTipo = new JComboBox<>(tiposProducto);
+    JTextField campoMarca = new JTextField(20);
+    JTextField campoEtiquetas = new JTextField(20);
+
+    // Establecer valores actuales
+    campoNombre.setText(producto[1]);
+    campoPrecio.setText(producto[2].replace("$", ""));
+    comboMoneda.setSelectedItem("USD");
+    campoCantidad.setText(producto[4]);
+    comboTipo.setSelectedItem(producto[5]);
+    campoMarca.setText(producto[6]);
+    campoEtiquetas.setText(producto[7]);
+
+    // Agregar componentes al diálogo
+    dialogo.add(new JLabel("Nombre:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(campoNombre, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Precio:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(campoPrecio, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Moneda:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(comboMoneda, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Cantidad:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(campoCantidad, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Tipo:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(comboTipo, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Marca:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(campoMarca, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+    dialogo.add(new JLabel("Etiquetas:"), gbc);
+    gbc.gridx = 1;
+    dialogo.add(campoEtiquetas, gbc);
+
+    // Botón de guardar cambios
+    JButton botonGuardar = new JButton("Guardar Cambios");
+    gbc.gridx = 0;
+    gbc.gridy++;
+    gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.CENTER;
+    dialogo.add(botonGuardar, gbc);
+
+    botonGuardar.addActionListener(e -> {
+        try {
+            int id = Integer.parseInt(producto[0]);
+            String nombre = campoNombre.getText();
+            double precio = Double.parseDouble(campoPrecio.getText());
+            boolean esUSD = comboMoneda.getSelectedItem().equals("USD");
+            int cantidad = Integer.parseInt(campoCantidad.getText());
+            String tipo = comboTipo.getSelectedItem().toString();
+            String marca = campoMarca.getText();
+            String etiquetas = campoEtiquetas.getText();
+
+            double precioUSD = esUSD ? precio : precio / 7.8;
+            double precioQuetzales = esUSD ? precio * 7.8 : precio;
+
+            gestorProductos.editarProducto(id, nombre, precioUSD, precioQuetzales, cantidad, tipo, marca, etiquetas);
+            cargarProductos();
+            dialogo.dispose();
+            JOptionPane.showMessageDialog(this, "Producto actualizado con éxito.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(dialogo, "Por favor, ingrese valores numéricos válidos.");
+        }
+    });
+
+    dialogo.pack();
+    dialogo.setLocationRelativeTo(this);
+    dialogo.setVisible(true);
+}
+
+
 
     private void mostrarDetallesProducto(String[] producto) {
         modeloTabla.setRowCount(0);
@@ -327,40 +416,211 @@ public class Gui extends javax.swing.JFrame {
         this.add(panelBoton, BorderLayout.SOUTH);
         this.revalidate();
     }
-
     private void mostrarDialogoEliminar() {
-        String[] nombresProductos = gestorProductos.obtenerTodosLosProductos().stream()
-                .map(p -> p[1])
-                .toArray(String[]::new);
-
-        String productoSeleccionado = (String) JOptionPane.showInputDialog(
-                this,
-                "Seleccione un producto para eliminar:",
-                "Eliminar Producto",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                nombresProductos,
-                nombresProductos[0]);
-
-        if (productoSeleccionado != null) {
+    JDialog dialogoSeleccion = new JDialog(this, "Seleccionar Producto para Eliminar", true);
+    dialogoSeleccion.setLayout(new BorderLayout(10, 10));
+    dialogoSeleccion.setSize(500, 400);
+    
+    // Panel de búsqueda
+    JPanel panelBusqueda = new JPanel(new BorderLayout(5, 5));
+    JTextField campoBusqueda = new JTextField(30);
+    configurarPlaceholder(campoBusqueda, "Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
+    panelBusqueda.add(campoBusqueda, BorderLayout.CENTER);
+    panelBusqueda.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+    
+    // Lista de productos
+    DefaultListModel<ProductoListItem> modeloLista = new DefaultListModel<>();
+    JList<ProductoListItem> listaProductos = new JList<>(modeloLista);
+    JScrollPane scrollPane = new JScrollPane(listaProductos);
+    
+    // Cargar productos iniciales
+    cargarProductosEnLista(modeloLista);
+    
+    // Configurar búsqueda en tiempo real
+    campoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+        private void searchProduct() {
+            actualizarListaProductos(campoBusqueda.getText(), modeloLista);
+        }
+        
+        @Override
+        public void insertUpdate(DocumentEvent e) { searchProduct(); }
+        @Override
+        public void removeUpdate(DocumentEvent e) { searchProduct(); }
+        @Override
+        public void changedUpdate(DocumentEvent e) { searchProduct(); }
+    });
+    
+    // Panel de botones
+    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JButton botonEliminar = new JButton("Eliminar");
+    JButton botonCancelar = new JButton("Cancelar");
+    
+    botonEliminar.addActionListener(e -> {
+        ProductoListItem item = listaProductos.getSelectedValue();
+        if (item != null) {
             int confirmacion = JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Está seguro de que desea eliminar el producto " + productoSeleccionado + "?",
-                    "Confirmar Eliminación",
-                    JOptionPane.YES_NO_OPTION);
-
+                dialogoSeleccion,
+                "¿Está seguro de que desea eliminar este producto?\n" + item.toString(),
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            
             if (confirmacion == JOptionPane.YES_OPTION) {
-                String[] producto = gestorProductos.buscarProductoPorNombre(productoSeleccionado);
-                if (producto != null) {
-                    int id = Integer.parseInt(producto[0]);
-                    gestorProductos.eliminarProducto(id);
-                    cargarProductos();
-                    JOptionPane.showMessageDialog(this, "Producto eliminado con éxito.");
-                }
+                gestorProductos.eliminarProducto(item.getId());
+                cargarProductos();
+                JOptionPane.showMessageDialog(this, "Producto eliminado con éxito.");
+                dialogoSeleccion.dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(dialogoSeleccion,
+                "Por favor, seleccione un producto para eliminar.",
+                "Ningún producto seleccionado",
+                JOptionPane.WARNING_MESSAGE);
+        }
+    });
+    
+    botonCancelar.addActionListener(e -> dialogoSeleccion.dispose());
+    
+    panelBotones.add(botonEliminar);
+    panelBotones.add(botonCancelar);
+    
+    dialogoSeleccion.add(panelBusqueda, BorderLayout.NORTH);
+    dialogoSeleccion.add(scrollPane, BorderLayout.CENTER);
+    dialogoSeleccion.add(panelBotones, BorderLayout.SOUTH);
+    dialogoSeleccion.setLocationRelativeTo(this);
+    dialogoSeleccion.setVisible(true);
+}
+
+    private void mostrarDialogoCostear() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    private class ProductoListItem {
+    private final int id;
+    private final String nombre;
+    private final String tipo;
+    private final String marca;
+    private final String etiquetas;
+    
+    public ProductoListItem(String[] producto) {
+        this.id = Integer.parseInt(producto[0]);
+        this.nombre = producto[1];
+        this.tipo = producto[5];
+        this.marca = producto[6];
+        this.etiquetas = producto[7];
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("ID: %d - %s - Tipo: %s - Marca: %s", id, nombre, tipo, marca);
+    }
+}
+    private void configurarPlaceholder(JTextField campo, String placeholder) {
+    campo.setText(placeholder);
+    campo.setForeground(Color.GRAY);
+    
+    campo.addFocusListener(new FocusListener() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (campo.getText().equals(placeholder)) {
+                campo.setText("");
+                campo.setForeground(Color.BLACK);
             }
         }
+        
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (campo.getText().isEmpty()) {
+                campo.setText(placeholder);
+                campo.setForeground(Color.GRAY);
+            }
+        }
+    });
+}
+    private void cargarProductosEnLista(DefaultListModel<ProductoListItem> modeloLista) {
+    modeloLista.clear();
+    List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
+    for (String[] producto : productos) {
+        modeloLista.addElement(new ProductoListItem(producto));
     }
+}
 
+private void actualizarListaProductos(String busqueda, DefaultListModel<ProductoListItem> modeloLista) {
+    busqueda = busqueda.toLowerCase().trim();
+    if (busqueda.equals("buscar por id, nombre, tipo, marca o etiqueta")) {
+        cargarProductosEnLista(modeloLista);
+        return;
+    }
+    
+    modeloLista.clear();
+    List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
+    
+    for (String[] producto : productos) {
+        if (coincideConBusqueda(producto, busqueda)) {
+            modeloLista.addElement(new ProductoListItem(producto));
+        }
+    }
+}
+
+private boolean coincideConBusqueda(String[] producto, String busqueda) {
+    if (busqueda.isEmpty()) return true;
+    
+    // Buscar en ID
+    if (producto[0].toLowerCase().contains(busqueda)) return true;
+    
+    // Buscar en Nombre
+    if (producto[1].toLowerCase().contains(busqueda)) return true;
+    
+    // Buscar en Tipo
+    if (producto[5].toLowerCase().contains(busqueda)) return true;
+    
+    // Buscar en Marca
+    if (producto[6].toLowerCase().contains(busqueda)) return true;
+    
+    // Buscar en Etiquetas
+    return producto[7].toLowerCase().contains(busqueda);
+}
+
+private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel modeloTabla) {
+    valorBusqueda = valorBusqueda.toLowerCase();
+    if (valorBusqueda.isEmpty() || 
+        valorBusqueda.equals("buscar por id, nombre, tipo, marca o etiqueta")) {
+        JOptionPane.showMessageDialog(null,
+            "Por favor, ingrese un término de búsqueda válido.",
+            "Campo vacío",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    modeloTabla.setRowCount(0);
+    List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
+    List<String[]> resultados = new ArrayList<>();
+    
+    for (String[] producto : productos) {
+        if (coincideConBusqueda(producto, valorBusqueda)) {
+            resultados.add(producto);
+        }
+    }
+    
+    if (!resultados.isEmpty()) {
+        for (String[] resultado : resultados) {
+            modeloTabla.addRow(resultado);
+        }
+    } else {
+        JOptionPane.showMessageDialog(null,
+            "No se encontraron productos que coincidan con la búsqueda.",
+            "Sin resultados",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -615,7 +875,5 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 
-    private void mostrarDialogoCostear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 }
