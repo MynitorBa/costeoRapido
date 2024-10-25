@@ -30,7 +30,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
     
      public GestionUsuarios() {
-        this("admin"); // Asigna un valor por defecto
+        this("admin"); 
     }
     public GestionUsuarios(String username) {
         this.currentUser = username;
