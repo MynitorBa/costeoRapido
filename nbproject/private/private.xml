@@ -3,11 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/gestionProductos/GestorProductos2.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteSolicitudDePedido/SolicitudDePedido_mandarCorreo.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteCosteoRapido/CosteoForm_Ingresar.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/gestionProductos/Gui.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteCosteoRapido/costeofinal.java</file>
+=======
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteCosteoRapido/CosteoForm_Ingresar.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/gerstionUsuarios/GestionUsuarios.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteInicioSesion/LoginRegistroForm.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteCosteoRapido/CosteoFinal.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteSolicitudDePedido/SolicitudDePedido_mandarCorreo.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/gestionProductos/GestorProductos2.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/gestionProductos/Gui.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteInicioSesion/Usuario.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/GUI/GuiPrincipal.java</file>
+            <file>file:/C:/Users/mynit/OneDrive/Escritorio/POO/costeoRapido/src/paqueteInicioSesion/AdministradorUsuario.java</file>
+>>>>>>> 1669c44f68584d36f366440f0fe8c5b53a57eb47
         </group>
     </open-files>
 </project-private>

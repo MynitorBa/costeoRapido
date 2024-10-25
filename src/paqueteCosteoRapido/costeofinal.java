@@ -147,8 +147,15 @@ public class CosteoFinal extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(51, 102, 0));
         jLabel7.setText("Costeo Final");
 
+        jPanel2.setBackground(new java.awt.Color(178, 171, 171));
+
         flechaIzquierda.setText("←");
         flechaIzquierda.setToolTipText("");
+        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaIzquierdaActionPerformed(evt);
+            }
+        });
 
         searchButton.setText("🔍");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +213,7 @@ public class CosteoFinal extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bookmarkButton)
@@ -215,7 +222,7 @@ public class CosteoFinal extends javax.swing.JFrame {
                     .addComponent(searchButton)
                     .addComponent(flechaDerecha)
                     .addComponent(recargar))
-                .addContainerGap())
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -261,15 +268,11 @@ public class CosteoFinal extends javax.swing.JFrame {
                                 .addComponent(jLabel7)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(76, 76, 76))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 430, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
@@ -452,6 +455,18 @@ public class CosteoFinal extends javax.swing.JFrame {
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        SwingUtilities.invokeLater(() -> {
+            new CosteoForm_Ingresar(currentUser).setVisible(true);
+        });
+        
+        
+        
+        
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
     private boolean validarDatos() {
         return true; 
     }
@@ -480,6 +495,7 @@ public class CosteoFinal extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CosteoFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

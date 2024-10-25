@@ -167,7 +167,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        botonRegresarGUIPrincipal = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -198,16 +197,9 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(51, 102, 0));
         jLabel4.setText("Costeo Rápido");
 
-        botonRegresarGUIPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/left_arrow (1).png"))); // NOI18N
-        botonRegresarGUIPrincipal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRegresarGUIPrincipalActionPerformed(evt);
-            }
-        });
-
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
 
-        jLabel3.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel3.setText("DAI");
 
         jButton1.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
@@ -227,13 +219,13 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel1.setText("Costo Fob USD$");
 
-        jLabel11.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel11.setText("Margen de Venta");
 
-        jLabel2.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel2.setText("Flete");
 
         CosteoRapido_calcular.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
@@ -307,8 +299,15 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         nombreDescripcionProducto.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         nombreDescripcionProducto.setText("Nombre o descripción del producto");
 
+        jPanel3.setBackground(new java.awt.Color(178, 171, 171));
+
         flechaIzquierda.setText("←");
         flechaIzquierda.setToolTipText("");
+        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaIzquierdaActionPerformed(evt);
+            }
+        });
 
         searchButton.setText("🔍");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -392,9 +391,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                         .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonRegresarGUIPrincipal)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -411,9 +408,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(botonRegresarGUIPrincipal)
-                .addGap(28, 28, 28))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -523,15 +518,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_flete_IngresarActionPerformed
 
-    private void botonRegresarGUIPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarGUIPrincipalActionPerformed
-        // TODO add your handling code here:
-      botonRegresarGUIPrincipal.setEnabled(false);
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new GuiPrincipal(currentUser).setVisible(true);
-        });
-    }//GEN-LAST:event_botonRegresarGUIPrincipalActionPerformed
-
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -547,6 +533,16 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
+        // TODO add your handling code here:
+        
+        
+        this.dispose();
+        SwingUtilities.invokeLater(() -> {
+            new GuiPrincipal(currentUser).setVisible(true);
+        });
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -589,7 +585,6 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JButton CosteoRapido_calcular;
     private javax.swing.JTextField MargenVenta_Ingresar;
     private javax.swing.JButton bookmarkButton;
-    private javax.swing.JButton botonRegresarGUIPrincipal;
     private javax.swing.JTextField costoFobUSD$_Ingresar;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;

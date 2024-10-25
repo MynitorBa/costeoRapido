@@ -34,8 +34,29 @@ public class GuiPrincipal extends javax.swing.JFrame {
         customizeComponents();
         buscador = new BuscadorInteligente();
         configurarBuscadorInteligente();
+        configurarEventos();
     }
+    private void configurarEventos() {
+    // Configurar eventos del buscador
+    searchButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            realizarBusqueda();
+        }
+    });
     
+    searchField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            realizarBusqueda();
+        }
+    });
+    
+    // Solo configuramos los eventos que no están en el form
+    searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { actualizarSugerencias(); }
+    });
+}
     private void configurarBuscadorInteligente() {
         sugerenciasPopup = new JPopupMenu();
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -184,6 +205,9 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
 
+        costeoRapidoButton.setBackground(new java.awt.Color(204, 255, 255));
+        costeoRapidoButton.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        costeoRapidoButton.setForeground(new java.awt.Color(102, 102, 0));
         costeoRapidoButton.setText("COSTEO RÁPIDO");
         costeoRapidoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,7 +228,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        addProductButton1.setText("jButton1");
+        addProductButton1.setText("Añadir");
         addProductButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProductButton1ActionPerformed(evt);
@@ -248,7 +272,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        addProductButton2.setText("jButton1");
+        addProductButton2.setText("Añadir");
         addProductButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProductButton2ActionPerformed(evt);
@@ -292,7 +316,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        addProductButton3.setText("jButton1");
+        addProductButton3.setText("Añadir");
         addProductButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProductButton3ActionPerformed(evt);
@@ -336,7 +360,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        addProductButton4.setText("jButton1");
+        addProductButton4.setText("Añadir");
         addProductButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProductButton4ActionPerformed(evt);
@@ -369,8 +393,15 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
 
+        jPanel10.setBackground(new java.awt.Color(178, 171, 171));
+
         flechaIzquierda.setText("←");
         flechaIzquierda.setToolTipText("");
+        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaIzquierdaActionPerformed(evt);
+            }
+        });
 
         searchButton.setText("🔍");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -380,6 +411,11 @@ public class GuiPrincipal extends javax.swing.JFrame {
         });
 
         recargar.setText("🔄");
+        recargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recargarActionPerformed(evt);
+            }
+        });
 
         menuButton.setText("☰");
         menuButton.addActionListener(new java.awt.event.ActionListener() {
@@ -403,6 +439,11 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
+        flechaDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaDerechaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -427,8 +468,8 @@ public class GuiPrincipal extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bookmarkButton)
@@ -437,13 +478,14 @@ public class GuiPrincipal extends javax.swing.JFrame {
                     .addComponent(searchButton)
                     .addComponent(flechaDerecha)
                     .addComponent(recargar))
-                .addContainerGap())
+                .addGap(21, 21, 21))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,24 +502,19 @@ public class GuiPrincipal extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(64, 64, 64)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(costeoRapidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addComponent(jLabel1)))
-                            .addGap(22, 22, 22)))
+                            .addGap(81, 81, 81)
+                            .addComponent(jLabel1)
+                            .addGap(39, 39, 39)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(72, 72, 72)
+                        .addComponent(costeoRapidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(costeoRapidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -508,26 +545,39 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
     private void addProductButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton4ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+    new Gui(currentUser).setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_addProductButton4ActionPerformed
 
     private void addProductButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton3ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+    new Gui(currentUser).setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_addProductButton3ActionPerformed
 
     private void addProductButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton2ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+    new Gui(currentUser).setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_addProductButton2ActionPerformed
 
     private void addProductButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton1ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+    new Gui(currentUser).setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_addProductButton1ActionPerformed
 
     private void costeoRapidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costeoRapidoButtonActionPerformed
         // TODO add your handling code here:
-        java.awt.EventQueue.invokeLater(() -> {
-            new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
-        this.dispose();
+        SwingUtilities.invokeLater(() -> {
+        this.setVisible(false);  // Oculta la ventana actual
+        new CosteoForm_Ingresar(currentUser).setVisible(true);
+        this.dispose();  // Libera los recursos de la ventana actual
+    });
 
     }//GEN-LAST:event_costeoRapidoButtonActionPerformed
 
@@ -537,162 +587,70 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
         // TODO add your handling code here:
+        popupMenu.show(menuButton, 0, menuButton.getHeight());
     }//GEN-LAST:event_menuButtonActionPerformed
 
     private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Función de marcadores");
     }//GEN-LAST:event_bookmarkButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
 
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
+        // TODO add your handling code here:
+        
+        JOptionPane.showMessageDialog(this, "Navegando hacia atrás");
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
+
+    private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
+        // TODO add your handling code here:
+         JOptionPane.showMessageDialog(this, "Navegando hacia adelante");
+    }//GEN-LAST:event_flechaDerechaActionPerformed
+
+    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
+        // TODO add your handling code here:
+        customizeComponents();
+        SwingUtilities.updateComponentTreeUI(this);
+        JOptionPane.showMessageDialog(this, "Página recargada");
+    }//GEN-LAST:event_recargarActionPerformed
+
     
-    private void customizeComponents() {
-        // Personalizar campo de búsqueda
-        searchField.setPreferredSize(new Dimension(200, 30));
-
-        // Personalizar botones
-        searchButton.setText("🔍");
-        bookmarkButton.setText("🔖");
-        menuButton.setText("☰");
-
-        // Personalizar botón de Costeo Rápido
-        costeoRapidoButton.setFont(new Font("Arial", Font.BOLD, 18));
-        costeoRapidoButton.setBackground(new Color(255, 255, 255));
-        costeoRapidoButton.setForeground(new Color(0, 0, 0));
-        costeoRapidoButton.setPreferredSize(new Dimension(300, 60));
-        costeoRapidoButton.setMaximumSize(new Dimension(300, 60));
-        costeoRapidoButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Crear un panel para los productos con GridBagLayout
-        JPanel productsPanel = new JPanel(new GridBagLayout());
-        productsPanel.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Personalizar y agregar paneles de productos
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        customizeProductPanel(jPanel2, jPanel6, addProductButton1, "Producto 1");
-        productsPanel.add(jPanel2, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        customizeProductPanel(jPanel3, jPanel7, addProductButton2, "Producto 2");
-        productsPanel.add(jPanel3, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        customizeProductPanel(jPanel4, jPanel8, addProductButton3, "Producto 3");
-        productsPanel.add(jPanel4, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        customizeProductPanel(jPanel5, jPanel9, addProductButton4, "Producto 4");
-        productsPanel.add(jPanel5, gbc);
-
-        // Actualizar el layout del panel principal
-        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
-        jPanel1.removeAll();
-
-        // Agregar componentes al panel principal
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        searchPanel.setOpaque(false);
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-        searchPanel.add(bookmarkButton);
-        searchPanel.add(menuButton);
-
-        jPanel1.add(Box.createVerticalStrut(20));
-        jPanel1.add(searchPanel);
-        jPanel1.add(Box.createVerticalStrut(20));
-        jPanel1.add(jLabel1);
-        jLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jPanel1.add(Box.createVerticalStrut(20));
-        jPanel1.add(costeoRapidoButton);
-        jPanel1.add(Box.createVerticalStrut(20));
-        jPanel1.add(productsPanel);
-        productsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jPanel1.add(Box.createVerticalGlue());
-
-        // Crear y personalizar el menú desplegable
-        createPopupMenu();
-
-        // Vincular el menú desplegable al botón de menú
-        menuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                popupMenu.show(menuButton, 0, menuButton.getHeight());
-            }
-        });
+    private void gestionarProducto(int numeroProducto) {
+        // Implementar la gestión de productos según el botón presionado
+        JOptionPane.showMessageDialog(this, 
+            "Gestionando producto " + numeroProducto);
     }
-    //Deberia estar arreglado
 
-    
-    
-    
-     private void customizeProductPanel(JPanel outerPanel, JPanel innerPanel, JButton addButton, String productName) {
-         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        outerPanel.setOpaque(false);
+    private void createPopupMenu() {
+        popupMenu = new JPopupMenu();
+        popupMenu.setBackground(Color.WHITE);
+        popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        
+        JTextField searchField = new JTextField(15);
+        searchField.setBorder(BorderFactory.createCompoundBorder(
+            searchField.getBorder(), 
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        popupMenu.add(searchField);
+        popupMenu.addSeparator();
 
-        // Configurar el panel interno como una imagen de placeholder
-        innerPanel.setPreferredSize(new Dimension(100, 100));
-        innerPanel.setMaximumSize(new Dimension(100, 100));
-        innerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        innerPanel.setOpaque(true);
-        innerPanel.setBackground(Color.LIGHT_GRAY);
-
-        JLabel nameLabel = new JLabel(productName);
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        addButton.setText("Agregar");
-        addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        outerPanel.add(innerPanel);
-        outerPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        outerPanel.add(nameLabel);
-        outerPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        outerPanel.add(addButton);
+        addMenuItem("Perfil", "\uD83D\uDC64");
+        addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
+        addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
+        
+        if ("admin".equals(currentUser)) {
+            addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
+        }
+        
+        addMenuItem("Favoritos", "\u2764");
+        addMenuItem("Historial", "\uD83D\uDCC3");
+        addMenuItem("Configuración", "\u2699");
+        
+        popupMenu.addSeparator();
+        addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
     }
-     
-     private void createPopupMenu() {
-    popupMenu = new JPopupMenu();
-    popupMenu.setBackground(Color.WHITE);
-    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-    
-    JTextField searchField = new JTextField(15);
-    searchField.setBorder(BorderFactory.createCompoundBorder(
-        searchField.getBorder(), 
-        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-    popupMenu.add(searchField);
-    popupMenu.addSeparator();
-
-    addMenuItem("Perfil", "\uD83D\uDC64");
-    addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
-    addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
-    
-    // Agregar opción de Gestión de Usuarios solo si es admin
-    if ("admin".equals(currentUser)) {
-        addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
-    }
-    
-    addMenuItem("Favoritos", "\u2764");
-    addMenuItem("Historial", "\uD83D\uDCC3");
-    addMenuItem("Configuración", "\u2699");
-    
-    popupMenu.addSeparator();
-    addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
-}
-     
-     
-     private void abrirGestionUsuarios() {
-    SwingUtilities.invokeLater(() -> {
-        new GestionUsuarios(currentUser).setVisible(true);
-    });
-    this.dispose();
-}
 
     private void addMenuItem(String text, String icon) {
         addMenuItem(text, icon, null);
@@ -711,20 +669,27 @@ public class GuiPrincipal extends javax.swing.JFrame {
         }
         popupMenu.add(menuItem);
     }
-    
-    private void abrirCosteoRapido() {
-    SwingUtilities.invokeLater(() -> {
-        new CosteoForm_Ingresar(currentUser).setVisible(true);
-    });
-    this.dispose();
-}
 
-private void abrirGestionProductos() {
-    SwingUtilities.invokeLater(() -> {
-        new Gui(currentUser).setVisible(true);
-    });
-    this.dispose();
-}
+    private void abrirCosteoRapido() {
+        SwingUtilities.invokeLater(() -> {
+            new CosteoForm_Ingresar(currentUser).setVisible(true);
+        });
+        this.dispose();
+    }
+
+    private void abrirGestionProductos() {
+        SwingUtilities.invokeLater(() -> {
+            new Gui(currentUser).setVisible(true);
+        });
+        this.dispose();
+    }
+
+    private void abrirGestionUsuarios() {
+        SwingUtilities.invokeLater(() -> {
+            new GestionUsuarios(currentUser).setVisible(true);
+        });
+        this.dispose();
+    }
 
     private void logout() {
         int confirm = JOptionPane.showConfirmDialog(
@@ -741,6 +706,32 @@ private void abrirGestionProductos() {
             });
         }
     }
+
+    private void customizeComponents() {
+    // Configurar solo los íconos necesarios para los botones
+    searchButton.setText("🔍");
+    bookmarkButton.setText("🔖");
+    menuButton.setText("☰");
+    flechaIzquierda.setText("←");
+    flechaDerecha.setText("→");
+    recargar.setText("🔄");
+
+    // Crear el menú desplegable
+    createPopupMenu();
+}
+
+    private void customizeProductPanel(JPanel outerPanel, JPanel innerPanel, JButton addButton, String productName) {
+    
+    // Solo personalizamos la apariencia
+    innerPanel.setBackground(new Color(204, 204, 204));
+    addButton.setText("Agregar " + productName);
+    addButton.setBackground(new Color(255, 255, 255));
+    addButton.setForeground(new Color(0, 0, 0));
+    addButton.setFont(new Font("Arial", Font.PLAIN, 12));
+    
+    // No modificamos la estructura de los paneles ya que está definida en el form
+    outerPanel.setBackground(new Color(178, 171, 171));
+}
     /**
      * @param args the command line arguments
      */
