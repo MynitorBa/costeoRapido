@@ -15,6 +15,7 @@ import java.security.SecureRandom;
 public class AdministradorUsuario {
     private static final String ARCHIVO_EXCEL = "resources/usuarios.xlsx";
     private static final String HOJA_USUARIOS = "Usuarios";
+    
 
     public AdministradorUsuario() {
         inicializarArchivoExcel();
@@ -87,6 +88,8 @@ public class AdministradorUsuario {
             return false;
         }
     }
+    
+    
 
      public boolean iniciarSesion(String nombreUsuario, String contrasena) {
 

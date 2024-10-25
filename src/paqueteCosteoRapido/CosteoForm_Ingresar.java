@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import GUI.GuiPrincipal;
+import java.awt.Color;
 import java.util.List;
 /**
  *
@@ -23,6 +24,9 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private BuscadorInteligente buscador;
     private JPopupMenu popupMenu;
     private String currentUser;
+    private final Color PLACEHOLDER_COLOR = new Color(128, 128, 128); // Color gris
+    private final Color TEXT_COLOR = Color.BLACK;
+
 
     /**
      * Creates new form CosteoForm
@@ -32,31 +36,60 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 }
     public CosteoForm_Ingresar(String username, String nombre, double costoFob, double flete, double margenVenta) {
         this.currentUser = username;
+        
+       
         initComponents();
         buscador = new BuscadorInteligente();
         popupMenu = new JPopupMenu();
         
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetearCampos();
-            }
-        });
+        setupPlaceholders();
+        
+        
+        
     searchField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchFieldKeyReleased(evt);
             }
         });
     
-    nombreDescripcionProducto.setText(nombre);
-        costoFobUSD$_Ingresar.setText(String.format("$%.2f", costoFob));
-        flete_Ingresar.setText(String.format("%.2f%%", flete * 100));
-        MargenVenta_Ingresar.setText(String.format("%.2f%%", margenVenta * 100));
-        ClasificacionDAI_elegir.setSelectedIndex(0);
-
-        // Seleccionar la clasificación DAI apropiada (puedes ajustar esto según tus necesidades)
-        ClasificacionDAI_elegir.setSelectedIndex(0);
+    
+    
+    
+    
+    
+    
     }
+    
+    
+    
+    private void setupPlaceholders() {
+    setupPlaceholder(nombreDescripcionProducto, "Nombre o descripción del producto");
+    setupPlaceholder(costoFobUSD$_Ingresar, "$0.00");
+    setupPlaceholder(flete_Ingresar, "0%");
+    setupPlaceholder(MargenVenta_Ingresar, "0%");
+}
+    
+    private void setupPlaceholder(JTextField textField, String placeholder) {
+    textField.setForeground(PLACEHOLDER_COLOR);
+    
+    textField.addFocusListener(new FocusListener() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (textField.getText().equals(placeholder)) {
+                textField.setText("");
+                textField.setForeground(TEXT_COLOR);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (textField.getText().isEmpty()) {
+                textField.setForeground(PLACEHOLDER_COLOR);
+                textField.setText(placeholder);
+            }
+        }
+    });
+}
     
     private void handleSearch() {
         String query = searchField.getText().trim();
@@ -138,20 +171,21 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     }
     
     private void resetearCampos() {
-    if (nombreDescripcionProducto.getText().equals("Nombre o descripción del producto")) {
-        nombreDescripcionProducto.setText("Nombre o descripción del producto");
-    }
-    if (costoFobUSD$_Ingresar.getText().equals("$0.00")) {
-        costoFobUSD$_Ingresar.setText("$0.00");
-    }
-    if (flete_Ingresar.getText().equals("0%")) {
-        flete_Ingresar.setText("0%");
-    }
-    if (MargenVenta_Ingresar.getText().equals("0%")) {
-        MargenVenta_Ingresar.setText("0%");
-    }
+    nombreDescripcionProducto.setForeground(PLACEHOLDER_COLOR);
+    nombreDescripcionProducto.setText("Nombre o descripción del producto");
+    
+    costoFobUSD$_Ingresar.setForeground(PLACEHOLDER_COLOR);
+    costoFobUSD$_Ingresar.setText("$0.00");
+    
+    flete_Ingresar.setForeground(PLACEHOLDER_COLOR);
+    flete_Ingresar.setText("0%");
+    
+    MargenVenta_Ingresar.setForeground(PLACEHOLDER_COLOR);
+    MargenVenta_Ingresar.setText("0%");
+    
     ClasificacionDAI_elegir.setSelectedIndex(0);
 }
+
     
     
 
@@ -204,6 +238,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
         jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         MargenVenta_Ingresar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         MargenVenta_Ingresar.setText("0%");
@@ -298,6 +337,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
 
         nombreDescripcionProducto.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         nombreDescripcionProducto.setText("Nombre o descripción del producto");
+        nombreDescripcionProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombreDescripcionProductoActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(178, 171, 171));
 
@@ -395,7 +439,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,7 +503,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         double precioConIVA = precioVenta * 1.12;  // Asumiendo un IVA del 12%
 
         // Crear y mostrar el formulario CosteoFinal con los resultados
-            CosteoFinal costeoFinal = new CosteoFinal();
+            CosteoFinal costeoFinal = new CosteoFinal(currentUser);
             costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
             costeoFinal.setVisible(true);
             this.dispose(); // Cierra la ventana actual
@@ -485,26 +529,36 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     }     
     
         private boolean validarEntradas() {
-        try {
-            if (nombreDescripcionProducto.getText().trim().isEmpty()) {
-                mostrarError("Por favor, ingrese un nombre o descripción del producto.");
-                return false;
-            }
-            
-            double costoFob = Double.parseDouble(costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", ""));
-            double flete = Double.parseDouble(flete_Ingresar.getText().replace("%", ""));
-            double margenVenta = Double.parseDouble(MargenVenta_Ingresar.getText().replace("%", ""));
-            
-            if (costoFob <= 0 || flete < 0 || margenVenta < 0) {
-                mostrarError("Los valores deben ser positivos.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            mostrarError("Por favor, ingrese valores numéricos válidos.");
+    try {
+        String nombre = nombreDescripcionProducto.getText();
+        if (nombre.trim().isEmpty() || nombre.equals("Nombre o descripción del producto")) {
+            mostrarError("Por favor, ingrese un nombre o descripción del producto.");
             return false;
         }
-        return true;
+        
+        String costoFobText = costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", "");
+        String fleteText = flete_Ingresar.getText().replace("%", "");
+        String margenVentaText = MargenVenta_Ingresar.getText().replace("%", "");
+        
+        if (costoFobText.equals("0.00") || fleteText.equals("0") || margenVentaText.equals("0")) {
+            mostrarError("Por favor, complete todos los campos.");
+            return false;
+        }
+        
+        double costoFob = Double.parseDouble(costoFobText);
+        double flete = Double.parseDouble(fleteText);
+        double margenVenta = Double.parseDouble(margenVentaText);
+        
+        if (costoFob <= 0 || flete < 0 || margenVenta < 0) {
+            mostrarError("Los valores deben ser positivos.");
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        mostrarError("Por favor, ingrese valores numéricos válidos.");
+        return false;
     }
+    return true;
+}
         
     private void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
@@ -544,6 +598,15 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
+    private void nombreDescripcionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreDescripcionProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreDescripcionProductoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        resetearCampos();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -575,7 +638,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         /* Create and display the form */
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CosteoForm_Ingresar("admin").setVisible(true); // Usar un valor por defecto para pruebas
+                new CosteoForm_Ingresar("").setVisible(true); 
             }
         });
     }
