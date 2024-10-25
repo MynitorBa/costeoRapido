@@ -48,28 +48,44 @@ public class GestorProductos2 {
         }
         Files.move(archivoTemporal.toPath(), new File(rutaArchivo).toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
-
+    
     public void agregarProducto(String nombre, double precioUSD, double precioQuetzales, int cantidad, String tipo, String marca, String etiquetas) {
-        try {
-            Workbook libro = cargarLibro();
-            Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
-            int ultimaFila = hoja.getLastRowNum();
-            Row nuevaFila = hoja.createRow(ultimaFila + 1);
-
-            nuevaFila.createCell(0).setCellValue(ultimaFila + 1); // ID
-            nuevaFila.createCell(1).setCellValue(nombre);
-            nuevaFila.createCell(2).setCellValue(precioUSD);
-            nuevaFila.createCell(3).setCellValue(precioQuetzales);
-            nuevaFila.createCell(4).setCellValue(cantidad);
-            nuevaFila.createCell(5).setCellValue(tipo);
-            nuevaFila.createCell(6).setCellValue(marca);
-            nuevaFila.createCell(7).setCellValue(etiquetas);
-
-            guardarLibro(libro, ARCHIVO_EXCEL);
-        } catch (IOException e) {
-            e.printStackTrace();
+    try {
+        Workbook libro = cargarLibro();
+        Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
+        int ultimaFila = hoja.getLastRowNum();
+        Row nuevaFila = hoja.createRow(ultimaFila + 1);
+        
+        // Calcular el siguiente ID
+        int nuevoId = 1; // ID por defecto si no hay productos
+        if (ultimaFila > 0) {
+            // Buscar el ID más alto actual y sumar 1
+            for (Row fila : hoja) {
+                if (fila.getRowNum() == 0) continue; // Saltar encabezado
+                Cell idCell = fila.getCell(0);
+                if (idCell != null) {
+                    int currentId = getCellValueAsInt(idCell);
+                    if (currentId >= nuevoId) {
+                        nuevoId = currentId + 1;
+                    }
+                }
+            }
         }
+
+        nuevaFila.createCell(0).setCellValue(nuevoId); // ID autogenerado
+        nuevaFila.createCell(1).setCellValue(nombre);
+        nuevaFila.createCell(2).setCellValue(precioUSD);
+        nuevaFila.createCell(3).setCellValue(precioQuetzales);
+        nuevaFila.createCell(4).setCellValue(cantidad);
+        nuevaFila.createCell(5).setCellValue(tipo);
+        nuevaFila.createCell(6).setCellValue(marca);
+        nuevaFila.createCell(7).setCellValue(etiquetas);
+
+        guardarLibro(libro, ARCHIVO_EXCEL);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
     public void editarProducto(int id, String nombre, double precioUSD, double precioQuetzales, int cantidad, String tipo, String marca, String etiquetas) {
         try {
@@ -92,24 +108,51 @@ public class GestorProductos2 {
             e.printStackTrace();
         }
     }
-
+    
     public void eliminarProducto(int id) {
-        try {
-            Workbook libro = cargarLibro();
-            Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
-            for (int i = 1; i <= hoja.getLastRowNum(); i++) {
-                Row fila = hoja.getRow(i);
-                if (fila != null && getCellValueAsInt(fila.getCell(0)) == id) {
-                    hoja.removeRow(fila);
-                    hoja.shiftRows(i + 1, hoja.getLastRowNum(), -1);
-                    break;
+    try {
+        Workbook libro = cargarLibro();
+        Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
+        int lastRowNum = hoja.getLastRowNum();
+        int rowToDelete = -1;
+
+        // First find the row to delete
+        for (int i = 1; i <= lastRowNum; i++) {
+            Row fila = hoja.getRow(i);
+            if (fila != null && getCellValueAsInt(fila.getCell(0)) == id) {
+                rowToDelete = i;
+                break;
+            }
+        }
+
+        // If we found the row to delete
+        if (rowToDelete != -1) {
+            // If it's the last row, just remove it
+            if (rowToDelete == lastRowNum) {
+                Row removingRow = hoja.getRow(rowToDelete);
+                if (removingRow != null) {
+                    hoja.removeRow(removingRow);
+                }
+            } else {
+                // Remove the row
+                Row removingRow = hoja.getRow(rowToDelete);
+                if (removingRow != null) {
+                    hoja.removeRow(removingRow);
+                }
+                
+                // Only shift if there are rows below to shift
+                if (rowToDelete < lastRowNum) {
+                    hoja.shiftRows(rowToDelete + 1, lastRowNum, -1);
                 }
             }
+            
             guardarLibro(libro, ARCHIVO_EXCEL);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     public String[] buscarProductoPorId(int id) {
         try {

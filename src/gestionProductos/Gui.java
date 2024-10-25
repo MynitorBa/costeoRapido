@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import GUI.GuiPrincipal;
+import java.util.ArrayList;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 /**
  *
@@ -55,35 +56,111 @@ public class Gui extends javax.swing.JFrame {
     guardar.addActionListener(e -> guardarCambios());
     costear.addActionListener(e -> mostrarDialogoCostear());
 }
-    private void mostrarDialogoCostear() {
-    JDialog dialogo = new JDialog(this, "Seleccionar Producto para Costear", true);
-    dialogo.setLayout(new BorderLayout());
-
-    // Crear una tabla con los productos actuales
-    JTable tablaProductos = new JTable(modeloTabla);
-    JScrollPane scrollPane = new JScrollPane(tablaProductos);
-    dialogo.add(scrollPane, BorderLayout.CENTER);
-
-    JButton botonCostear = new JButton("Costear Producto Seleccionado");
-    botonCostear.addActionListener(e -> {
-        int filaSeleccionada = tablaProductos.getSelectedRow();
-        if (filaSeleccionada != -1) {
-            String[] productoSeleccionado = new String[modeloTabla.getColumnCount()];
-            for (int i = 0; i < modeloTabla.getColumnCount(); i++) {
-                productoSeleccionado[i] = modeloTabla.getValueAt(filaSeleccionada, i).toString();
+    
+    private void mostrarDialogoBuscar() {
+    JDialog dialogo = new JDialog(this, "Búsqueda de Productos", true);
+    dialogo.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(5, 5, 5, 5);
+    
+    // ComboBox para el criterio de búsqueda
+    String[] criterios = {"ID", "Nombre", "Tipo", "Marca"};
+    JComboBox<String> comboCriterio = new JComboBox<>(criterios);
+    
+    // Campo de texto para la búsqueda
+    JTextField campoBusqueda = new JTextField(20);
+    
+    // Botón de búsqueda
+    JButton botonBuscar = new JButton("Buscar");
+    
+    // Añadir componentes al diálogo
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    dialogo.add(new JLabel("Buscar por:"), gbc);
+    
+    gbc.gridx = 1;
+    dialogo.add(comboCriterio, gbc);
+    
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    dialogo.add(new JLabel("Criterio:"), gbc);
+    
+    gbc.gridx = 1;
+    dialogo.add(campoBusqueda, gbc);
+    
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.CENTER;
+    dialogo.add(botonBuscar, gbc);
+    
+    botonBuscar.addActionListener(e -> {
+        String criterio = comboCriterio.getSelectedItem().toString();
+        String valorBusqueda = campoBusqueda.getText().trim();
+        
+        if (!valorBusqueda.isEmpty()) {
+            modeloTabla.setRowCount(0);
+            List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
+            List<String[]> resultados = new ArrayList<>();
+            
+            for (String[] producto : productos) {
+                boolean coincide = false;
+                switch (criterio) {
+                    case "ID":
+                        try {
+                            int id = Integer.parseInt(valorBusqueda);
+                            coincide = producto[0].equals(String.valueOf(id));
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(dialogo, 
+                                "Por favor, ingrese un ID válido (número entero).", 
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        break;
+                    case "Nombre":
+                        coincide = producto[1].toLowerCase()
+                                  .contains(valorBusqueda.toLowerCase());
+                        break;
+                    case "Tipo":
+                        coincide = producto[5].toLowerCase()
+                                  .contains(valorBusqueda.toLowerCase());
+                        break;
+                    case "Marca":
+                        coincide = producto[6].toLowerCase()
+                                  .contains(valorBusqueda.toLowerCase());
+                        break;
+                }
+                
+                if (coincide) {
+                    resultados.add(producto);
+                }
             }
-            dialogo.dispose();
-            abrirVentanaCosteoIngresar(productoSeleccionado);
+            
+            if (!resultados.isEmpty()) {
+                for (String[] resultado : resultados) {
+                    modeloTabla.addRow(resultado);
+                }
+                dialogo.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialogo,
+                    "No se encontraron productos con ese criterio.",
+                    "Sin resultados",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
-            JOptionPane.showMessageDialog(dialogo, "Por favor, seleccione un producto para costear.");
+            JOptionPane.showMessageDialog(dialogo,
+                "Por favor, ingrese un valor para buscar.",
+                "Campo vacío",
+                JOptionPane.WARNING_MESSAGE);
         }
     });
-    dialogo.add(botonCostear, BorderLayout.SOUTH);
-
-    dialogo.setSize(600, 400);
+    
+    // Configurar el diálogo
+    dialogo.pack();
     dialogo.setLocationRelativeTo(this);
     dialogo.setVisible(true);
 }
+
     
     private void abrirVentanaCosteoIngresar(String[] producto) {
     SwingUtilities.invokeLater(() -> {
@@ -126,64 +203,77 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto para guardar los cambios.");
     }
 }
-
+    
     private void mostrarDialogoAgregar() {
-        JDialog dialogo = new JDialog(this, "Agregar Producto", true);
-        dialogo.setLayout(new GridLayout(9, 2));
+    JDialog dialogo = new JDialog(this, "Agregar Producto", true);
+    dialogo.setLayout(new GridLayout(8, 2));
 
-        JTextField campoId = new JTextField();
-        JTextField campoNombre = new JTextField();
-        JTextField campoPrecio = new JTextField();
-        JComboBox<String> comboMoneda = new JComboBox<>(new String[]{"USD", "Quetzales"});
-        JTextField campoCantidad = new JTextField();
-        JTextField campoTipo = new JTextField();
-        JTextField campoMarca = new JTextField();
-        JTextField campoEtiquetas = new JTextField();
+    // Crear los componentes
+    JTextField campoNombre = new JTextField();
+    JTextField campoPrecio = new JTextField();
+    JComboBox<String> comboMoneda = new JComboBox<>(new String[]{"USD", "Quetzales"});
+    JTextField campoCantidad = new JTextField();
+    
+    // Crear el ComboBox para tipos de producto
+    String[] tiposProducto = {
+        "CAMARA",
+        "SISTEMA DE ALMACENAMIENTO",
+        "ACCESORIO CCTV",
+        "CONTROL DE ACCESO Y SEGURIDAD",
+        "SISTEMAS DE RED"
+    };
+    JComboBox<String> comboTipo = new JComboBox<>(tiposProducto);
+    
+    JTextField campoMarca = new JTextField();
+    JTextField campoEtiquetas = new JTextField();
 
-        dialogo.add(new JLabel("ID:"));
-        dialogo.add(campoId);
-        dialogo.add(new JLabel("Nombre:"));
-        dialogo.add(campoNombre);
-        dialogo.add(new JLabel("Precio:"));
-        dialogo.add(campoPrecio);
-        dialogo.add(new JLabel("Moneda:"));
-        dialogo.add(comboMoneda);
-        dialogo.add(new JLabel("Cantidad:"));
-        dialogo.add(campoCantidad);
-        dialogo.add(new JLabel("Tipo:"));
-        dialogo.add(campoTipo);
-        dialogo.add(new JLabel("Marca:"));
-        dialogo.add(campoMarca);
-        dialogo.add(new JLabel("Etiquetas:"));
-        dialogo.add(campoEtiquetas);
+    // Agregar los componentes al diálogo
+    dialogo.add(new JLabel("Nombre:"));
+    dialogo.add(campoNombre);
+    dialogo.add(new JLabel("Precio:"));
+    dialogo.add(campoPrecio);
+    dialogo.add(new JLabel("Moneda:"));
+    dialogo.add(comboMoneda);
+    dialogo.add(new JLabel("Cantidad:"));
+    dialogo.add(campoCantidad);
+    dialogo.add(new JLabel("Tipo:"));
+    dialogo.add(comboTipo);
+    dialogo.add(new JLabel("Marca:"));
+    dialogo.add(campoMarca);
+    dialogo.add(new JLabel("Etiquetas:"));
+    dialogo.add(campoEtiquetas);
 
-        JButton botonAgregar = new JButton("Agregar");
-        botonAgregar.addActionListener(e -> {
-            try {
-                int id = Integer.parseInt(campoId.getText());
-                String nombre = campoNombre.getText();
-                double precio = Double.parseDouble(campoPrecio.getText());
-                boolean esUSD = comboMoneda.getSelectedItem().equals("USD");
-                int cantidad = Integer.parseInt(campoCantidad.getText());
-                String tipo = campoTipo.getText();
-                String marca = campoMarca.getText();
-                String etiquetas = campoEtiquetas.getText();
+    JButton botonAgregar = new JButton("Agregar");
+    botonAgregar.addActionListener(e -> {
+        try {
+            String nombre = campoNombre.getText();
+            double precio = Double.parseDouble(campoPrecio.getText());
+            boolean esUSD = comboMoneda.getSelectedItem().equals("USD");
+            int cantidad = Integer.parseInt(campoCantidad.getText());
+            String tipo = comboTipo.getSelectedItem().toString();
+            String marca = campoMarca.getText();
+            String etiquetas = campoEtiquetas.getText();
 
-                double precioUSD = esUSD ? precio : precio / 7.8;
-                double precioQuetzales = esUSD ? precio * 7.8 : precio;
+            double precioUSD = esUSD ? precio : precio / 7.8;
+            double precioQuetzales = esUSD ? precio * 7.8 : precio;
 
-                gestorProductos.agregarProducto(nombre, precioUSD, precioQuetzales, cantidad, tipo, marca, etiquetas);
-                cargarProductos();
-                dialogo.dispose();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialogo, "Por favor, ingrese valores numéricos válidos.");
-            }
-        });
+            gestorProductos.agregarProducto(nombre, precioUSD, precioQuetzales, cantidad, tipo, marca, etiquetas);
+            cargarProductos();
+            dialogo.dispose();
+            JOptionPane.showMessageDialog(this, "Producto agregado con éxito.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(dialogo, "Por favor, ingrese valores numéricos válidos.");
+        }
+    });
 
-        dialogo.add(botonAgregar);
-        dialogo.pack();
-        dialogo.setVisible(true);
-    }
+    dialogo.add(botonAgregar);
+    dialogo.pack();
+    dialogo.setLocationRelativeTo(this);
+    dialogo.setVisible(true);
+}
+    
+    
+
 
     private void mostrarDialogoEditar() {
         String[] nombresProductos = gestorProductos.obtenerTodosLosProductos().stream()
@@ -271,26 +361,6 @@ public class Gui extends javax.swing.JFrame {
         }
     }
 
-    private void mostrarDialogoBuscar() {
-        String criterioBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre o ID del producto a buscar:");
-    if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
-        String[] producto = null;
-        try {
-            int id = Integer.parseInt(criterioBusqueda);
-            producto = gestorProductos.buscarProductoPorId(id);
-        } catch (NumberFormatException e) {
-            producto = gestorProductos.buscarProductoPorNombre(criterioBusqueda);
-        }
-
-        if (producto != null) {
-            modeloTabla.setRowCount(0);
-            modeloTabla.addRow(producto);
-            JOptionPane.showMessageDialog(this, "Producto encontrado y mostrado en la tabla.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Producto no encontrado.");
-        }
-    }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -544,4 +614,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarDialogoCostear() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
