@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package paqueteCosteoRapido;
+import GUI.GuiPrincipal;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
@@ -25,9 +26,7 @@ public class CosteoFinal extends javax.swing.JFrame {
         this.currentUser = username;
         initComponents();
     }
-     public CosteoFinal() {
-        this("admin"); // Valor por defecto
-    }
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -391,7 +390,7 @@ public class CosteoFinal extends javax.swing.JFrame {
     private void mandarSolicitudPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandarSolicitudPedidoActionPerformed
         // TODO add your handling code here:
     try {
-            SolicitudDePedido_mandarCorreo solicitud = new SolicitudDePedido_mandarCorreo();
+            SolicitudDePedido_mandarCorreo solicitud = new SolicitudDePedido_mandarCorreo(currentUser);
             solicitud.setDatos(
                 nombreDescripcionProducto.getText(),
                 parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
@@ -515,7 +514,7 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new CosteoFinal("admin").setVisible(true);
+            new CosteoFinal("").setVisible(true);
         });
     }
 

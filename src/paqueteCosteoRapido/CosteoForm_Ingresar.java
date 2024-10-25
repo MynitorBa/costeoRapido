@@ -503,7 +503,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         double precioConIVA = precioVenta * 1.12;  // Asumiendo un IVA del 12%
 
         // Crear y mostrar el formulario CosteoFinal con los resultados
-            CosteoFinal costeoFinal = new CosteoFinal();
+            CosteoFinal costeoFinal = new CosteoFinal(currentUser);
             costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
             costeoFinal.setVisible(true);
             this.dispose(); // Cierra la ventana actual
@@ -638,7 +638,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         /* Create and display the form */
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CosteoForm_Ingresar("admin").setVisible(true); // Usar un valor por defecto para pruebas
+                new CosteoForm_Ingresar("").setVisible(true); 
             }
         });
     }

@@ -46,12 +46,37 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
     this.currentUser = username;
     this.adminUsuario = new AdministradorUsuario();
     initComponents();
+    cargarEmailUsuario();
     
 }
+   
+   private void cargarEmailUsuario() {
+        try {
+            // Obtener la lista de usuarios
+            List<String[]> usuarios = adminUsuario.listarUsuarios();
+            
+            // Buscar el email del usuario actual
+            for (String[] usuario : usuarios) {
+                if (usuario[0].equals(currentUser)) {
+                    // usuario[1] contiene el email según la estructura del Excel
+                    recibirCorreo.setText(usuario[1]);
+                    break;
+                }
+            }
+            
+            // Hacer el campo editable para permitir cambios
+            recibirCorreo.setEditable(true);
+        } catch (Exception e) {
+            System.err.println("Error al cargar el email del usuario: " + e.getMessage());
+            // En caso de error, dejar el campo editable y vacío
+            recibirCorreo.setEditable(true);
+            recibirCorreo.setText("");
+        }
+    }
+   
+  
 
-public SolicitudDePedido_mandarCorreo() {
-    this("admin"); // Valor por defecto
-}
+
 
 
     /**
@@ -608,7 +633,7 @@ private void enviarCorreo(String destinatario) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SolicitudDePedido_mandarCorreo().setVisible(true);
+                new SolicitudDePedido_mandarCorreo("").setVisible(true);
             }
         });
     }
