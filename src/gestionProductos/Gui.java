@@ -123,14 +123,35 @@ public class Gui extends javax.swing.JFrame {
 }
     
     
+    
     private void guardarCambios() {
     int fila = jTable1.getSelectedRow();
     if (fila != -1) {
         try {
             int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
             String nombre = modeloTabla.getValueAt(fila, 1).toString();
-            double precioUSD = Double.parseDouble(modeloTabla.getValueAt(fila, 2).toString().replace("$", ""));
-            double precioQuetzales = Double.parseDouble(modeloTabla.getValueAt(fila, 3).toString().replace("Q", ""));
+            
+            // Obtener ambos precios de la tabla
+            String precioUSDStr = modeloTabla.getValueAt(fila, 2).toString().replace("$", "");
+            String precioQuetzalesStr = modeloTabla.getValueAt(fila, 3).toString().replace("Q", "");
+            
+            // Verificar cuál precio fue modificado comparando con los datos originales
+            String[] productoOriginal = gestorProductos.buscarProductoPorId(id);
+            double precioUSDOriginal = Double.parseDouble(productoOriginal[2].replace("$", ""));
+            double precioQuetzalesOriginal = Double.parseDouble(productoOriginal[3].replace("Q", ""));
+            
+            double precioUSD = Double.parseDouble(precioUSDStr);
+            double precioQuetzales = Double.parseDouble(precioQuetzalesStr);
+            
+            // Si el precio USD cambió, actualizar el precio en Quetzales
+            if (precioUSD != precioUSDOriginal) {
+                precioQuetzales = precioUSD * 7.8;
+            }
+            // Si el precio en Quetzales cambió, actualizar el precio USD
+            else if (precioQuetzales != precioQuetzalesOriginal) {
+                precioUSD = precioQuetzales / 7.8;
+            }
+            
             int cantidad = Integer.parseInt(modeloTabla.getValueAt(fila, 4).toString());
             String tipo = modeloTabla.getValueAt(fila, 5).toString();
             String marca = modeloTabla.getValueAt(fila, 6).toString();
@@ -146,6 +167,8 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto para guardar los cambios.");
     }
 }
+    
+    
     
     private void mostrarDialogoAgregar() {
         
@@ -384,6 +407,48 @@ public class Gui extends javax.swing.JFrame {
     dialogo.setVisible(true);
 }
 
+private boolean validarCampos(JTextField nombre, JTextField precioUSD, JTextField precioQuetzales, JTextField cantidad) {
+    if (nombre.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "El nombre no puede estar vacío.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    try {
+        double precio = Double.parseDouble(precioUSD.getText().trim());
+        if (precio <= 0) {
+            JOptionPane.showMessageDialog(null, "El precio debe ser mayor que 0.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "El precio USD debe ser un número válido.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    try {
+        double precio = Double.parseDouble(precioQuetzales.getText().trim());
+        if (precio <= 0) {
+            JOptionPane.showMessageDialog(null, "El precio debe ser mayor que 0.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "El precio en Quetzales debe ser un número válido.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    try {
+        int cant = Integer.parseInt(cantidad.getText().trim());
+        if (cant < 0) {
+            JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "La cantidad debe ser un número entero válido.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    return true;
+}
+
 
 
     private void mostrarDetallesProducto(String[] producto) {
@@ -493,7 +558,23 @@ public class Gui extends javax.swing.JFrame {
 }
 
     private void mostrarDialogoCostear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int filaSeleccionada = jTable1.getSelectedRow();
+    if (filaSeleccionada != -1) {
+        // Obtener los datos del producto seleccionado
+        String[] producto = new String[]{
+            modeloTabla.getValueAt(filaSeleccionada, 0).toString(), // ID
+            modeloTabla.getValueAt(filaSeleccionada, 1).toString(), // Nombre
+            modeloTabla.getValueAt(filaSeleccionada, 2).toString(), // Precio USD
+        };
+        
+        // Abrir la ventana de costeo con los datos del producto
+        abrirVentanaCosteoIngresar(producto);
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "Por favor, seleccione un producto para costear.",
+            "Ningún producto seleccionado",
+            JOptionPane.WARNING_MESSAGE);
+    }
     }
     
     private class ProductoListItem {
