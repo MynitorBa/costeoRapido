@@ -7,6 +7,8 @@ package preguntasFrecuentes;
 import GUI.GuiPrincipal;
 import javax.swing.SwingUtilities;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -36,6 +38,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         flechaIzquierda1 = new javax.swing.JButton();
@@ -45,7 +48,6 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         bookmarkButton1 = new javax.swing.JButton();
         searchField1 = new javax.swing.JTextField();
         flechaDerecha1 = new javax.swing.JButton();
-        scrollbar1 = new java.awt.Scrollbar();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -53,6 +55,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
 
@@ -162,7 +165,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(301, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,53 +184,70 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(108, 108, 108)))
-                        .addComponent(scrollbar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(133, 133, 133)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(774, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollbar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(35, 35, 35)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 159, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(494, Short.MAX_VALUE))
         );
+
+        jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 589, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 61, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchField1ActionPerformed
+
+    private void bookmarkButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookmarkButton1ActionPerformed
+
+    private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButton1ActionPerformed
+
+    private void searchButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButton1ActionPerformed
+        // TODO add your handling code here:
+        handleSearch();
+    }//GEN-LAST:event_searchButton1ActionPerformed
 
     private void flechaIzquierda1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierda1ActionPerformed
         // TODO add your handling code here:
@@ -238,142 +258,164 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_flechaIzquierda1ActionPerformed
 
-    private void searchButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButton1ActionPerformed
-        // TODO add your handling code here:
-        handleSearch();
-    }//GEN-LAST:event_searchButton1ActionPerformed
-
-    private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuButton1ActionPerformed
-
-    private void bookmarkButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bookmarkButton1ActionPerformed
-
-    private void searchField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchField1ActionPerformed
-
     
     
  
-private void setupFAQs() {
+ private void setupFAQs() {
     // Ajustar tamaño de la ventana
     setSize(438, 533);
     setLocationRelativeTo(null);
     
     // Limpiar y configurar el panel principal
     jPanel1.removeAll();
-    jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
+    jPanel1.setLayout(new BorderLayout()); // Cambiado a BorderLayout para mejor control
     jPanel1.setBackground(new Color(178, 171, 171));
     
-    // Configurar panel de navegación para que sea más compacto
+    // Panel superior para la navegación y título
+    JPanel topPanel = new JPanel();
+    topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+    topPanel.setBackground(new Color(178, 171, 171));
+    
+    // Configurar panel de navegación
     jPanel3.setPreferredSize(new Dimension(438, 35));
     jPanel3.setMaximumSize(new Dimension(438, 35));
     
-    // Configurar título principal con tamaño más pequeño
+    // Configurar título
     jLabel1.setText("Preguntas Frecuentes");
-    jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 18)); // Reducido de 28 a 22
+    jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 22));
     jLabel1.setForeground(new Color(51, 102, 0));
     jLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
     
-    // Panel para el título centrado más compacto
+    // Panel para el título
     JPanel titlePanel = new JPanel();
     titlePanel.setBackground(new Color(178, 171, 171));
-    titlePanel.setMaximumSize(new Dimension(438, 38)); // Reducido de 50 a 40
     titlePanel.add(jLabel1);
     
-    // Agregar componentes con menos espacio entre ellos
-    jPanel1.add(jPanel3);
-    jPanel1.add(Box.createRigidArea(new Dimension(0, 3))); // Reducido de 10 a 5
-    jPanel1.add(titlePanel);
-    jPanel1.add(Box.createRigidArea(new Dimension(0, 3))); // Reducido de 10 a 5
+    // Agregar elementos al panel superior
+    topPanel.add(jPanel3);
+    topPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    topPanel.add(titlePanel);
+    topPanel.add(Box.createRigidArea(new Dimension(0, 5)));
     
-    // Crear panel contenedor para preguntas
-    JPanel questionsContainer = new JPanel();
-    questionsContainer.setLayout(new BoxLayout(questionsContainer, BoxLayout.Y_AXIS));
-    questionsContainer.setBackground(new Color(178, 171, 171));
+    // Panel para las preguntas
+    JPanel questionsPanel = new JPanel();
+    questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
+    questionsPanel.setBackground(new Color(178, 171, 171));
+    questionsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
     
-    // Panel para centrar las preguntas
-    JPanel centeringPanel = new JPanel();
-    centeringPanel.setLayout(new BoxLayout(centeringPanel, BoxLayout.Y_AXIS));
-    centeringPanel.setBackground(new Color(178, 171, 171));
-    centeringPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    // Agregar preguntas
+    addQuestionsToContainer(questionsPanel);
     
-    // Agregar preguntas al contenedor
-    addQuestionsToContainer(centeringPanel);
+    // ScrollPane con las preguntas
+    JScrollPane scrollPane = new JScrollPane(
+        questionsPanel,
+        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+    );
     
-    // Panel con padding reducido
-    JPanel paddingPanel = new JPanel();
-    paddingPanel.setLayout(new BoxLayout(paddingPanel, BoxLayout.X_AXIS));
-    paddingPanel.setBackground(new Color(178, 171, 171));
-    paddingPanel.add(Box.createHorizontalStrut(8)); // Reducido de 20 a 10
-    paddingPanel.add(centeringPanel);
-    paddingPanel.add(Box.createHorizontalStrut(8)); // Reducido de 20 a 10
-    
-    questionsContainer.add(paddingPanel);
-    
-    // Configurar scroll pane
-    JScrollPane scrollPane = new JScrollPane(questionsContainer);
     scrollPane.setBorder(null);
     scrollPane.setBackground(new Color(178, 171, 171));
     scrollPane.getViewport().setBackground(new Color(178, 171, 171));
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
     
-    // Agregar scroll pane al panel principal
-    jPanel1.add(scrollPane);
+    // Agregar los paneles al panel principal
+    jPanel1.add(topPanel, BorderLayout.NORTH);
+    jPanel1.add(scrollPane, BorderLayout.CENTER);
     
     // Configurar el campo de búsqueda
     setupSearchField();
-}       
+}
 
 private JPanel createQuestionPanel(String question, String answer) {
     JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout(3, 3)); // Reducido de 10,10 a 5,5
-    panel.setBackground(new Color(240, 240, 240));
+    panel.setLayout(new BorderLayout(5, 5));
+    panel.setBackground(new Color(255, 255, 255));
     panel.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-        BorderFactory.createEmptyBorder(6, 6, 6, 6) // Reducido de 15 a 
+        BorderFactory.createEmptyBorder(10, 10, 10, 10)
     ));
-    panel.setMaximumSize(new Dimension(400, Integer.MAX_VALUE));
     
-    // Panel para la pregunta con icono Q más compacto
-    JPanel questionPanel = new JPanel(new BorderLayout(3, 0)); // Reducido de 10 a 5
-    questionPanel.setOpaque(false);
+    // Panel para la pregunta con icono Q (cabecera)
+    JPanel questionPanel = new JPanel(new BorderLayout());
+    questionPanel.setBackground(new Color(245, 245, 245));
+    questionPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    questionPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     
-    // Icono Q más pequeño
+    JPanel iconAndQuestion = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+    iconAndQuestion.setBackground(new Color(245, 245, 245));
+    
+    // Icono Q
     JLabel iconLabel = new JLabel("Q");
-    iconLabel.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Reducido de 18 a 14
+    iconLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
     iconLabel.setForeground(new Color(51, 102, 0));
     
-    // Pregunta con fuente más pequeña
+    // Pregunta
     JLabel questionLabel = new JLabel(question);
-    questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 10)); // Reducido de 14 a 12
+    questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
     
-    questionPanel.add(iconLabel, BorderLayout.WEST);
-    questionPanel.add(questionLabel, BorderLayout.CENTER);
+    iconAndQuestion.add(iconLabel);
+    iconAndQuestion.add(questionLabel);
     
-    // Respuesta con fuente más pequeña y ancho ajustado
+    // Icono de flecha
+    JLabel arrowLabel = new JLabel("▼");
+    arrowLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    arrowLabel.setForeground(new Color(100, 100, 100));
+    
+    questionPanel.add(iconAndQuestion, BorderLayout.WEST);
+    questionPanel.add(arrowLabel, BorderLayout.EAST);
+    
+    // Panel para la respuesta
+    JPanel answerPanel = new JPanel();
+    answerPanel.setLayout(new BorderLayout());
+    answerPanel.setBackground(Color.WHITE);
+    answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 5, 15));
+    
     JLabel answerLabel = new JLabel(answer);
-    answerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 9)); // Reducido de 13 a 11
+    answerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    answerPanel.add(answerLabel);
+    
+    // Inicialmente ocultar la respuesta
+    answerPanel.setVisible(false);
+    
+    // Agregar el manejador de clics
+    questionPanel.addMouseListener(new MouseAdapter() {
+        
+        public void mouseClicked(MouseEvent e) {
+            boolean isVisible = answerPanel.isVisible();
+            answerPanel.setVisible(!isVisible);
+            arrowLabel.setText(isVisible ? "▼" : "▲");
+            panel.revalidate();
+            panel.repaint();
+        }
+        
+        public void mouseEntered(MouseEvent e) {
+            questionPanel.setBackground(new Color(235, 235, 235));
+            iconAndQuestion.setBackground(new Color(235, 235, 235));
+        }
+        
+        public void mouseExited(MouseEvent e) {
+            questionPanel.setBackground(new Color(245, 245, 245));
+            iconAndQuestion.setBackground(new Color(245, 245, 245));
+        }
+    });
     
     panel.add(questionPanel, BorderLayout.NORTH);
-    panel.add(answerLabel, BorderLayout.CENTER);
+    panel.add(answerPanel, BorderLayout.CENTER);
     
     return panel;
 }
 
 private void addQuestionsToContainer(JPanel container) {
     String[][] questions = {
-        {"¿Qué es Black Box Security?",
-         "<html><div style='width:300px;padding:3px'>" + // Reducido de 350 a 300
-         "Black Box Security es un sistema integral diseñado para la gestión de " +
+        {"¿Qué es Costeo Rápido de Box Security?",
+         "<html><div style='width:310px'>" +  // Eliminadas las comillas extra
+         "Costeo Rápdio Security es un sistema integral diseñado para la gestión de " +
          "productos de seguridad, especializado en costeo rápido, control de " +
          "inventario y administración eficiente de usuarios." +
          "</div></html>"},
          
         {"¿Cómo realizar un costeo rápido?",
-         "<html><div style='width:300px;padding:3px'>" +
+         "<html><div style='width:310px'>" +
          "1. Selecciona 'Costeo Rápido' en el menú principal<br>" +
          "2. Ingresa los datos del producto<br>" +
          "3. Completa los campos de costo FOB, flete y margen<br>" +
@@ -381,19 +423,46 @@ private void addQuestionsToContainer(JPanel container) {
          "</div></html>"},
          
         {"¿Cómo gestionar usuarios?",
-         "<html><div style='width:300px;padding:3px'>" +
+         "<html><div style='width:310px'>" +
          "Como administrador puedes:<br>" +
          "• Agregar nuevos usuarios<br>" +
          "• Editar perfiles existentes<br>" +
          "• Gestionar permisos y roles<br>" +
          "• Monitorear actividad del sistema" +
+         "</div></html>"},
+
+        {"¿Cómo agregar productos?",
+         "<html><div style='width:310px'>" +
+         "Para agregar nuevos productos:<br>" +
+         "• Accede a la sección 'Productos'<br>" +
+         "• Haz clic en 'Agregar Producto'<br>" +
+         "• Completa la información requerida<br>" +
+         "• Guarda los cambios realizados" +
+         "</div></html>"},
+
+        {"¿Cómo funciona la búsqueda?",
+         "<html><div style='width:310px'>" +
+         "El sistema permite buscar por:<br>" +
+         "• Nombre del producto<br>" +
+         "• Tipo de producto<br>" +
+         "• Marca del producto<br>" +
+         "• Etiquetas asociadas" +
+         "</div></html>"},
+
+        {"¿Cómo recuperar contraseña?",
+         "<html><div style='width:310px'>" +
+         "Para recuperar tu contraseña:<br>" +
+         "1. Haz clic en '¿Olvidaste tu contraseña?'<br>" +
+         "2. Ingresa tu correo registrado<br>" +
+         "3. Sigue las instrucciones del correo<br>" +
+         "4. Establece tu nueva contraseña" +
          "</div></html>"}
     };
     
     for (String[] question : questions) {
         JPanel panel = createQuestionPanel(question[0], question[1]);
         container.add(panel);
-        container.add(Box.createRigidArea(new Dimension(0, 3))); // Reducido de 10 a 5
+        container.add(Box.createRigidArea(new Dimension(0, 5)));
     }
 }
 private void searchQuestions(String searchText) {
@@ -568,10 +637,10 @@ private void handleSearch() {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton menuButton1;
     private javax.swing.JButton recargar1;
-    private java.awt.Scrollbar scrollbar1;
     private javax.swing.JButton searchButton1;
     private javax.swing.JTextField searchField1;
     // End of variables declaration//GEN-END:variables
