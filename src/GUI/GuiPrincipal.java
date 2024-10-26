@@ -20,6 +20,7 @@ import javax.swing.Timer;
 import java.awt.event.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import preguntasFrecuentes.PreguntasFrecuentesForm;
 /**
  *
  * @author mynit
@@ -457,32 +458,38 @@ private void manejarCambioTexto() {
     }
 
     private void createPopupMenu() {
-        popupMenu = new JPopupMenu();
-        popupMenu.setBackground(Color.WHITE);
-        popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-        
-        JTextField searchField = new JTextField(15);
-        searchField.setBorder(BorderFactory.createCompoundBorder(
-            searchField.getBorder(), 
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        popupMenu.add(searchField);
-        popupMenu.addSeparator();
+    popupMenu = new JPopupMenu();
+    popupMenu.setBackground(Color.WHITE);
+    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+    
+    JTextField searchField = new JTextField(15);
+    searchField.setBorder(BorderFactory.createCompoundBorder(
+        searchField.getBorder(), 
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    popupMenu.add(searchField);
+    popupMenu.addSeparator();
 
-        addMenuItem("Perfil", "\uD83D\uDC64");
-        addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
-        addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
-        
-        if ("admin".equals(currentUser)) {
-            addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
-        }
-        
-        addMenuItem("Favoritos", "\u2764");
-        addMenuItem("Historial", "\uD83D\uDCC3");
-        
-        
-        popupMenu.addSeparator();
-        addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+    addMenuItem("Perfil", "\uD83D\uDC64");
+    addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
+    addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
+    addMenuItem("Preguntas Frecuentes", "❓", e -> abrirPreguntasFrecuentes());
+    
+    if ("admin".equals(currentUser)) {
+        addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
     }
+    
+    addMenuItem("Favoritos", "\u2764");
+    addMenuItem("Historial", "\uD83D\uDCC3");
+    
+    popupMenu.addSeparator();
+    addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+}
+    private void abrirPreguntasFrecuentes() {
+    SwingUtilities.invokeLater(() -> {
+        new PreguntasFrecuentesForm(currentUser).setVisible(true);
+    });
+    this.dispose();
+}
 
     private void addMenuItem(String text, String icon) {
         addMenuItem(text, icon, null);

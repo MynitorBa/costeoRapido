@@ -731,27 +731,47 @@ private void enviarPregunta() {
     mainPanel.setBackground(Color.WHITE);
 
     // Panel superior para la información del usuario
-    JPanel userInfoPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+    JPanel userInfoPanel = new JPanel(new GridLayout(3, 2, 5, 5));
     userInfoPanel.setBackground(Color.WHITE);
     userInfoPanel.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(200, 200, 200)),
         BorderFactory.createEmptyBorder(0, 0, 10, 0)
     ));
 
-    // Etiquetas de usuario
+    // Etiquetas y campos - Usuario
     JLabel userLabel = new JLabel("Usuario:");
     userLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
     JLabel userValueLabel = new JLabel(currentUser);
     userValueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    userValueLabel.setForeground(new Color(51, 51, 51));
+    userValueLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+
+    // Etiquetas y campos - Correo (ahora como campo de texto)
+    JLabel emailLabel = new JLabel("Tu correo:");
+    emailLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    JTextField emailField = new JTextField();
+    emailField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    emailField.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+    ));
+    emailField.setToolTipText("Ingresa tu correo electrónico para recibir la respuesta");
 
     // Campo de asunto
     JLabel subjectLabel = new JLabel("Asunto:");
     subjectLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
     JTextField subjectField = new JTextField();
     subjectField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    subjectField.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+    ));
 
+    // Agregar componentes al panel de información
     userInfoPanel.add(userLabel);
     userInfoPanel.add(userValueLabel);
+    userInfoPanel.add(emailLabel);
+    userInfoPanel.add(emailField);
     userInfoPanel.add(subjectLabel);
     userInfoPanel.add(subjectField);
 
@@ -782,11 +802,6 @@ private void enviarPregunta() {
     mainPanel.add(userInfoPanel, BorderLayout.NORTH);
     mainPanel.add(questionPanel, BorderLayout.CENTER);
 
-    // Personalizar el diálogo
-    JDialog dialog = new JDialog(this, "Enviar Pregunta", true);
-    dialog.setLayout(new BorderLayout());
-    dialog.add(mainPanel, BorderLayout.CENTER);
-
     // Panel de botones
     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     buttonPanel.setBackground(Color.WHITE);
@@ -808,25 +823,48 @@ private void enviarPregunta() {
     buttonPanel.add(cancelButton);
     buttonPanel.add(sendButton);
 
+    // Personalizar el diálogo
+    JDialog dialog = new JDialog(this, "Enviar Pregunta", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.add(mainPanel, BorderLayout.CENTER);
     dialog.add(buttonPanel, BorderLayout.SOUTH);
 
     // Configurar acciones de botones
     sendButton.addActionListener(e -> {
-        if (subjectField.getText().trim().isEmpty()) {
+        // Validar campos
+        String email = emailField.getText().trim();
+        String subject = subjectField.getText().trim();
+        String question = questionArea.getText().trim();
+        
+        // Validar correo electrónico
+        if (!validarCorreo(email)) {
+            JOptionPane.showMessageDialog(dialog,
+                "Por favor, ingresa un correo electrónico válido.",
+                "Campo inválido",
+                JOptionPane.WARNING_MESSAGE);
+            emailField.requestFocus();
+            return;
+        }
+        
+        if (subject.isEmpty()) {
             JOptionPane.showMessageDialog(dialog,
                 "Por favor, ingresa un asunto para tu pregunta.",
                 "Campo requerido",
                 JOptionPane.WARNING_MESSAGE);
+            subjectField.requestFocus();
             return;
         }
-        if (questionArea.getText().trim().isEmpty()) {
+        
+        if (question.isEmpty()) {
             JOptionPane.showMessageDialog(dialog,
                 "Por favor, escribe tu pregunta.",
                 "Campo requerido",
                 JOptionPane.WARNING_MESSAGE);
+            questionArea.requestFocus();
             return;
         }
-        enviarCorreo(subjectField.getText().trim(), questionArea.getText().trim());
+        
+        enviarCorreo(subject, question, email);
         dialog.dispose();
     });
 
@@ -839,7 +877,12 @@ private void enviarPregunta() {
     dialog.setVisible(true);
 }
 
-private void enviarCorreo(String asunto, String pregunta) {
+private boolean validarCorreo(String email) {
+    String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+    return email.matches(regex);
+}
+
+private void enviarCorreo(String asunto, String pregunta, String correoUsuario) {
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
@@ -860,9 +903,9 @@ private void enviarCorreo(String asunto, String pregunta) {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(username));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+        message.addRecipient(Message.RecipientType.CC, new InternetAddress(correoUsuario));
         message.setSubject("[Pregunta Box Security] " + asunto);
         
-        // Crear contenido HTML para el correo
         String contenidoHTML = 
             "<html>" +
             "<body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>" +
@@ -873,6 +916,7 @@ private void enviarCorreo(String asunto, String pregunta) {
             "<div style='background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>" +
             "<h3 style='color: #336600; margin-top: 0;'>Detalles de la Consulta</h3>" +
             "<p><strong>Usuario:</strong> " + currentUser + "</p>" +
+            "<p><strong>Correo:</strong> " + correoUsuario + "</p>" +
             "<p><strong>Asunto:</strong> " + asunto + "</p>" +
             "<div style='background-color: #f5f5f5; padding: 15px; border-left: 4px solid #336600; margin: 10px 0;'>" +
             "<h4 style='margin-top: 0; color: #333;'>Pregunta:</h4>" +
@@ -886,14 +930,11 @@ private void enviarCorreo(String asunto, String pregunta) {
             "</body>" +
             "</html>";
 
-        // Configurar el contenido HTML
         message.setContent(contenidoHTML, "text/html; charset=utf-8");
-
         Transport.send(message);
 
-        // Mostrar confirmación estilizada
         JOptionPane.showMessageDialog(this,
-            "Tu pregunta ha sido enviada exitosamente.\nTe responderemos pronto.",
+            "Tu pregunta ha sido enviada exitosamente.\nTe responderemos pronto a " + correoUsuario,
             "Mensaje Enviado",
             JOptionPane.INFORMATION_MESSAGE);
 
