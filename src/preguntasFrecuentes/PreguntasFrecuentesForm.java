@@ -9,6 +9,14 @@ import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -313,6 +321,35 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
     );
     
+    // Crear panel para la sección de contacto
+    JPanel contactPanel = new JPanel();
+    contactPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+    contactPanel.setBackground(new Color(178, 171, 171));
+    
+    // Label "¿No encuentras tu pregunta?"
+    JLabel contactLabel = new JLabel("¿No encuentras tu pregunta?");
+    contactLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    contactLabel.setForeground(new Color(51, 51, 51));
+    
+    // Botón de contacto estilizado como texto
+    JButton contactButton = new JButton("Contáctanos");
+    contactButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    contactButton.setForeground(new Color(51, 102, 0));
+    contactButton.setBorderPainted(false);
+    contactButton.setContentAreaFilled(false);
+    contactButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    
+    // Agregar el evento al botón
+    contactButton.addActionListener(e -> enviarPregunta());
+    
+    // Agregar componentes al panel de contacto
+    contactPanel.add(contactLabel);
+    contactPanel.add(contactButton);
+    
+    // Agregar el panel de contacto al topPanel después del título
+    topPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    topPanel.add(contactPanel);
+    
     scrollPane.setBorder(null);
     scrollPane.setBackground(new Color(178, 171, 171));
     scrollPane.getViewport().setBackground(new Color(178, 171, 171));
@@ -408,55 +445,152 @@ private JPanel createQuestionPanel(String question, String answer) {
 private void addQuestionsToContainer(JPanel container) {
     String[][] questions = {
         {"¿Qué es Costeo Rápido de Box Security?",
-         "<html><div style='width:310px'>" +  // Eliminadas las comillas extra
-         "Costeo Rápdio Security es un sistema integral diseñado para la gestión de " +
-         "productos de seguridad, especializado en costeo rápido, control de " +
-         "inventario y administración eficiente de usuarios." +
+         "<html><div style='width:310px'>" +
+         "Costeo Rápido Security es una herramienta diseñada para facilitar " +
+         "el cálculo de costos de productos de seguridad, incluyendo variables " +
+         "como costo FOB, flete, DAI y margen de venta." +
          "</div></html>"},
          
         {"¿Cómo realizar un costeo rápido?",
          "<html><div style='width:310px'>" +
-         "1. Selecciona 'Costeo Rápido' en el menú principal<br>" +
-         "2. Ingresa los datos del producto<br>" +
-         "3. Completa los campos de costo FOB, flete y margen<br>" +
-         "4. El sistema calculará automáticamente los costos" +
-         "</div></html>"},
-         
-        {"¿Cómo gestionar usuarios?",
-         "<html><div style='width:310px'>" +
-         "Como administrador puedes:<br>" +
-         "• Agregar nuevos usuarios<br>" +
-         "• Editar perfiles existentes<br>" +
-         "• Gestionar permisos y roles<br>" +
-         "• Monitorear actividad del sistema" +
+         "1. Selecciona 'COSTEO RÁPIDO' en el menú principal<br>" +
+         "2. Ingresa el nombre o descripción del producto<br>" +
+         "3. Ingresa el costo FOB en USD<br>" +
+         "4. Ingresa el porcentaje de flete<br>" +
+         "5. Selecciona la clasificación DAI<br>" +
+         "6. Ingresa el margen de venta<br>" +
+         "7. Presiona 'COSTEO RÁPIDO'" +
          "</div></html>"},
 
-        {"¿Cómo agregar productos?",
+        {"¿Qué datos necesito para hacer un costeo?",
          "<html><div style='width:310px'>" +
-         "Para agregar nuevos productos:<br>" +
-         "• Accede a la sección 'Productos'<br>" +
-         "• Haz clic en 'Agregar Producto'<br>" +
-         "• Completa la información requerida<br>" +
-         "• Guarda los cambios realizados" +
+         "Necesitas:<br>" +
+         "• Nombre o descripción del producto<br>" +
+         "• Costo FOB en USD<br>" +
+         "• Porcentaje de flete<br>" +
+         "• Clasificación DAI (seleccionar de la lista)<br>" +
+         "• Margen de venta deseado" +
          "</div></html>"},
 
-        {"¿Cómo funciona la búsqueda?",
+        {"¿Cómo funciona la clasificación DAI?",
          "<html><div style='width:310px'>" +
-         "El sistema permite buscar por:<br>" +
+         "El sistema maneja las siguientes clasificaciones:<br>" +
+         "• Cámara 0%<br>" +
+         "• Acceso 0%<br>" +
+         "• Metal 15%<br>" +
+         "• Grabador 15%<br>" +
+         "• Aluminio 10%" +
+         "</div></html>"},
+
+        {"¿Qué productos puedo gestionar en el sistema?",
+         "<html><div style='width:310px'>" +
+         "El sistema está configurado para:<br>" +
+         "• Cámaras<br>" +
+         "• Sistemas de almacenamiento<br>" +
+         "• Accesorios CCTV<br>" +
+         "• Control de acceso y seguridad<br>" +
+         "• Sistemas de red" +
+         "</div></html>"},
+
+        {"¿Cómo buscar productos existentes?",
+         "<html><div style='width:310px'>" +
+         "Puedes buscar por:<br>" +
          "• Nombre del producto<br>" +
          "• Tipo de producto<br>" +
-         "• Marca del producto<br>" +
-         "• Etiquetas asociadas" +
+         "• Marca<br>" +
+         "• Etiquetas<br>" +
+         "El buscador mostrará sugerencias mientras escribes" +
          "</div></html>"},
 
-        {"¿Cómo recuperar contraseña?",
+        {"¿Cómo funciona la gestión de usuarios?",
+         "<html><div style='width:310px'>" +
+         "El administrador puede:<br>" +
+         "• Ver lista de usuarios<br>" +
+         "• Editar usuarios existentes<br>" +
+         "• Eliminar usuarios<br>" +
+         "• Modificar información de contacto" +
+         "</div></html>"},
+
+        {"¿Cómo recuperar mi contraseña?",
          "<html><div style='width:310px'>" +
          "Para recuperar tu contraseña:<br>" +
          "1. Haz clic en '¿Olvidaste tu contraseña?'<br>" +
          "2. Ingresa tu correo registrado<br>" +
-         "3. Sigue las instrucciones del correo<br>" +
-         "4. Establece tu nueva contraseña" +
+         "3. Recibirás un código por correo<br>" +
+         "4. Ingresa el código y establece nueva contraseña" +
+         "</div></html>"},
+
+        {"¿Cómo enviar una solicitud de pedido?",
+         "<html><div style='width:310px'>" +
+         "Para enviar una solicitud:<br>" +
+         "1. Realiza el costeo del producto<br>" +
+         "2. En la pantalla de costeo final, selecciona 'Mandar solicitud de pedido'<br>" +
+         "3. Ingresa el correo del destinatario<br>" +
+         "4. Confirma el envío" +
+         "</div></html>"},
+
+        {"¿Cómo se calcula el precio final?",
+         "<html><div style='width:310px'>" +
+         "El sistema calcula automáticamente:<br>" +
+         "• Costo FOB USD<br>" +
+         "• Costo USD (incluyendo flete y DAI)<br>" +
+         "• Costo en Quetzales<br>" +
+         "• Precio de venta<br>" +
+         "• Precio con IVA" +
+         "</div></html>"},
+
+        {"¿Cómo funciona la búsqueda inteligente?",
+         "<html><div style='width:310px'>" +
+         "El buscador inteligente:<br>" +
+         "• Muestra sugerencias en tiempo real<br>" +
+         "• Busca coincidencias parciales<br>" +
+         "• Ordena resultados por relevancia<br>" +
+         "• Permite seleccionar productos sugeridos" +
+         "</div></html>"},
+
+        {"¿Qué información se muestra en el costeo final?",
+         "<html><div style='width:310px'>" +
+         "El costeo final muestra:<br>" +
+         "• Nombre del producto<br>" +
+         "• Costo FOB USD<br>" +
+         "• Costo USD final<br>" +
+         "• Costo en Quetzales<br>" +
+         "• Precio de venta<br>" +
+         "• Precio con IVA<br>" +
+         "• Margen aplicado" +
+         "</div></html>"},
+        
+        {"¿Cómo agregar nuevos productos?",
+         "<html><div style='width:310px'>" +
+         "Para agregar productos:<br>" +
+         "1. Ve a la sección de productos<br>" +
+         "2. Haz clic en 'Agregar'<br>" +
+         "3. Completa los campos requeridos<br>" +
+         "• Nombre<br>" +
+         "• Precio<br>" +
+         "• Tipo<br>" +
+         "• Marca<br>" +
+         "• Etiquetas" +
+         "</div></html>"},
+
+        {"¿Cómo editar productos existentes?",
+         "<html><div style='width:310px'>" +
+         "Para editar un producto:<br>" +
+         "1. Busca el producto<br>" +
+         "2. Selecciona 'Editar'<br>" +
+         "3. Modifica los campos necesarios<br>" +
+         "4. Guarda los cambios" +
+         "</div></html>"},
+
+        {"¿Qué hace el botón de reset en el costeo?",
+         "<html><div style='width:310px'>" +
+         "El botón de reset:<br>" +
+         "• Limpia todos los campos del formulario<br>" +
+         "• Restaura valores por defecto<br>" +
+         "• Permite iniciar un nuevo costeo<br>" +
+         "• No afecta costeos guardados" +
          "</div></html>"}
+            
     };
     
     for (String[] question : questions) {
@@ -587,6 +721,189 @@ private void handleSearch() {
         String searchText = searchField1.getText();
         searchQuestions(searchText);
     });
+}
+
+
+private void enviarPregunta() {
+    // Crear panel principal con margen
+    JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+    mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    mainPanel.setBackground(Color.WHITE);
+
+    // Panel superior para la información del usuario
+    JPanel userInfoPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+    userInfoPanel.setBackground(Color.WHITE);
+    userInfoPanel.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(200, 200, 200)),
+        BorderFactory.createEmptyBorder(0, 0, 10, 0)
+    ));
+
+    // Etiquetas de usuario
+    JLabel userLabel = new JLabel("Usuario:");
+    userLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    JLabel userValueLabel = new JLabel(currentUser);
+    userValueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+    // Campo de asunto
+    JLabel subjectLabel = new JLabel("Asunto:");
+    subjectLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    JTextField subjectField = new JTextField();
+    subjectField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+    userInfoPanel.add(userLabel);
+    userInfoPanel.add(userValueLabel);
+    userInfoPanel.add(subjectLabel);
+    userInfoPanel.add(subjectField);
+
+    // Panel central para la pregunta
+    JPanel questionPanel = new JPanel(new BorderLayout(5, 5));
+    questionPanel.setBackground(Color.WHITE);
+    
+    JLabel questionLabel = new JLabel("Tu pregunta:");
+    questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
+
+    JTextArea questionArea = new JTextArea(8, 30);
+    questionArea.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    questionArea.setLineWrap(true);
+    questionArea.setWrapStyleWord(true);
+    questionArea.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+    ));
+
+    JScrollPane scrollPane = new JScrollPane(questionArea);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+    questionPanel.add(questionLabel, BorderLayout.NORTH);
+    questionPanel.add(scrollPane, BorderLayout.CENTER);
+
+    // Agregar todos los paneles al panel principal
+    mainPanel.add(userInfoPanel, BorderLayout.NORTH);
+    mainPanel.add(questionPanel, BorderLayout.CENTER);
+
+    // Personalizar el diálogo
+    JDialog dialog = new JDialog(this, "Enviar Pregunta", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.add(mainPanel, BorderLayout.CENTER);
+
+    // Panel de botones
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    buttonPanel.setBackground(Color.WHITE);
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 15, 15));
+
+    JButton cancelButton = new JButton("Cancelar");
+    JButton sendButton = new JButton("Enviar Pregunta");
+    
+    // Estilizar botones
+    sendButton.setBackground(new Color(51, 102, 0));
+    sendButton.setForeground(Color.WHITE);
+    sendButton.setFocusPainted(false);
+    sendButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    
+    cancelButton.setBackground(Color.WHITE);
+    cancelButton.setFocusPainted(false);
+    cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+    buttonPanel.add(cancelButton);
+    buttonPanel.add(sendButton);
+
+    dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+    // Configurar acciones de botones
+    sendButton.addActionListener(e -> {
+        if (subjectField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog,
+                "Por favor, ingresa un asunto para tu pregunta.",
+                "Campo requerido",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (questionArea.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog,
+                "Por favor, escribe tu pregunta.",
+                "Campo requerido",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        enviarCorreo(subjectField.getText().trim(), questionArea.getText().trim());
+        dialog.dispose();
+    });
+
+    cancelButton.addActionListener(e -> dialog.dispose());
+
+    // Configurar y mostrar el diálogo
+    dialog.setSize(500, 400);
+    dialog.setLocationRelativeTo(this);
+    dialog.setResizable(false);
+    dialog.setVisible(true);
+}
+
+private void enviarCorreo(String asunto, String pregunta) {
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+
+    final String username = "stylematezelda@gmail.com";
+    final String password = "ucom vaej vocj tdvc";
+
+    Session session = Session.getInstance(props,
+        new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+    try {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+        message.setSubject("[Pregunta Box Security] " + asunto);
+        
+        // Crear contenido HTML para el correo
+        String contenidoHTML = 
+            "<html>" +
+            "<body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>" +
+            "<div style='background-color: #336600; color: white; padding: 20px; text-align: center;'>" +
+            "<h2 style='margin: 0;'>Nueva Pregunta - Box Security</h2>" +
+            "</div>" +
+            "<div style='padding: 20px; background-color: #f9f9f9;'>" +
+            "<div style='background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>" +
+            "<h3 style='color: #336600; margin-top: 0;'>Detalles de la Consulta</h3>" +
+            "<p><strong>Usuario:</strong> " + currentUser + "</p>" +
+            "<p><strong>Asunto:</strong> " + asunto + "</p>" +
+            "<div style='background-color: #f5f5f5; padding: 15px; border-left: 4px solid #336600; margin: 10px 0;'>" +
+            "<h4 style='margin-top: 0; color: #333;'>Pregunta:</h4>" +
+            "<p style='margin-bottom: 0;'>" + pregunta.replace("\n", "<br>") + "</p>" +
+            "</div>" +
+            "</div>" +
+            "<p style='color: #666; font-size: 12px; text-align: center; margin-top: 20px;'>" +
+            "Este correo fue enviado desde el sistema de Box Security" +
+            "</p>" +
+            "</div>" +
+            "</body>" +
+            "</html>";
+
+        // Configurar el contenido HTML
+        message.setContent(contenidoHTML, "text/html; charset=utf-8");
+
+        Transport.send(message);
+
+        // Mostrar confirmación estilizada
+        JOptionPane.showMessageDialog(this,
+            "Tu pregunta ha sido enviada exitosamente.\nTe responderemos pronto.",
+            "Mensaje Enviado",
+            JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (MessagingException e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al enviar el mensaje: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
 }
 
 // Modificar el evento del botón de búsqueda
