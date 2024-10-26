@@ -44,6 +44,15 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         
         setupPlaceholders();
         
+        if (!nombre.isEmpty()) {
+        nombreDescripcionProducto.setText(nombre);
+        nombreDescripcionProducto.setForeground(TEXT_COLOR);
+    }
+    
+    if (costoFob > 0) {
+        costoFobUSD$_Ingresar.setText(String.format("%.2f", costoFob));
+        costoFobUSD$_Ingresar.setForeground(TEXT_COLOR);
+    }
         
         
     searchField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -117,27 +126,14 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     
     private void llenarCamposProducto(String nombreProducto) {
         List<String[]> resultados = buscador.procesarConsulta(nombreProducto);
-        if (!resultados.isEmpty()) {
-            String[] producto = resultados.get(0);
-            nombreDescripcionProducto.setText(producto[1]);
-            costoFobUSD$_Ingresar.setText(producto[2].replace("$", ""));
-            // Asumiendo que el flete y el margen de venta no están en el producto, los dejamos como están
-            // Si tienes esta información en el producto, ajusta los índices según corresponda
-            // flete_Ingresar.setText(...);
-            // MargenVenta_Ingresar.setText(...);
-            
-            // Para ClasificacionDAI_elegir, selecciona la opción más cercana basada en el DAI del producto
-            String daiProducto = producto[5]; // Asumiendo que el DAI está en el índice 5
-            String[] opciones = {"Cámara 0%", "Acceso 0%", "Metal 15%", "Grabador 15%", "Aluminio 10%"};
-            String opcionMasCercana = opciones[0];
-            for (String opcion : opciones) {
-                if (opcion.contains(daiProducto)) {
-                    opcionMasCercana = opcion;
-                    break;
-                }
-            }
-            ClasificacionDAI_elegir.setSelectedItem(opcionMasCercana);
-        }
+    if (!resultados.isEmpty()) {
+        String[] producto = resultados.get(0);
+        nombreDescripcionProducto.setText(producto[1]);
+        nombreDescripcionProducto.setForeground(TEXT_COLOR);
+        
+        costoFobUSD$_Ingresar.setText(producto[2].replace("$", ""));
+        costoFobUSD$_Ingresar.setForeground(TEXT_COLOR);
+    }
     }
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {
@@ -186,6 +182,86 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     ClasificacionDAI_elegir.setSelectedIndex(0);
 }
 
+    private void calcularCosteo() {
+        // Obtener los valores ingresados por el usuario
+        try{
+            
+        
+        String nombre = nombreDescripcionProducto.getText();
+        double costoFob = Double.parseDouble(costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", ""));
+        double fletePercent = Double.parseDouble(flete_Ingresar.getText().replace("%", "")) / 100.0;
+        String clasificacionDAI = (String) ClasificacionDAI_elegir.getSelectedItem();
+        double margenVentaPercent = Double.parseDouble(MargenVenta_Ingresar.getText().replace("%", "")) / 100.0;
+
+        // Realizar los cálculos necesarios
+        double costoConFlete = costoFob * (1 + fletePercent);
+        double daiPercent = obtenerPorcentajeDAI(clasificacionDAI);
+        double costoConDAI = costoConFlete * (1 + daiPercent);
+        double precioVenta = costoConDAI / (1 - margenVentaPercent);
+        double precioConIVA = precioVenta * 1.12;  // Asumiendo un IVA del 12%
+
+        // Crear y mostrar el formulario CosteoFinal con los resultados
+            CosteoFinal costeoFinal = new CosteoFinal(currentUser);
+            costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
+            costeoFinal.setVisible(true);
+            this.dispose(); // Cierra la ventana actual
+        } catch (Exception e) {
+            mostrarError("Error al calcular el costeo: " + e.getMessage());
+        }
+    }
+
+
+  private double obtenerPorcentajeDAI(String clasificacion) {
+        switch (clasificacion) {
+            case "Cámara 0%":
+            case "Acceso 0%":
+                return 0.0;
+            case "Metal 15%":
+            case "Grabador 15%":
+                return 0.15;
+            case "Aluminio 10%":
+                return 0.10;
+            default:
+                return 0.0;
+        }
+    }     
+    
+        private boolean validarEntradas() {
+    try {
+        String nombre = nombreDescripcionProducto.getText();
+        if (nombre.trim().isEmpty() || nombre.equals("Nombre o descripción del producto")) {
+            mostrarError("Por favor, ingrese un nombre o descripción del producto.");
+            return false;
+        }
+        
+        String costoFobText = costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", "");
+        String fleteText = flete_Ingresar.getText().replace("%", "");
+        String margenVentaText = MargenVenta_Ingresar.getText().replace("%", "");
+        
+        if (costoFobText.equals("0.00") || fleteText.equals("0") || margenVentaText.equals("0")) {
+            mostrarError("Por favor, complete todos los campos.");
+            return false;
+        }
+        
+        double costoFob = Double.parseDouble(costoFobText);
+        double flete = Double.parseDouble(fleteText);
+        double margenVenta = Double.parseDouble(margenVentaText);
+        
+        if (costoFob <= 0 || flete < 0 || margenVenta < 0) {
+            mostrarError("Los valores deben ser positivos.");
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        mostrarError("Por favor, ingrese valores numéricos válidos.");
+        return false;
+    }
+    return true;
+}
+        
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     
     
 
@@ -484,85 +560,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     }//GEN-LAST:event_CosteoRapido_calcularActionPerformed
 
 
-   private void calcularCosteo() {
-        // Obtener los valores ingresados por el usuario
-        try{
-            
-        
-        String nombre = nombreDescripcionProducto.getText();
-        double costoFob = Double.parseDouble(costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", ""));
-        double fletePercent = Double.parseDouble(flete_Ingresar.getText().replace("%", "")) / 100.0;
-        String clasificacionDAI = (String) ClasificacionDAI_elegir.getSelectedItem();
-        double margenVentaPercent = Double.parseDouble(MargenVenta_Ingresar.getText().replace("%", "")) / 100.0;
-
-        // Realizar los cálculos necesarios
-        double costoConFlete = costoFob * (1 + fletePercent);
-        double daiPercent = obtenerPorcentajeDAI(clasificacionDAI);
-        double costoConDAI = costoConFlete * (1 + daiPercent);
-        double precioVenta = costoConDAI / (1 - margenVentaPercent);
-        double precioConIVA = precioVenta * 1.12;  // Asumiendo un IVA del 12%
-
-        // Crear y mostrar el formulario CosteoFinal con los resultados
-            CosteoFinal costeoFinal = new CosteoFinal(currentUser);
-            costeoFinal.setDatos(nombre, costoFob, costoConFlete, costoConDAI, precioVenta, precioConIVA, margenVentaPercent);
-            costeoFinal.setVisible(true);
-            this.dispose(); // Cierra la ventana actual
-        } catch (Exception e) {
-            mostrarError("Error al calcular el costeo: " + e.getMessage());
-        }
-    }
-
-
-  private double obtenerPorcentajeDAI(String clasificacion) {
-        switch (clasificacion) {
-            case "Cámara 0%":
-            case "Acceso 0%":
-                return 0.0;
-            case "Metal 15%":
-            case "Grabador 15%":
-                return 0.15;
-            case "Aluminio 10%":
-                return 0.10;
-            default:
-                return 0.0;
-        }
-    }     
-    
-        private boolean validarEntradas() {
-    try {
-        String nombre = nombreDescripcionProducto.getText();
-        if (nombre.trim().isEmpty() || nombre.equals("Nombre o descripción del producto")) {
-            mostrarError("Por favor, ingrese un nombre o descripción del producto.");
-            return false;
-        }
-        
-        String costoFobText = costoFobUSD$_Ingresar.getText().replace("$", "").replace(",", "");
-        String fleteText = flete_Ingresar.getText().replace("%", "");
-        String margenVentaText = MargenVenta_Ingresar.getText().replace("%", "");
-        
-        if (costoFobText.equals("0.00") || fleteText.equals("0") || margenVentaText.equals("0")) {
-            mostrarError("Por favor, complete todos los campos.");
-            return false;
-        }
-        
-        double costoFob = Double.parseDouble(costoFobText);
-        double flete = Double.parseDouble(fleteText);
-        double margenVenta = Double.parseDouble(margenVentaText);
-        
-        if (costoFob <= 0 || flete < 0 || margenVenta < 0) {
-            mostrarError("Los valores deben ser positivos.");
-            return false;
-        }
-    } catch (NumberFormatException e) {
-        mostrarError("Por favor, ingrese valores numéricos válidos.");
-        return false;
-    }
-    return true;
-}
-        
-    private void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+   
     
     private void costoFobUSD$_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoFobUSD$_IngresarActionPerformed
         // TODO add your handling code here:
