@@ -4,6 +4,9 @@
  */
 package paqueteCosteoRapido;
 import GUI.GuiPrincipal;
+import Historial.HistorialEntry;
+import Historial.HistorialManager;
+import Historial.HistorialViewer;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
@@ -63,6 +66,7 @@ public class CosteoFinal extends javax.swing.JFrame {
         bookmarkButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
+        botonVerHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -247,21 +251,25 @@ public class CosteoFinal extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
+        botonVerHistorial.setText(" 📝");
+        botonVerHistorial.setToolTipText("");
+        botonVerHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVerHistorialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 430, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 430, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nombreDescripcionProducto)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel7)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -275,64 +283,76 @@ public class CosteoFinal extends javax.swing.JFrame {
                                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(margen_FINAL, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(margen_FINAL)
                                     .addComponent(CostoUSD$_FINAL)
                                     .addComponent(costoFobUSD$_FINAL)
                                     .addComponent(CostoQuetzales_FINAL)
                                     .addComponent(PrecioVenta_FINAL)
-                                    .addComponent(jTextField6))))
-                        .addGap(76, 76, 76))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(mandarSolicitudPedido)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(ModificarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(GuardarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(mandarSolicitudPedido)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(ModificarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(GuardarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(70, 70, 70))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addGap(26, 26, 26)
-                .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(ConIVA_FINAL)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel8))
+                        .addComponent(botonVerHistorial)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(costoFobUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CostoUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addGap(26, 26, 26)
+                        .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(ConIVA_FINAL)
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel8))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(costoFobUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(CostoUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(CostoQuetzales_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(PrecioVenta_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(margen_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(CostoQuetzales_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(PrecioVenta_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(margen_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28)
-                .addComponent(mandarSolicitudPedido)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ModificarCosteo)
-                    .addComponent(GuardarCosteo))
-                .addContainerGap(175, Short.MAX_VALUE))
+                        .addComponent(mandarSolicitudPedido)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ModificarCosteo)
+                            .addComponent(GuardarCosteo))
+                        .addContainerGap(100, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -348,6 +368,111 @@ public class CosteoFinal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerHistorialActionPerformed
+        // TODO add your handling code here:
+        HistorialViewer viewer = new HistorialViewer(currentUser, this);
+        viewer.setVisible(true);
+
+    }//GEN-LAST:event_botonVerHistorialActionPerformed
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookmarkButtonActionPerformed
+
+    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButtonActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        SwingUtilities.invokeLater(() -> {
+            new CosteoForm_Ingresar(currentUser).setVisible(true);
+        });
+
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
+
+    private void GuardarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarCosteoActionPerformed
+        // TODO add your handling code here:
+
+        if (validarDatos()) {
+            guardarCosteo();
+        }
+    }//GEN-LAST:event_GuardarCosteoActionPerformed
+
+    private void ModificarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCosteoActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nombre = nombreDescripcionProducto.getText();
+            double costoFob = parseNumber(costoFobUSD$_FINAL.getText().replace("$", ""));
+            double costoConDAI = parseNumber(CostoUSD$_FINAL.getText().replace("$", ""));
+            double precioVenta = parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8;
+            double margenVenta = parseNumber(margen_FINAL.getText().replace("%", "")) / 100;
+
+            // Calcular el flete
+            double flete = (costoConDAI - costoFob) / costoFob;
+
+            // Pasar el currentUser al crear la nueva instancia
+            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
+                currentUser, nombre, costoFob, flete, margenVenta);
+            costeoForm.setVisible(true);
+            this.dispose();
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al procesar los números: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_ModificarCosteoActionPerformed
+
+    private void mandarSolicitudPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandarSolicitudPedidoActionPerformed
+        // TODO add your handling code here:
+        try {
+            SolicitudDePedido_mandarCorreo solicitud = new SolicitudDePedido_mandarCorreo(currentUser);
+            solicitud.setDatos(
+                nombreDescripcionProducto.getText(),
+                parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
+                parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
+                parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
+                parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")),
+                parseNumber(jTextField6.getText().replace("Q", "")),
+                parseNumber(margen_FINAL.getText().replace("%", "")) / 100
+            );
+            solicitud.setVisible(true);
+            this.dispose();
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Error al procesar los números: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mandarSolicitudPedidoActionPerformed
+
+    private void margen_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_margen_FINALActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_margen_FINALActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void PrecioVenta_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrecioVenta_FINALActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PrecioVenta_FINALActionPerformed
+
+    private void costoFobUSD$_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoFobUSD$_FINALActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costoFobUSD$_FINALActionPerformed
+
+    private void nombreDescripcionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreDescripcionProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreDescripcionProductoActionPerformed
 
     
 
@@ -367,46 +492,6 @@ public class CosteoFinal extends javax.swing.JFrame {
    
    
     
-    private void nombreDescripcionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreDescripcionProductoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombreDescripcionProductoActionPerformed
-
-    private void costoFobUSD$_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoFobUSD$_FINALActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_costoFobUSD$_FINALActionPerformed
-
-    private void PrecioVenta_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrecioVenta_FINALActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PrecioVenta_FINALActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
-    private void margen_FINALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_margen_FINALActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_margen_FINALActionPerformed
-
-    private void mandarSolicitudPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mandarSolicitudPedidoActionPerformed
-        // TODO add your handling code here:
-    try {
-            SolicitudDePedido_mandarCorreo solicitud = new SolicitudDePedido_mandarCorreo(currentUser);
-            solicitud.setDatos(
-                nombreDescripcionProducto.getText(),
-                parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
-                parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
-                parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
-                parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")),
-                parseNumber(jTextField6.getText().replace("Q", "")),
-                parseNumber(margen_FINAL.getText().replace("%", "")) / 100
-            );
-            solicitud.setVisible(true);
-            this.dispose();
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, "Error al procesar los números: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_mandarSolicitudPedidoActionPerformed
-
     private double parseNumber(String number) throws ParseException {
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         Number parsed = format.parse(number.replace(",", ""));
@@ -415,73 +500,49 @@ public class CosteoFinal extends javax.swing.JFrame {
     
     
     
-    private void ModificarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCosteoActionPerformed
-        // TODO add your handling code here:
-       try {
-            String nombre = nombreDescripcionProducto.getText();
-            double costoFob = parseNumber(costoFobUSD$_FINAL.getText().replace("$", ""));
-            double costoConDAI = parseNumber(CostoUSD$_FINAL.getText().replace("$", ""));
-            double precioVenta = parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8;
-            double margenVenta = parseNumber(margen_FINAL.getText().replace("%", "")) / 100;
-            
-            // Calcular el flete
-            double flete = (costoConDAI - costoFob) / costoFob;
-            
-            // Pasar el currentUser al crear la nueva instancia
-            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
-                currentUser, nombre, costoFob, flete, margenVenta);
-            costeoForm.setVisible(true);
-            this.dispose();
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al procesar los números: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_ModificarCosteoActionPerformed
-
     private void guardarCosteo() {
+        try {
+        // Crear una nueva entrada de historial
+        HistorialEntry entrada = new HistorialEntry(
+            currentUser,
+            nombreDescripcionProducto.getText(),
+            parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
+            parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
+            parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
+            parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")),
+            parseNumber(jTextField6.getText().replace("Q", "")),
+            parseNumber(margen_FINAL.getText().replace("%", "")) / 100
+        );
 
-        JOptionPane.showMessageDialog(this, "Costeo guardado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        // Guardar en el historial
+        HistorialManager manager = new HistorialManager();
+        manager.guardarCosteo(entrada);
+
+        JOptionPane.showMessageDialog(this, 
+            "Costeo guardado exitosamente", 
+            "Éxito", 
+            JOptionPane.INFORMATION_MESSAGE);
+    } catch (ParseException e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error al guardar el costeo: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
     }
+}
+    public void cargarCosteoDesdeHistorial(String producto, String costoFobUSD, 
+    String costoUSDFinal, String costoQuetzales, String precioVenta, 
+    String precioConIVA, String margen) {
+        
+    nombreDescripcionProducto.setText(producto);
+    costoFobUSD$_FINAL.setText("$" + costoFobUSD);
+    CostoUSD$_FINAL.setText("$" + costoUSDFinal);
+    CostoQuetzales_FINAL.setText("Q" + costoQuetzales);
+    PrecioVenta_FINAL.setText("Q" + precioVenta);
+    jTextField6.setText("Q" + precioConIVA);
+    margen_FINAL.setText(margen + "%");
+}
     
-    
-    private void GuardarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarCosteoActionPerformed
-        // TODO add your handling code here:
-        
-        if (validarDatos()) {
-            guardarCosteo();
-        }        
-    }//GEN-LAST:event_GuardarCosteoActionPerformed
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
-
-    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuButtonActionPerformed
-
-    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bookmarkButtonActionPerformed
-
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
-        
-        
-        
-        
-    }//GEN-LAST:event_flechaIzquierdaActionPerformed
-    private boolean validarDatos() {
+        private boolean validarDatos() {
         return true; 
     }
     /**
@@ -526,6 +587,7 @@ public class CosteoFinal extends javax.swing.JFrame {
     private javax.swing.JButton ModificarCosteo;
     private javax.swing.JTextField PrecioVenta_FINAL;
     private javax.swing.JButton bookmarkButton;
+    private javax.swing.JButton botonVerHistorial;
     private javax.swing.JTextField costoFobUSD$_FINAL;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
