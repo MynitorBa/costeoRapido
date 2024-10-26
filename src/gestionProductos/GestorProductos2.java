@@ -95,26 +95,51 @@ public class GestorProductos2 {
 
     public void editarProducto(int id, String nombre, double precioUSD, double precioQuetzales, int cantidad, String tipo, String marca, String etiquetas) {
         try {
-            Workbook libro = cargarLibro();
-            Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
-            for (Row fila : hoja) {
-                if (getCellValueAsInt(fila.getCell(0)) == id) {
-                    fila.getCell(1).setCellValue(nombre);
-                    fila.getCell(2).setCellValue(precioUSD);
-                    fila.getCell(3).setCellValue(precioQuetzales);
-                    fila.getCell(4).setCellValue(cantidad);
-                    fila.getCell(5).setCellValue(tipo);
-                    fila.getCell(6).setCellValue(marca);
-                    fila.getCell(7).setCellValue(etiquetas);
-                    fila.getCell(8).setCellValue(obtenerEmojiPorTipo(tipo));
-                    break;
-                }
+        Workbook libro = cargarLibro();
+        Sheet hoja = libro.getSheet(HOJA_PRODUCTOS);
+        for (Row fila : hoja) {
+            if (getCellValueAsInt(fila.getCell(0)) == id) {
+                // Create cells if they don't exist, then set values
+                Cell cellNombre = fila.getCell(1);
+                if (cellNombre == null) cellNombre = fila.createCell(1);
+                cellNombre.setCellValue(nombre);
+
+                Cell cellPrecioUSD = fila.getCell(2);
+                if (cellPrecioUSD == null) cellPrecioUSD = fila.createCell(2);
+                cellPrecioUSD.setCellValue(precioUSD);
+
+                Cell cellPrecioQuetzales = fila.getCell(3);
+                if (cellPrecioQuetzales == null) cellPrecioQuetzales = fila.createCell(3);
+                cellPrecioQuetzales.setCellValue(precioQuetzales);
+
+                Cell cellCantidad = fila.getCell(4);
+                if (cellCantidad == null) cellCantidad = fila.createCell(4);
+                cellCantidad.setCellValue(cantidad);
+
+                Cell cellTipo = fila.getCell(5);
+                if (cellTipo == null) cellTipo = fila.createCell(5);
+                cellTipo.setCellValue(tipo);
+
+                Cell cellMarca = fila.getCell(6);
+                if (cellMarca == null) cellMarca = fila.createCell(6);
+                cellMarca.setCellValue(marca);
+
+                Cell cellEtiquetas = fila.getCell(7);
+                if (cellEtiquetas == null) cellEtiquetas = fila.createCell(7);
+                cellEtiquetas.setCellValue(etiquetas);
+
+                Cell cellOtros = fila.getCell(8);
+                if (cellOtros == null) cellOtros = fila.createCell(8);
+                cellOtros.setCellValue(obtenerEmojiPorTipo(tipo));
+
+                break;
             }
-            guardarLibro(libro, ARCHIVO_EXCEL);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        guardarLibro(libro, ARCHIVO_EXCEL);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
     
     public void eliminarProducto(int id) {
     try {
