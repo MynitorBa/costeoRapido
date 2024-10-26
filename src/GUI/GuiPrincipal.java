@@ -14,6 +14,8 @@ import paqueteInicioSesion.LoginRegistroForm;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 import gestionProductos.Gui;
 import gerstionUsuarios.GestionUsuarios;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  * @author mynit
@@ -107,10 +109,24 @@ public class GuiPrincipal extends javax.swing.JFrame {
 
     private void realizarBusqueda() {
         String consulta = searchField.getText();
-        List<String[]> resultados = buscador.procesarConsulta(consulta);
-        resultados = buscador.filtrarResultados(resultados, ""); // Puedes agregar filtros adicionales aquí
-        resultados = buscador.ordenarResultados(resultados, consulta);
-        mostrarResultados(resultados);
+    
+    // Obtener los resultados iniciales
+    List<String[]> resultados = buscador.procesarConsulta(consulta);
+    
+    // Crear un mapa de filtros vacío (o agregar los filtros que necesites)
+    Map<String, String> filtros = new HashMap<>();
+    // Ejemplo de cómo agregar filtros:
+    // filtros.put("marca", "Samsung");
+    // filtros.put("tipo", "Smartphone");
+    
+    // Aplicar filtros
+    resultados = buscador.filtrarResultados(resultados, filtros);
+    
+    // Ordenar resultados (usando "relevancia" como criterio por defecto)
+    resultados = buscador.ordenarResultados(resultados, consulta, "relevancia");
+    
+    // Mostrar los resultados
+    mostrarResultados(resultados);
     }
 
     private void mostrarResultados(List<String[]> resultados) {
