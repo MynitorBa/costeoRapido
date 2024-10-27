@@ -97,11 +97,9 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         flechaIzquierda = new javax.swing.JButton();
-        searchButton = new javax.swing.JButton();
         recargar = new javax.swing.JButton();
         menuButton = new javax.swing.JButton();
         favoritos = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         historial = new javax.swing.JButton();
@@ -124,6 +122,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         guardar_al_historial = new javax.swing.JButton();
         enviarCorreo = new javax.swing.JButton();
         menuButton1 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(178, 171, 171));
@@ -136,13 +135,6 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flechaIzquierdaActionPerformed(evt);
-            }
-        });
-
-        searchButton.setText("🔍");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
             }
         });
 
@@ -159,12 +151,6 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         favoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 favoritosActionPerformed(evt);
-            }
-        });
-
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
             }
         });
 
@@ -272,6 +258,8 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -285,23 +273,19 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                         .addComponent(flechaDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(recargar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95)
+                        .addComponent(historial)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(historial)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(menuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(474, 474, 474)
-                .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115))
+                        .addComponent(menuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(474, 474, 474)
+                        .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(jLabel10)
+                        .addContainerGap())))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -341,25 +325,28 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                         .addGap(167, 167, 167)
                         .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(148, 148, 148)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(favoritos)
                     .addComponent(menuButton)
                     .addComponent(flechaIzquierda)
-                    .addComponent(searchButton)
                     .addComponent(flechaDerecha)
                     .addComponent(recargar)
-                    .addComponent(menuButton1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(historial)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                    .addComponent(menuButton1)
+                    .addComponent(historial))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(20, 20, 20)
                 .addComponent(nombreDescripcionProductoFINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2)
@@ -573,10 +560,6 @@ private void enviarCorreo(String destinatario) {
 
     }//GEN-LAST:event_guardar_al_historialActionPerformed
 
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
-
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuButtonActionPerformed
@@ -625,10 +608,6 @@ private void enviarCorreo(String destinatario) {
     }
     }//GEN-LAST:event_favoritosActionPerformed
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
         
@@ -654,8 +633,8 @@ private void enviarCorreo(String destinatario) {
     JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
     JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
     JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
-    JMenuItem favoritosItem = new JMenuItem("❤ Favoritos");
-    JMenuItem historialItem = new JMenuItem("\uD83D\uDCC3 Historial");
+ 
+ 
     JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
 
     // Personalizar apariencia de los items
@@ -663,7 +642,7 @@ private void enviarCorreo(String destinatario) {
     Color hoverColor = new Color(240, 240, 240);
     
     for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem, favoritosItem, historialItem, logoutItem}) {
+        productosItem, preguntasItem, logoutItem}) {
         item.setFont(menuFont);
         item.setBackground(Color.WHITE);
         item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -716,21 +695,9 @@ private void enviarCorreo(String destinatario) {
         });
     });
 
-    favoritosItem.addActionListener(e -> {
-        // TODO: Implementar vista de favoritos
-        JOptionPane.showMessageDialog(this, 
-            "Función de favoritos en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
+    
 
-    historialItem.addActionListener(e -> {
-        // TODO: Implementar vista de historial
-        JOptionPane.showMessageDialog(this, 
-            "Función de historial en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
+   
 
     logoutItem.addActionListener(e -> {
         int confirm = JOptionPane.showConfirmDialog(
@@ -781,8 +748,6 @@ private void enviarCorreo(String destinatario) {
     }
     
     popupMenu.addSeparator();
-    popupMenu.add(favoritosItem);
-    popupMenu.add(historialItem);
     popupMenu.addSeparator();
     popupMenu.add(logoutItem);
 
@@ -944,6 +909,7 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     private javax.swing.JButton guardar_al_historial;
     private javax.swing.JButton historial;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -960,8 +926,6 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     private javax.swing.JTextField nombreDescripcionProductoFINAL;
     private javax.swing.JButton recargar;
     private javax.swing.JTextField recibirCorreo;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 
     private void bookmarkButton1ActionPerformed(Object object) {

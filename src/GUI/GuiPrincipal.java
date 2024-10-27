@@ -6,6 +6,7 @@ package GUI;
 
 
 import BuscadorInteligente.BuscadorInteligente;
+import Historial.HistorialViewer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -514,7 +515,7 @@ private void manejarCambioTexto() {
     searchField.setBorder(BorderFactory.createCompoundBorder(
         searchField.getBorder(), 
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-    popupMenu.add(searchField);
+
     popupMenu.addSeparator();
 
     // Agregar la opción de Perfil de Usuario
@@ -527,12 +528,14 @@ private void manejarCambioTexto() {
         addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
     }
     
-    addMenuItem("Favoritos", "\u2764");
-    addMenuItem("Historial", "\uD83D\uDCC3");
+
+
     
     popupMenu.addSeparator();
     addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
 }
+
+   
 
 // Agregar el método para abrir el perfil de usuario
 private void abrirPerfilUsuario() {

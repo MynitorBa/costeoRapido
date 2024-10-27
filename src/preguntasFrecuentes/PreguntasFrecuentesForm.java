@@ -307,8 +307,6 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
     JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
     JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
-    JMenuItem favoritosItem = new JMenuItem("❤ Favoritos");
-    JMenuItem historialItem = new JMenuItem("\uD83D\uDCC3 Historial");
     JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
 
     // Personalizar apariencia de los items
@@ -316,7 +314,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     Color hoverColor = new Color(240, 240, 240);
     
     for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem, favoritosItem, historialItem, logoutItem}) {
+        productosItem, preguntasItem, logoutItem}) {
         item.setFont(menuFont);
         item.setBackground(Color.WHITE);
         item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -369,21 +367,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         });
     });
 
-    favoritosItem.addActionListener(e -> {
-        // TODO: Implementar vista de favoritos
-        JOptionPane.showMessageDialog(this, 
-            "Función de favoritos en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
-
-    historialItem.addActionListener(e -> {
-        // TODO: Implementar vista de historial
-        JOptionPane.showMessageDialog(this, 
-            "Función de historial en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
+    
 
     logoutItem.addActionListener(e -> {
         int confirm = JOptionPane.showConfirmDialog(
@@ -434,8 +418,6 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     }
     
     popupMenu.addSeparator();
-    popupMenu.add(favoritosItem);
-    popupMenu.add(historialItem);
     popupMenu.addSeparator();
     popupMenu.add(logoutItem);
 

@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import GUI.GuiPrincipal;
+import Historial.HistorialViewer;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -985,7 +986,7 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
     Color hoverColor = new Color(240, 240, 240);
     
     for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem, favoritosItem, historialItem, logoutItem}) {
+        productosItem, preguntasItem,  logoutItem}) {
         item.setFont(menuFont);
         item.setBackground(Color.WHITE);
         item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -1038,22 +1039,9 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
         });
     });
 
-    favoritosItem.addActionListener(e -> {
-        // TODO: Implementar vista de favoritos
-        JOptionPane.showMessageDialog(this, 
-            "Función de favoritos en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
+   
 
-    historialItem.addActionListener(e -> {
-        // TODO: Implementar vista de historial
-        JOptionPane.showMessageDialog(this, 
-            "Función de historial en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
-
+   
     logoutItem.addActionListener(e -> {
         int confirm = JOptionPane.showConfirmDialog(
             this,

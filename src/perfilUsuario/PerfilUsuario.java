@@ -341,7 +341,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
 
         txtUsuario.setEditable(false);
         txtUsuario.setBackground(new java.awt.Color(204, 204, 204));
-        txtUsuario.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
+        txtUsuario.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
         txtUsuario.setText("Nombre Usuario");
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,11 +355,16 @@ public class PerfilUsuario extends javax.swing.JFrame {
         btnEditarCorreo.setToolTipText("");
         btnEditarCorreo.setBorderPainted(false);
         btnEditarCorreo.setContentAreaFilled(false);
+        btnEditarCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarCorreoActionPerformed(evt);
+            }
+        });
 
         txtCorreo.setEditable(false);
         txtCorreo.setBackground(new java.awt.Color(204, 204, 204));
-        txtCorreo.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
-        txtCorreo.setText("Nombre Usuario");
+        txtCorreo.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
+        txtCorreo.setText("Correo del Usuario");
         txtCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCorreoActionPerformed(evt);
@@ -400,26 +405,20 @@ public class PerfilUsuario extends javax.swing.JFrame {
                         .addGap(101, 101, 101)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addComponent(txtUsuario)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                            .addComponent(btnEditarContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(174, 174, 174)
+                        .addComponent(btnEditarUsuario))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(btnEditarCorreo)))
+                        .addGap(171, 171, 171)
+                        .addComponent(btnEditarCorreo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditarContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(82, 82, 82)
-                    .addComponent(jLabel3)
-                    .addContainerGap(263, Short.MAX_VALUE)))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(180, Short.MAX_VALUE)
-                    .addComponent(btnEditarUsuario)
-                    .addGap(172, 172, 172)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -428,27 +427,21 @@ public class PerfilUsuario extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(89, 89, 89)
+                .addGap(58, 58, 58)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditarUsuario)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditarCorreo)
-                .addGap(40, 40, 40)
+                .addGap(41, 41, 41)
                 .addComponent(btnEditarContrasena)
-                .addContainerGap(123, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(173, 173, 173)
-                    .addComponent(jLabel3)
-                    .addContainerGap(401, Short.MAX_VALUE)))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(263, 263, 263)
-                    .addComponent(btnEditarUsuario)
-                    .addContainerGap(309, Short.MAX_VALUE)))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -481,8 +474,6 @@ public class PerfilUsuario extends javax.swing.JFrame {
     JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
     JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
     JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
-    JMenuItem favoritosItem = new JMenuItem("❤ Favoritos");
-    JMenuItem historialItem = new JMenuItem("\uD83D\uDCC3 Historial");
     JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
 
     // Personalizar apariencia de los items
@@ -490,7 +481,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
     Color hoverColor = new Color(240, 240, 240);
     
     for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem, favoritosItem, historialItem, logoutItem}) {
+        productosItem, preguntasItem,logoutItem}) {
         item.setFont(menuFont);
         item.setBackground(Color.WHITE);
         item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -543,22 +534,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
         });
     });
 
-    favoritosItem.addActionListener(e -> {
-        // TODO: Implementar vista de favoritos
-        JOptionPane.showMessageDialog(this, 
-            "Función de favoritos en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
-
-    historialItem.addActionListener(e -> {
-        // TODO: Implementar vista de historial
-        JOptionPane.showMessageDialog(this, 
-            "Función de historial en desarrollo", 
-            "Próximamente", 
-            JOptionPane.INFORMATION_MESSAGE);
-    });
-
+    
     logoutItem.addActionListener(e -> {
         int confirm = JOptionPane.showConfirmDialog(
             this,
@@ -608,8 +584,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
     }
     
     popupMenu.addSeparator();
-    popupMenu.add(favoritosItem);
-    popupMenu.add(historialItem);
+   
     popupMenu.addSeparator();
     popupMenu.add(logoutItem);
 
@@ -671,7 +646,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
         // TODO add your handling code here:
-        editarUsuario();
+     
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
@@ -680,7 +655,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
 
     private void btnEditarContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarContrasenaActionPerformed
         // TODO add your handling code here:
-        cambiarContrasena();
+     
     }//GEN-LAST:event_btnEditarContrasenaActionPerformed
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
@@ -694,6 +669,10 @@ public class PerfilUsuario extends javax.swing.JFrame {
     private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_flechaDerechaActionPerformed
+
+    private void btnEditarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarCorreoActionPerformed
 
     
     
