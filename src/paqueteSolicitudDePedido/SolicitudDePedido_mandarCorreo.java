@@ -4,7 +4,9 @@
  */
 package paqueteSolicitudDePedido;
     
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -24,6 +26,8 @@ import java.util.List;
 import paqueteCosteoRapido.CosteoFinal;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 import paqueteInicioSesion.AdministradorUsuario;
+import productosFavoritos.FavoritosManager;
+import productosFavoritos.ProductoFavorito;
 
 /**
  *
@@ -579,6 +583,46 @@ private void enviarCorreo(String destinatario) {
 
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
+        try {
+        // Usamos el FavoritosManager que ya está implementado
+        FavoritosManager favoritosManager = new FavoritosManager();
+        List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
+        
+        if (favoritos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "No tienes productos favoritos guardados",
+                "Sin Favoritos",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear panel principal con layout vertical
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        
+        // Agregar cada producto favorito al panel
+        for (ProductoFavorito favorito : favoritos) {
+            JPanel productoPanel = crearPanelProductoFavorito(favorito);
+            mainPanel.add(productoPanel);
+            mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre productos
+        }
+
+        // Agregar scroll al panel
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        
+        // Mostrar el diálogo con los favoritos
+        JOptionPane.showMessageDialog(this, 
+            scrollPane, 
+            "Mis Productos Favoritos", 
+            JOptionPane.PLAIN_MESSAGE);
+            
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al cargar favoritos: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -749,6 +793,109 @@ private void enviarCorreo(String destinatario) {
         
         JOptionPane.showMessageDialog(this, "Funcionalidad de historial aún no implementada");
     }
+    
+    
+    
+    // Método auxiliar para crear el panel de cada producto favorito
+private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout(10, 10));
+    panel.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+    ));
+    
+    // Panel de información
+    JPanel infoPanel = new JPanel();
+    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+    
+    // Nombre del producto en negrita
+    JLabel nombreLabel = new JLabel(favorito.getNombre());
+    nombreLabel.setFont(new Font(nombreLabel.getFont().getName(), Font.BOLD, 14));
+    infoPanel.add(nombreLabel);
+    
+    // Detalles del producto
+    String detalles = String.format("<html>Costo FOB: $%.2f<br>" +
+                                  "Costo Final USD: $%.2f<br>" +
+                                  "Costo en Q.: Q%.2f<br>" +
+                                  "Precio Venta: Q%.2f<br>" +
+                                  "Margen: %.1f%%</html>",
+        favorito.getCostoFobUSD(),
+        favorito.getCostoUSDFinal(),
+        favorito.getCostoQuetzales(),
+        favorito.getPrecioVenta(),
+        favorito.getMargen() * 100);
+    
+    JLabel detallesLabel = new JLabel(detalles);
+    detallesLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+    infoPanel.add(detallesLabel);
+    
+    panel.add(infoPanel, BorderLayout.CENTER);
+    
+    // Panel de botones
+    JPanel botonesPanel = new JPanel();
+    botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+    
+    // Botón de costear
+    JButton costearButton = new JButton("Costear");
+    costearButton.addActionListener(e -> costearProductoFavorito(favorito));
+    botonesPanel.add(costearButton);
+    botonesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    
+    // Botón de eliminar
+    JButton eliminarButton = new JButton("Eliminar");
+    eliminarButton.addActionListener(e -> eliminarProductoFavorito(favorito));
+    botonesPanel.add(eliminarButton);
+    
+    panel.add(botonesPanel, BorderLayout.EAST);
+    
+    return panel;
+}
+
+// Método para costear un producto favorito
+private void costearProductoFavorito(ProductoFavorito favorito) {
+    SwingUtilities.invokeLater(() -> {
+        CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
+            currentUser,
+            favorito.getNombre(),
+            favorito.getCostoFobUSD(),
+            0.0, // Flete por defecto
+            favorito.getMargen() * 100 // Convertir margen a porcentaje
+        );
+        costeoForm.setVisible(true);
+        this.dispose();
+    });
+}
+
+// Método para eliminar un producto favorito
+private void eliminarProductoFavorito(ProductoFavorito favorito) {
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+        "¿Estás seguro de que deseas eliminar '" + favorito.getNombre() + "' de tus favoritos?",
+        "Confirmar Eliminación",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE);
+        
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            FavoritosManager favoritosManager = new FavoritosManager();
+            favoritosManager.eliminarFavorito(favorito, currentUser);
+            
+            JOptionPane.showMessageDialog(this,
+                "Producto eliminado de favoritos exitosamente",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE);
+                
+            // Actualizar la vista de favoritos
+            bookmarkButton1ActionPerformed(null);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al eliminar el favorito: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -816,4 +963,8 @@ private void enviarCorreo(String destinatario) {
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
+
+    private void bookmarkButton1ActionPerformed(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
