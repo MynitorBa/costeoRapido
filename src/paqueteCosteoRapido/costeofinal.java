@@ -7,13 +7,17 @@ import GUI.GuiPrincipal;
 import Historial.HistorialEntry;
 import Historial.HistorialManager;
 import Historial.HistorialViewer;
+import java.awt.BorderLayout;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import paqueteSolicitudDePedido.SolicitudDePedido_mandarCorreo;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
+import productosFavoritos.FavoritosManager;
+import productosFavoritos.ProductoFavorito;
 /**
  *
  * @author andre
@@ -29,6 +33,35 @@ public class CosteoFinal extends javax.swing.JFrame {
         this.currentUser = username;
         initComponents();
     }
+    
+    public void guardarProductoFavorito() {
+    try {
+        ProductoFavorito favorito = new ProductoFavorito(
+            nombreDescripcionProducto.getText(),
+            parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
+            parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
+            parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
+            parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8,
+            parseNumber(jTextField6.getText().replace("Q", "")) / 7.8,
+            parseNumber(margen_FINAL.getText().replace("%", "")) / 100
+        );
+        
+        FavoritosManager favoritosManager = new FavoritosManager();
+        favoritosManager.guardarFavorito(favorito, "favorito1");
+        
+        JOptionPane.showMessageDialog(this,
+            "Producto guardado en favoritos exitosamente",
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE);
+            
+    } catch (ParseException e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al guardar en favoritos: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
+
      
 
     /**
@@ -382,6 +415,56 @@ public class CosteoFinal extends javax.swing.JFrame {
 
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
+        
+        FavoritosManager favoritosManager = new FavoritosManager();
+    List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritos();
+    
+    if (favoritos.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "No hay productos favoritos guardados",
+            "Sin favoritos",
+            JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+    
+    // Crear diálogo para mostrar favoritos
+    JDialog dialogoFavoritos = new JDialog(this, "Productos Favoritos", true);
+    dialogoFavoritos.setLayout(new BorderLayout());
+    
+    // Crear lista de favoritos
+    DefaultListModel<String> modeloLista = new DefaultListModel<>();
+    favoritos.forEach(f -> modeloLista.addElement(f.getNombre()));
+    JList<String> listaFavoritos = new JList<>(modeloLista);
+    JScrollPane scrollPane = new JScrollPane(listaFavoritos);
+    
+    // Botón para cargar favorito seleccionado
+    JButton botonCargar = new JButton("Cargar Producto");
+    botonCargar.addActionListener(e -> {
+        int indiceSeleccionado = listaFavoritos.getSelectedIndex();
+        if (indiceSeleccionado != -1) {
+            ProductoFavorito favorito = favoritos.get(indiceSeleccionado);
+            
+            // Usar el método existente para cargar los datos
+            cargarCosteoDesdeHistorial(
+                favorito.getNombre(),
+                String.format("%.2f", favorito.getCostoFobUSD()),
+                String.format("%.2f", favorito.getCostoUSDFinal()),
+                String.format("%.2f", favorito.getCostoQuetzales()),
+                String.format("%.2f", favorito.getPrecioVenta()),
+                String.format("%.2f", favorito.getPrecioConIVA()),
+                String.format("%.2f", favorito.getMargen())
+            );
+            
+            dialogoFavoritos.dispose();
+        }
+    });
+    
+    dialogoFavoritos.add(scrollPane, BorderLayout.CENTER);
+    dialogoFavoritos.add(botonCargar, BorderLayout.SOUTH);
+    
+    dialogoFavoritos.setSize(400, 300);
+    dialogoFavoritos.setLocationRelativeTo(this);
+    dialogoFavoritos.setVisible(true);
     }//GEN-LAST:event_favoritosActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
