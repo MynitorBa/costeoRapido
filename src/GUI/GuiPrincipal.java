@@ -13,7 +13,7 @@ import java.util.List;
 import paqueteInicioSesion.LoginRegistroForm;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
 import gestionProductos.Gui;
-import gerstionUsuarios.GestionUsuarios;
+import gestionUsuarios.GestionUsuarios;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Timer;
