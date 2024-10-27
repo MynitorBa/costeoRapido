@@ -294,7 +294,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         recargar = new javax.swing.JButton();
         menuButton = new javax.swing.JButton();
-        bookmarkButton = new javax.swing.JButton();
+        favoritos = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
 
@@ -445,10 +445,10 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
             }
         });
 
-        bookmarkButton.setText("🔖");
-        bookmarkButton.addActionListener(new java.awt.event.ActionListener() {
+        favoritos.setText("❤");
+        favoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookmarkButtonActionPerformed(evt);
+                favoritosActionPerformed(evt);
             }
         });
 
@@ -477,7 +477,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookmarkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(115, 115, 115))
@@ -488,7 +488,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bookmarkButton)
+                    .addComponent(favoritos)
                     .addComponent(menuButton)
                     .addComponent(flechaIzquierda)
                     .addComponent(searchButton)
@@ -578,9 +578,9 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuButtonActionPerformed
 
-    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bookmarkButtonActionPerformed
+    }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
@@ -645,8 +645,8 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ClasificacionDAI_elegir;
     private javax.swing.JButton CosteoRapido_calcular;
     private javax.swing.JTextField MargenVenta_Ingresar;
-    private javax.swing.JButton bookmarkButton;
     private javax.swing.JTextField costoFobUSD$_Ingresar;
+    private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JTextField flete_Ingresar;

@@ -718,7 +718,7 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
         searchButton = new javax.swing.JButton();
         recargar = new javax.swing.JButton();
         menuButton = new javax.swing.JButton();
-        bookmarkButton = new javax.swing.JButton();
+        favoritos = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -761,10 +761,11 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
             }
         });
 
-        bookmarkButton.setText("🔖");
-        bookmarkButton.addActionListener(new java.awt.event.ActionListener() {
+        favoritos.setText("❤");
+        favoritos.setToolTipText("");
+        favoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookmarkButtonActionPerformed(evt);
+                favoritosActionPerformed(evt);
             }
         });
 
@@ -793,7 +794,7 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookmarkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(115, 115, 115))
@@ -804,7 +805,7 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bookmarkButton)
+                    .addComponent(favoritos)
                     .addComponent(menuButton)
                     .addComponent(flechaIzquierda)
                     .addComponent(searchButton)
@@ -921,9 +922,9 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
         // TODO add your handling code here:
     }//GEN-LAST:event_menuButtonActionPerformed
 
-    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bookmarkButtonActionPerformed
+    }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
@@ -978,8 +979,8 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
     private javax.swing.JButton Buscar;
     private javax.swing.JButton Editar;
     private javax.swing.JButton Eliminar;
-    private javax.swing.JButton bookmarkButton;
     private javax.swing.JButton costear;
+    private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JButton guardar;

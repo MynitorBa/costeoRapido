@@ -85,7 +85,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="historial" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="bookmarkButton" min="-2" pref="48" max="-2" attributes="0"/>
+                              <Component id="favoritos" min="-2" pref="48" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="menuButton1" min="-2" pref="44" max="-2" attributes="0"/>
                           </Group>
@@ -155,7 +155,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="bookmarkButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="favoritos" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="menuButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="flechaIzquierda" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -164,9 +164,9 @@
                           <Component id="menuButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="historial" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="nombreDescripcionProductoFINAL" min="-2" max="-2" attributes="0"/>
@@ -248,12 +248,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="bookmarkButton">
+            <Component class="javax.swing.JButton" name="favoritos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="\ud83d\udd16" containsInvalidXMLChars="true"/>
+                <Property name="text" type="java.lang.String" value="&#x2764;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bookmarkButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="favoritosActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="searchField">

@@ -94,7 +94,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         recargar = new javax.swing.JButton();
         menuButton = new javax.swing.JButton();
-        bookmarkButton = new javax.swing.JButton();
+        favoritos = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -149,10 +149,10 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
             }
         });
 
-        bookmarkButton.setText("🔖");
-        bookmarkButton.addActionListener(new java.awt.event.ActionListener() {
+        favoritos.setText("❤");
+        favoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookmarkButtonActionPerformed(evt);
+                favoritosActionPerformed(evt);
             }
         });
 
@@ -290,7 +290,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(historial)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(bookmarkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(menuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(474, 474, 474)
@@ -342,7 +342,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bookmarkButton)
+                    .addComponent(favoritos)
                     .addComponent(menuButton)
                     .addComponent(flechaIzquierda)
                     .addComponent(searchButton)
@@ -350,9 +350,9 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                     .addComponent(recargar)
                     .addComponent(menuButton1))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(historial))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(historial)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(nombreDescripcionProductoFINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
@@ -575,9 +575,9 @@ private void enviarCorreo(String destinatario) {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuButtonActionPerformed
 
-    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bookmarkButtonActionPerformed
+    }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
@@ -642,10 +642,10 @@ private void enviarCorreo(String destinatario) {
     private javax.swing.JTextField ConIVA_FINAL;
     private javax.swing.JTextField CostoUSD$_FINAL;
     private javax.swing.JTextField PrecioVenta_FINAL;
-    private javax.swing.JButton bookmarkButton;
     private javax.swing.JTextField costoFOBUSD$_FINAL;
     private javax.swing.JTextField costoQuetzales_FINAL;
     private javax.swing.JButton enviarCorreo;
+    private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JButton guardar_al_historial;

@@ -557,7 +557,7 @@ private void manejarCambioTexto() {
         }
     });
     searchButton.setText("🔍");
-    bookmarkButton.setText("🔖");
+    favoritos.setText("🔖");
     menuButton.setText("☰");
     flechaIzquierda.setText("←");
     flechaDerecha.setText("→");
@@ -611,7 +611,7 @@ private void manejarCambioTexto() {
         searchButton = new javax.swing.JButton();
         recargar = new javax.swing.JButton();
         menuButton = new javax.swing.JButton();
-        bookmarkButton = new javax.swing.JButton();
+        favoritos = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
 
@@ -839,10 +839,10 @@ private void manejarCambioTexto() {
             }
         });
 
-        bookmarkButton.setText("🔖");
-        bookmarkButton.addActionListener(new java.awt.event.ActionListener() {
+        favoritos.setText("❤");
+        favoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookmarkButtonActionPerformed(evt);
+                favoritosActionPerformed(evt);
             }
         });
 
@@ -876,7 +876,7 @@ private void manejarCambioTexto() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookmarkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(115, 115, 115))
@@ -887,7 +887,7 @@ private void manejarCambioTexto() {
                 .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bookmarkButton)
+                    .addComponent(favoritos)
                     .addComponent(menuButton)
                     .addComponent(flechaIzquierda)
                     .addComponent(searchButton)
@@ -900,7 +900,7 @@ private void manejarCambioTexto() {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 430, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1005,10 +1005,10 @@ private void manejarCambioTexto() {
         popupMenu.show(menuButton, 0, menuButton.getHeight());
     }//GEN-LAST:event_menuButtonActionPerformed
 
-    private void bookmarkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookmarkButtonActionPerformed
+    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "Función de marcadores");
-    }//GEN-LAST:event_bookmarkButtonActionPerformed
+    }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
@@ -1075,8 +1075,8 @@ private void manejarCambioTexto() {
     private javax.swing.JButton addProductButton2;
     private javax.swing.JButton addProductButton3;
     private javax.swing.JButton addProductButton4;
-    private javax.swing.JButton bookmarkButton;
     private javax.swing.JButton costeoRapidoButton;
+    private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JLabel jLabel1;

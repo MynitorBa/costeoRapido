@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/Historial/HistorialManager.java</file>
+            <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/gestionProductos/GestorProductos2.java</file>
+            <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteSolicitudDePedido/SolicitudDePedido_mandarCorreo.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/GUI/GuiPrincipal.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/Historial/HistorialViewer.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteCosteoRapido/CosteoForm_Ingresar.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/paqueteCosteoRapido/CosteoFinal.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/Historial/HistorialEntry.java</file>
             <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/gestionUsuarios/GestionUsuarios.java</file>
+            <file>file:/C:/Users/andre/OneDrive/Documents/nruhhhh/costeoRapido/src/gestionProductos/Gui.java</file>
         </group>
     </open-files>
 </project-private>
