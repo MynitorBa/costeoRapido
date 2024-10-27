@@ -505,7 +505,7 @@ private void manejarCambioTexto() {
             "Gestionando producto " + numeroProducto);
     }
 
-    private void createPopupMenu() {
+   private void createPopupMenu() {
     popupMenu = new JPopupMenu();
     popupMenu.setBackground(Color.WHITE);
     popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
@@ -517,7 +517,8 @@ private void manejarCambioTexto() {
     popupMenu.add(searchField);
     popupMenu.addSeparator();
 
-    addMenuItem("Perfil", "\uD83D\uDC64");
+    // Agregar la opción de Perfil de Usuario
+    addMenuItem("Perfil de Usuario", "\uD83D\uDC64", e -> abrirPerfilUsuario());
     addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
     addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
     addMenuItem("Preguntas Frecuentes", "❓", e -> abrirPreguntasFrecuentes());
@@ -531,6 +532,14 @@ private void manejarCambioTexto() {
     
     popupMenu.addSeparator();
     addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+}
+
+// Agregar el método para abrir el perfil de usuario
+private void abrirPerfilUsuario() {
+    SwingUtilities.invokeLater(() -> {
+        new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
+    });
+    this.dispose();
 }
     private void abrirPreguntasFrecuentes() {
     SwingUtilities.invokeLater(() -> {
