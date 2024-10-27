@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.util.List;
 import paqueteInicioSesion.LoginRegistroForm;
 import paqueteCosteoRapido.CosteoForm_Ingresar;
+import paqueteCosteoRapido.CosteoFinal;
 import gestionProductos.Gui;
 import gestionUsuarios.GestionUsuarios;
 import java.util.HashMap;
@@ -394,14 +395,15 @@ private void manejarCambioTexto() {
         double precioFOB = Double.parseDouble(precioStr);
         
         // Calcular los valores necesarios
-        double costoUSDFinal = precioFOB * 1.1; // Ejemplo: 10% de costos adicionales
-        double costoQuetzales = costoUSDFinal * 7.85; // Tipo de cambio
-        double margen = 30.0; // 30% de margen
+        double costoUSDFinal = precioFOB * 1.1; 
+        double costoQuetzales = costoUSDFinal * 7.85; 
+        double margen = 30.0; 
         double precioVenta = costoQuetzales * (1 + (margen/100));
-        double precioConIVA = precioVenta * 1.12; // 12% IVA
+        double precioConIVA = precioVenta * 1.12; 
         
-        // Crear el producto favorito usando el constructor
+        // Crear el producto favorito usando el constructor correcto
         ProductoFavorito favorito = new ProductoFavorito(
+            currentUser,    // usuario actual
             producto[1],    // nombre
             precioFOB,     // costoFobUSD
             costoUSDFinal, // costoUSDFinal
@@ -411,12 +413,12 @@ private void manejarCambioTexto() {
             margen         // margen
         );
         
-        // Guardar en la base de datos como favorito1
+        // Guardar en favoritos con el usuario actual
         FavoritosManager favoritosManager = new FavoritosManager();
-        favoritosManager.guardarFavorito(favorito, "favorito1");
+        favoritosManager.guardarFavorito(favorito, currentUser);
         
         JOptionPane.showMessageDialog(this, 
-            "Producto '" + producto[1] + "' guardado como favorito1", 
+            "Producto '" + producto[1] + "' guardado en favoritos", 
             "Favorito Guardado", 
             JOptionPane.INFORMATION_MESSAGE);
             
@@ -625,6 +627,140 @@ private void manejarCambioTexto() {
     // No modificamos la estructura de los paneles ya que está definida en el form
     outerPanel.setBackground(new Color(178, 171, 171));
 }
+    
+    private void mostrarFavoritos() {
+        FavoritosManager favoritosManager = new FavoritosManager();
+        List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
+        
+        if (favoritos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "No tienes productos favoritos guardados",
+                "Sin Favoritos",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        
+        for (ProductoFavorito favorito : favoritos) {
+            JPanel productoPanel = crearPanelProductoFavorito(favorito);
+            mainPanel.add(productoPanel);
+            mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre productos
+        }
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        
+        JOptionPane.showMessageDialog(this, 
+            scrollPane, 
+            "Mis Productos Favoritos", 
+            JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200)),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        
+        // Panel de información
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        
+        // Nombre del producto en negrita
+        JLabel nombreLabel = new JLabel(favorito.getNombre());
+        nombreLabel.setFont(new Font(nombreLabel.getFont().getName(), Font.BOLD, 14));
+        infoPanel.add(nombreLabel);
+        
+        // Detalles del producto
+        String detalles = String.format("<html>Costo FOB: $%.2f<br>" +
+                                      "Costo Final USD: $%.2f<br>" +
+                                      "Costo en Q.: Q%.2f<br>" +
+                                      "Precio Venta: Q%.2f<br>" +
+                                      "Margen: %.1f%%</html>",
+            favorito.getCostoFobUSD(),
+            favorito.getCostoUSDFinal(),
+            favorito.getCostoQuetzales(),
+            favorito.getPrecioVenta(),
+            favorito.getMargen() * 100);
+        
+        JLabel detallesLabel = new JLabel(detalles);
+        detallesLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        infoPanel.add(detallesLabel);
+        
+        panel.add(infoPanel, BorderLayout.CENTER);
+        
+        // Panel de botones
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+        
+        // Botón de costear
+        JButton costearButton = new JButton("Costear");
+        costearButton.addActionListener(e -> costearProductoFavorito(favorito));
+        botonesPanel.add(costearButton);
+        botonesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        
+        // Botón de eliminar
+        JButton eliminarButton = new JButton("Eliminar");
+        eliminarButton.addActionListener(e -> eliminarProductoFavorito(favorito));
+        botonesPanel.add(eliminarButton);
+        
+        panel.add(botonesPanel, BorderLayout.EAST);
+        
+        return panel;
+    }
+    
+    private void costearProductoFavorito(ProductoFavorito favorito) {
+        SwingUtilities.invokeLater(() -> {
+            CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
+                currentUser,
+                favorito.getNombre(),
+                favorito.getCostoFobUSD(),
+                0.0, // Puedes ajustar el flete si lo tienes guardado
+                favorito.getMargen() * 100 // Convertir el margen decimal a porcentaje
+            );
+            costeoForm.setVisible(true);
+            this.dispose();
+        });
+    }
+    
+    private void eliminarProductoFavorito(ProductoFavorito favorito) {
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Estás seguro de que deseas eliminar '" + favorito.getNombre() + "' de tus favoritos?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+            
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                FavoritosManager favoritosManager = new FavoritosManager();
+                favoritosManager.eliminarFavorito(favorito, currentUser);
+                
+                JOptionPane.showMessageDialog(this,
+                    "Producto eliminado de favoritos exitosamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    
+                // Actualizar la vista de favoritos
+                mostrarFavoritos();
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                    "Error al eliminar el favorito: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    
+    
+    
+  
+    
     
     
 
@@ -1053,55 +1189,8 @@ private void manejarCambioTexto() {
 
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
-            FavoritosManager favoritosManager = new FavoritosManager();
-    List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritos();
-    
-    if (favoritos.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-            "No hay productos favoritos guardados",
-            "Sin favoritos",
-            JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-    
-    // Crear diálogo para mostrar favoritos
-    JDialog dialogoFavoritos = new JDialog(this, "Productos Favoritos", true);
-    dialogoFavoritos.setLayout(new BorderLayout());
-    
-    // Crear lista de favoritos
-    DefaultListModel<String> modeloLista = new DefaultListModel<>();
-    favoritos.forEach(f -> modeloLista.addElement(f.getNombre()));
-    JList<String> listaFavoritos = new JList<>(modeloLista);
-    JScrollPane scrollPane = new JScrollPane(listaFavoritos);
-    
-    // Botón para cargar favorito seleccionado
-    JButton botonCargar = new JButton("Cargar Producto");
-    botonCargar.addActionListener(e -> {
-        int indiceSeleccionado = listaFavoritos.getSelectedIndex();
-        if (indiceSeleccionado != -1) {
-            ProductoFavorito favorito = favoritos.get(indiceSeleccionado);
-            
-            // Usar el método existente para cargar los datos
-            cargarCosteoDesdeHistorial(
-                favorito.getNombre(),
-                String.format("%.2f", favorito.getCostoFobUSD()),
-                String.format("%.2f", favorito.getCostoUSDFinal()),
-                String.format("%.2f", favorito.getCostoQuetzales()),
-                String.format("%.2f", favorito.getPrecioVenta()),
-                String.format("%.2f", favorito.getPrecioConIVA()),
-                String.format("%.2f", favorito.getMargen())
-            );
-            
-            dialogoFavoritos.dispose();
-        }
-    });
-    
-    dialogoFavoritos.add(scrollPane, BorderLayout.CENTER);
-    dialogoFavoritos.add(botonCargar, BorderLayout.SOUTH);
-    
-    dialogoFavoritos.setSize(400, 300);
-    dialogoFavoritos.setLocationRelativeTo(this);
-    dialogoFavoritos.setVisible(true);
+        mostrarFavoritos();
+
     }//GEN-LAST:event_favoritosActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -1190,7 +1279,5 @@ private void manejarCambioTexto() {
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarCosteoDesdeHistorial(String nombre, String format, String format0, String format1, String format2, String format3, String format4) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 }

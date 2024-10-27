@@ -5,12 +5,23 @@
 package productosFavoritos;
 
 import java.io.Serializable;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  *
  * @author andre
  */
 public class ProductoFavorito implements Serializable {
+    private String usuario;
     private String nombre;
     private double costoFobUSD;
     private double costoUSDFinal;
@@ -19,11 +30,12 @@ public class ProductoFavorito implements Serializable {
     private double precioConIVA;
     private double margen;
     
-    // Constructor completo
-    public ProductoFavorito(String nombre, double costoFobUSD, double costoUSDFinal, 
-                          double costoQuetzales, double precioVenta, double precioConIVA, 
-                          double margen) {
-        this.nombre = nombre;
+    // Constructor actualizado para incluir usuario
+     public ProductoFavorito(String usuario, String nombre, double costoFobUSD, 
+            double costoUSDFinal, double costoQuetzales, double precioVenta, 
+            double precioConIVA, double margen) {
+        this.usuario = usuario;
+        this.nombre = nombre; // Corregido: ahora usa el parámetro nombre
         this.costoFobUSD = costoFobUSD;
         this.costoUSDFinal = costoUSDFinal;
         this.costoQuetzales = costoQuetzales;
@@ -34,6 +46,7 @@ public class ProductoFavorito implements Serializable {
     
     // Constructor vacío
     public ProductoFavorito() {
+        this.usuario = "";
         this.nombre = "";
         this.costoFobUSD = 0.0;
         this.costoUSDFinal = 0.0;
@@ -44,6 +57,7 @@ public class ProductoFavorito implements Serializable {
     }
     
     // Getters
+    public String getUsuario() { return usuario; }
     public String getNombre() { return nombre; }
     public double getCostoFobUSD() { return costoFobUSD; }
     public double getCostoUSDFinal() { return costoUSDFinal; }
@@ -53,6 +67,7 @@ public class ProductoFavorito implements Serializable {
     public double getMargen() { return margen; }
     
     // Setters
+    public void setUsuario(String usuario) { this.usuario = usuario; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCostoFobUSD(double costoFobUSD) { this.costoFobUSD = costoFobUSD; }
     public void setCostoUSDFinal(double costoUSDFinal) { this.costoUSDFinal = costoUSDFinal; }
@@ -61,3 +76,4 @@ public class ProductoFavorito implements Serializable {
     public void setPrecioConIVA(double precioConIVA) { this.precioConIVA = precioConIVA; }
     public void setMargen(double margen) { this.margen = margen; }
 }
+

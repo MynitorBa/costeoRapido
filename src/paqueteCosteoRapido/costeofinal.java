@@ -26,6 +26,7 @@ public class CosteoFinal extends javax.swing.JFrame {
     
     
     private String currentUser;
+    private String[] producto;
     /**
      * Creates new form CosteoFinal
      */
@@ -34,33 +35,89 @@ public class CosteoFinal extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void guardarProductoFavorito() {
+    private double parseNumber(String text) throws ParseException {
+    if (text == null || text.trim().isEmpty()) {
+        throw new ParseException("Valor vacío no permitido", 0);
+    }
+    // Limpiar símbolos monetarios y convertir a número
+    String cleanText = text.replace("$", "")
+                          .replace("Q", "")
+                          .replace("%", "")
+                          .replace(",", "")
+                          .trim();
     try {
-        ProductoFavorito favorito = new ProductoFavorito(
-            nombreDescripcionProducto.getText(),
-            parseNumber(costoFobUSD$_FINAL.getText().replace("$", "")),
-            parseNumber(CostoUSD$_FINAL.getText().replace("$", "")),
-            parseNumber(CostoQuetzales_FINAL.getText().replace("Q", "")),
-            parseNumber(PrecioVenta_FINAL.getText().replace("Q", "")) / 7.8,
-            parseNumber(jTextField6.getText().replace("Q", "")) / 7.8,
-            parseNumber(margen_FINAL.getText().replace("%", "")) / 100
-        );
+        return Double.parseDouble(cleanText);
+    } catch (NumberFormatException e) {
+        throw new ParseException("Valor inválido: " + cleanText, 0);
+    }
+}
+    
+public void guardarProductoFavorito() {
+    try {
+        // Obtener el nombre del producto y validar que no esté vacío
+        String nombreProducto = nombreDescripcionProducto.getText();
+        if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "El nombre del producto no puede estar vacío",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear el producto favorito
+        ProductoFavorito favorito = new ProductoFavorito();
         
+        // Establecer los valores asegurándonos de que el nombre se establece correctamente
+        favorito.setUsuario(currentUser);
+        favorito.setNombre(nombreProducto.trim()); // Aseguramos que el nombre se establece
+        
+        // Remover símbolos y convertir a números
+        favorito.setCostoFobUSD(parseNumber(costoFobUSD$_FINAL.getText()));
+        favorito.setCostoUSDFinal(parseNumber(CostoUSD$_FINAL.getText()));
+        favorito.setCostoQuetzales(parseNumber(CostoQuetzales_FINAL.getText()));
+        
+        // Convertir valores a USD dividiendo por 7.8
+        double precioVentaUSD = parseNumber(PrecioVenta_FINAL.getText()) / 7.8;
+        double precioConIVAUSD = parseNumber(jTextField6.getText()) / 7.8;
+        
+        favorito.setPrecioVenta(precioVentaUSD);
+        favorito.setPrecioConIVA(precioConIVAUSD);
+        
+        // Convertir el margen a decimal
+        double margenDecimal = parseNumber(margen_FINAL.getText()) / 100.0;
+        favorito.setMargen(margenDecimal);
+        
+        // Verificar que el objeto se creó correctamente
+        if (favorito.getNombre() == null || favorito.getNombre().isEmpty()) {
+            throw new IllegalStateException("El nombre del producto no se estableció correctamente");
+        }
+        
+        // Guardar el favorito
         FavoritosManager favoritosManager = new FavoritosManager();
-        favoritosManager.guardarFavorito(favorito, "favorito1");
+        favoritosManager.guardarFavorito(favorito, currentUser);
         
         JOptionPane.showMessageDialog(this,
-            "Producto guardado en favoritos exitosamente",
+            String.format("Producto '%s' guardado en favoritos exitosamente", nombreProducto),
             "Éxito",
             JOptionPane.INFORMATION_MESSAGE);
             
     } catch (ParseException e) {
         JOptionPane.showMessageDialog(this,
-            "Error al guardar en favoritos: " + e.getMessage(),
+            "Error al procesar los valores numéricos: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al guardar el favorito: " + e.getMessage(),
             "Error",
             JOptionPane.ERROR_MESSAGE);
     }
-}
+}  
+
+
+
+
+
 
      
 
@@ -416,8 +473,8 @@ public class CosteoFinal extends javax.swing.JFrame {
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
         // TODO add your handling code here:
         
-        FavoritosManager favoritosManager = new FavoritosManager();
-    List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritos();
+    FavoritosManager favoritosManager = new FavoritosManager();
+    List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
     
     if (favoritos.isEmpty()) {
         JOptionPane.showMessageDialog(this,
@@ -570,16 +627,7 @@ public class CosteoFinal extends javax.swing.JFrame {
         jTextField6.setText("Q" + df.format(precioConIVA * 7.8));
         margen_FINAL.setText(df.format(margenVentaPercent * 100) + "%");
     }
-   
-
-   
-   
-    
-    private double parseNumber(String number) throws ParseException {
-        NumberFormat format = NumberFormat.getInstance(Locale.US);
-        Number parsed = format.parse(number.replace(",", ""));
-        return parsed.doubleValue();
-    }
+ 
     
     
     

@@ -18,9 +18,24 @@ import java.util.List;
  * @author andre
  */
 public class FavoritosManager {
-    private static final String ARCHIVO_FAVORITOS = "favoritos.dat";
+    private static final String ARCHIVO_FAVORITOS = "favoritos_usuarios.dat";
     
-    public List<ProductoFavorito> obtenerFavoritos() {
+    // Obtener favoritos específicos de un usuario
+    public List<ProductoFavorito> obtenerFavoritosUsuario(String usuario) {
+        List<ProductoFavorito> todosFavoritos = obtenerTodosFavoritos();
+        List<ProductoFavorito> favoritosUsuario = new ArrayList<>();
+        
+        for (ProductoFavorito favorito : todosFavoritos) {
+            if (favorito.getUsuario().equals(usuario)) {
+                favoritosUsuario.add(favorito);
+            }
+        }
+        
+        return favoritosUsuario;
+    }
+    
+    // Obtener todos los favoritos
+    private List<ProductoFavorito> obtenerTodosFavoritos() {
         List<ProductoFavorito> favoritos = new ArrayList<>();
         File archivo = new File(ARCHIVO_FAVORITOS);
         
@@ -35,19 +50,54 @@ public class FavoritosManager {
         return favoritos;
     }
     
-    public void guardarFavorito(ProductoFavorito favorito, String favorito11) {
-        List<ProductoFavorito> favoritos = obtenerFavoritos();
-        // Verificar si ya existe por nombre
-        boolean existe = favoritos.stream()
-            .anyMatch(f -> f.getNombre().equals(favorito.getNombre()));
+    // Guardar favorito para un usuario específico
+    public void guardarFavorito(ProductoFavorito favorito, String usuario) {
+        List<ProductoFavorito> todosFavoritos = obtenerTodosFavoritos();
+        
+        // Verificar si ya existe por nombre y usuario
+        boolean existe = todosFavoritos.stream()
+            .anyMatch(f -> 
+                f.getUsuario() != null &&
+                f.getUsuario().equals(usuario) &&
+                f.getNombre() != null &&
+                f.getNombre().equals(favorito.getNombre())
+            );
         
         if (!existe) {
-            favoritos.add(favorito);
-            guardarFavoritos(favoritos);
+            favorito.setUsuario(usuario); // Asegurar que el favorito tiene el usuario correcto
+            todosFavoritos.add(favorito);
+            guardarTodosFavoritos(todosFavoritos);
         }
     }
     
-    private void guardarFavoritos(List<ProductoFavorito> favoritos) {
+    // Método original para eliminar favorito (mantenerlo por compatibilidad)
+    public boolean eliminarFavorito(String usuario, String nombreProducto) {
+        List<ProductoFavorito> todosFavoritos = obtenerTodosFavoritos();
+        boolean removido = todosFavoritos.removeIf(f -> 
+            f.getUsuario().equals(usuario) && f.getNombre().equals(nombreProducto));
+        
+        if (removido) {
+            guardarTodosFavoritos(todosFavoritos);
+        }
+        return removido;
+    }
+    
+    // Nuevo método para eliminar favorito usando el objeto ProductoFavorito
+    public void eliminarFavorito(ProductoFavorito favorito, String usuario) throws Exception {
+        List<ProductoFavorito> todosFavoritos = obtenerTodosFavoritos();
+        boolean removido = todosFavoritos.removeIf(f -> 
+            f.getUsuario().equals(usuario) && 
+            f.getNombre().equals(favorito.getNombre()));
+        
+        if (removido) {
+            guardarTodosFavoritos(todosFavoritos);
+        } else {
+            throw new Exception("No se encontró el producto favorito para eliminar");
+        }
+    }
+    
+    // Guardar todos los favoritos
+    private void guardarTodosFavoritos(List<ProductoFavorito> favoritos) {
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(ARCHIVO_FAVORITOS))) {
             oos.writeObject(favoritos);
