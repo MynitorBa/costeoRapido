@@ -918,6 +918,50 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        if (searchField.getText().equals("Buscar")) {
+        return;
+    }
+    
+    String valorBusqueda = searchField.getText().toLowerCase().trim();
+    if (valorBusqueda.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "Por favor, ingrese un término de búsqueda",
+            "Campo vacío",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    // Limpiar la tabla actual
+    modeloTabla.setRowCount(0);
+    
+    // Obtener todos los productos y filtrar
+    List<String[]> productos = gestorProductos.obtenerTodosLosProductos();
+    List<String[]> resultados = new ArrayList<>();
+    
+    for (String[] producto : productos) {
+        // Buscar en todos los campos relevantes
+        if (producto[0].toLowerCase().contains(valorBusqueda) || // ID
+            producto[1].toLowerCase().contains(valorBusqueda) || // Nombre
+            producto[5].toLowerCase().contains(valorBusqueda) || // Tipo
+            producto[6].toLowerCase().contains(valorBusqueda) || // Marca
+            producto[7].toLowerCase().contains(valorBusqueda))   // Etiquetas
+        {
+            resultados.add(producto);
+        }
+    }
+    
+    if (!resultados.isEmpty()) {
+        for (String[] resultado : resultados) {
+            modeloTabla.addRow(resultado);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "No se encontraron productos que coincidan con la búsqueda.",
+            "Sin resultados",
+            JOptionPane.INFORMATION_MESSAGE);
+        // Volver a cargar todos los productos
+        cargarProductos();
+    }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
@@ -1114,6 +1158,9 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
+        if (!searchField.getText().equals("Buscar")) {
+        searchButtonActionPerformed(evt);  
+    }
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed

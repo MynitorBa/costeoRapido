@@ -36,8 +36,11 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
      */
     public PreguntasFrecuentesForm(String username) {
         this.currentUser = username;
-        initComponents();
-        setupFAQs();
+    initComponents();
+    setSize(430, 600); // Ajustar el tamaño para que sea similar a las otras ventanas
+    setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+    setResizable(false); // Mantener tamaño fijo
+    setupFAQs();
     }
 
     /**

@@ -41,6 +41,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         initComponents();
         setupTable();
         loadUsers();
+        configurarBuscador();
         if (!"admin".equals(currentUser)) {
             JOptionPane.showMessageDialog(this, "Acceso no autorizado", "Error", JOptionPane.ERROR_MESSAGE);
             dispose();
@@ -488,6 +489,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        realizarBusqueda();
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
@@ -740,6 +742,7 @@ private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
+        realizarBusqueda();
     }//GEN-LAST:event_searchFieldActionPerformed
 
     
@@ -755,6 +758,97 @@ private void costearProductoFavorito(ProductoFavorito favorito) {
         );
         costeoForm.setVisible(true);
         this.dispose();
+    });
+}
+
+// Método auxiliar para realizar la búsqueda
+private void realizarBusqueda() {
+    String valorBusqueda = searchField.getText().toLowerCase().trim();
+    
+    if (valorBusqueda.equals("buscar")) {
+        return;
+    }
+    
+    // Obtener todos los usuarios
+    List<String[]> usuarios = adminUsuario.listarUsuarios();
+    tableModel.setRowCount(0); // Limpiar la tabla
+    
+    if (valorBusqueda.isEmpty()) {
+        loadUsers(); // Si la búsqueda está vacía, mostrar todos los usuarios
+        return;
+    }
+    
+    // Filtrar usuarios según el criterio de búsqueda
+    for (String[] usuario : usuarios) {
+        // No mostrar el usuario admin en los resultados
+        if (!"admin".equals(usuario[0])) {
+            // Buscar en username y email
+            if (usuario[0].toLowerCase().contains(valorBusqueda) || // username
+                usuario[1].toLowerCase().contains(valorBusqueda))   // email
+            {
+                tableModel.addRow(new Object[]{
+                    usuario[0], // username
+                    usuario[1], // email
+                    "********" // contraseña oculta
+                });
+            }
+        }
+    }
+    
+    if (tableModel.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this,
+            "No se encontraron usuarios que coincidan con la búsqueda.",
+            "Sin resultados",
+            JOptionPane.INFORMATION_MESSAGE);
+        loadUsers(); // Recargar todos los usuarios
+    }
+}
+
+// Agregar este método en el constructor después de initComponents()
+private void configurarBuscador() {
+    searchField.setText("Buscar");
+    searchField.setForeground(Color.GRAY);
+    
+    searchField.addFocusListener(new FocusListener() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (searchField.getText().equals("Buscar")) {
+                searchField.setText("");
+                searchField.setForeground(Color.BLACK);
+            }
+        }
+        
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (searchField.getText().isEmpty()) {
+                searchField.setText("Buscar");
+                searchField.setForeground(Color.GRAY);
+            }
+        }
+    });
+    
+    // Agregar listener para búsqueda en tiempo real
+    searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        @Override
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            if (!searchField.getText().equals("Buscar")) {
+                realizarBusqueda();
+            }
+        }
+
+        @Override
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            if (!searchField.getText().equals("Buscar")) {
+                realizarBusqueda();
+            }
+        }
+
+        @Override
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            if (!searchField.getText().equals("Buscar")) {
+                realizarBusqueda();
+            }
+        }
     });
 }
 

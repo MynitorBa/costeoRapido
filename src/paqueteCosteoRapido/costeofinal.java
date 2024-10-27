@@ -470,6 +470,7 @@ public void guardarProductoFavorito() {
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
+        searchButtonActionPerformed(evt);
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
@@ -676,6 +677,7 @@ public void guardarProductoFavorito() {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
