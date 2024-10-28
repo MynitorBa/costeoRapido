@@ -4,6 +4,8 @@
  */
 package paqueteSolicitudDePedido;
     
+import Historial.HistorialEntry;
+import Historial.HistorialManager;
 import Historial.NavigationManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -551,8 +553,9 @@ private void enviarCorreo(String destinatario) {
     
     private void guardar_al_historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_al_historialActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Funcionalidad de guardar aún no implementada");
-
+       if (validarDatos()) {
+            guardarCosteo();
+        }
     }//GEN-LAST:event_guardar_al_historialActionPerformed
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
@@ -852,6 +855,104 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
     
     
     
+    
+    private boolean validarDatos() {
+    try {
+        // Validar que no haya campos vacíos
+        if (nombreDescripcionProductoFINAL.getText().trim().isEmpty() ||
+            costoFOBUSD$_FINAL.getText().trim().isEmpty() ||
+            CostoUSD$_FINAL.getText().trim().isEmpty() ||
+            costoQuetzales_FINAL.getText().trim().isEmpty() ||
+            PrecioVenta_FINAL.getText().trim().isEmpty() ||
+            ConIVA_FINAL.getText().trim().isEmpty() ||
+            margen_FINAL.getText().trim().isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this,
+                "Todos los campos son requeridos",
+                "Error de validación",
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Validar que los valores numéricos sean válidos
+        try {
+            double costoFob = Double.parseDouble(costoFOBUSD$_FINAL.getText().replace("$", "").replace(",", ""));
+            double costoUSD = Double.parseDouble(CostoUSD$_FINAL.getText().replace("$", "").replace(",", ""));
+            double costoQuetzales = Double.parseDouble(costoQuetzales_FINAL.getText().replace("Q", "").replace(",", ""));
+            double precioVenta = Double.parseDouble(PrecioVenta_FINAL.getText().replace("Q", "").replace(",", ""));
+            double precioIVA = Double.parseDouble(ConIVA_FINAL.getText().replace("Q", "").replace(",", ""));
+            double margen = Double.parseDouble(margen_FINAL.getText().replace("%", "").replace(",", "")) / 100;
+            
+            // Validar que los valores sean positivos
+            if (costoFob <= 0 || costoUSD <= 0 || costoQuetzales <= 0 || 
+                precioVenta <= 0 || precioIVA <= 0 || margen <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Todos los valores numéricos deben ser mayores que cero",
+                    "Error de validación",
+                    JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                "Por favor, ingrese valores numéricos válidos",
+                "Error de validación", 
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al validar los datos: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+}
+
+private void guardarCosteo() {
+    try {
+        // Obtener los datos actuales
+        String nombre = nombreDescripcionProductoFINAL.getText();
+        double costoFob = Double.parseDouble(costoFOBUSD$_FINAL.getText().replace("$", "").replace(",", ""));
+        double costoUSD = Double.parseDouble(CostoUSD$_FINAL.getText().replace("$", "").replace(",", ""));
+        double costoQuetzales = Double.parseDouble(costoQuetzales_FINAL.getText().replace("Q", "").replace(",", ""));
+        double precioVenta = Double.parseDouble(PrecioVenta_FINAL.getText().replace("Q", "").replace(",", ""));
+        double precioIVA = Double.parseDouble(ConIVA_FINAL.getText().replace("Q", "").replace(",", ""));
+        double margen = Double.parseDouble(margen_FINAL.getText().replace("%", "").replace(",", "")) / 100;
+
+        // Crear entrada de historial
+        HistorialEntry entrada = new HistorialEntry(
+            currentUser,
+            nombre,
+            costoFob,
+            costoUSD,
+            costoQuetzales,
+            precioVenta,
+            precioIVA,
+            margen
+        );
+
+        // Guardar en el historial
+        HistorialManager manager = new HistorialManager();
+        manager.guardarCosteo(entrada);
+
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(this,
+            "Costeo guardado exitosamente en el historial",
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al guardar el costeo: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
     // Método auxiliar para crear el panel de cada producto favorito
 private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
     JPanel panel = new JPanel();
