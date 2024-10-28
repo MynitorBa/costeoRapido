@@ -37,9 +37,21 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     public PreguntasFrecuentesForm(String username) {
         this.currentUser = username;
     initComponents();
-    setSize(430, 600); // Ajustar el tamaño para que sea similar a las otras ventanas
-    setLocationRelativeTo(null); // Centrar la ventana en la pantalla
-    setResizable(false); // Mantener tamaño fijo
+    
+    // Ajustar el layout después de initComponents
+    Container contentPane = getContentPane();
+    contentPane.removeAll();  // Remover todos los componentes
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(jScrollPane1, BorderLayout.CENTER);
+    
+    // Eliminar el scroll extra si existe
+    if (jScrollPane2 != null) {
+        remove(jScrollPane2);
+    }
+    
+    setSize(600, 680);
+    setLocationRelativeTo(null);
+    setResizable(false);
     setupFAQs();
     }
 
@@ -53,6 +65,7 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -63,16 +76,21 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         bookmarkButton1 = new javax.swing.JButton();
         searchField1 = new javax.swing.JTextField();
         flechaDerecha1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(600, 680));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
+        jPanel1.setPreferredSize(new java.awt.Dimension(430, 600));
+        jPanel1.setRequestFocusEnabled(false);
 
         jPanel3.setBackground(new java.awt.Color(178, 171, 171));
 
@@ -125,11 +143,11 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
                 .addComponent(flechaIzquierda1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(flechaDerecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recargar1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 255, Short.MAX_VALUE)
                 .addComponent(searchButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bookmarkButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,6 +169,10 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
                     .addComponent(recargar1))
                 .addContainerGap())
         );
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 144, 47));
+        jLabel1.setText("Productos");
 
         jLabel3.setText("Pregunta");
 
@@ -190,9 +212,26 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
                 .addContainerGap(64, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 144, 47));
-        jLabel1.setText("Productos");
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,13 +244,11 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(774, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,10 +258,8 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(494, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(231, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -234,12 +269,20 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(530, 530, 530)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 119, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 207, Short.MAX_VALUE))
         );
 
         pack();
@@ -425,7 +468,11 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
 
     private void searchButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButton1ActionPerformed
         // TODO add your handling code here:
-        handleSearch();
+        String searchText = searchField1.getText();
+    if (searchText.equals("Buscar pregunta...")) {
+        searchText = "";
+    }
+    searchQuestions(searchText);
     }//GEN-LAST:event_searchButton1ActionPerformed
 
     private void flechaIzquierda1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierda1ActionPerformed
@@ -540,13 +587,13 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
 }
  
  private void setupFAQs() {
-    // Ajustar tamaño de la ventana
-    setSize(438, 533);
+    // Ajustar tamaño de la ventana a un ancho mayor
+    setSize(600, 680);
     setLocationRelativeTo(null);
     
     // Limpiar y configurar el panel principal
     jPanel1.removeAll();
-    jPanel1.setLayout(new BorderLayout()); // Cambiado a BorderLayout para mejor control
+    jPanel1.setLayout(new BorderLayout());
     jPanel1.setBackground(new Color(178, 171, 171));
     
     // Panel superior para la navegación y título
@@ -555,8 +602,8 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     topPanel.setBackground(new Color(178, 171, 171));
     
     // Configurar panel de navegación
-    jPanel3.setPreferredSize(new Dimension(438, 35));
-    jPanel3.setMaximumSize(new Dimension(438, 35));
+    jPanel3.setPreferredSize(new Dimension(600, 35));
+    jPanel3.setMaximumSize(new Dimension(600, 35));
     
     // Configurar título
     jLabel1.setText("Preguntas Frecuentes");
@@ -575,21 +622,34 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     topPanel.add(titlePanel);
     topPanel.add(Box.createRigidArea(new Dimension(0, 5)));
     
-    // Panel para las preguntas
+    // Panel para las preguntas con padding extra al final
     JPanel questionsPanel = new JPanel();
     questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
     questionsPanel.setBackground(new Color(178, 171, 171));
-    questionsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+    
+    // Mantener el padding original
+    questionsPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 50, 30));
     
     // Agregar preguntas
     addQuestionsToContainer(questionsPanel);
     
-    // ScrollPane con las preguntas
+    // Crear un panel contenedor con padding extra al final
+    JPanel containerPanel = new JPanel(new BorderLayout());
+    containerPanel.setBackground(new Color(178, 171, 171));
+    containerPanel.add(questionsPanel, BorderLayout.NORTH);
+    // Agregar un panel vacío al final para espacio extra
+    containerPanel.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.CENTER);
+    
+    // ScrollPane con las preguntas - Modificado para permitir scroll horizontal
     JScrollPane scrollPane = new JScrollPane(
-        questionsPanel,
+        containerPanel,
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED  // Cambiado a AS_NEEDED
     );
+    
+    // Configurar el scroll horizontal
+    scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
     
     // Crear panel para la sección de contacto
     JPanel contactPanel = new JPanel();
@@ -623,7 +683,6 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     scrollPane.setBorder(null);
     scrollPane.setBackground(new Color(178, 171, 171));
     scrollPane.getViewport().setBackground(new Color(178, 171, 171));
-    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
     
     // Agregar los paneles al panel principal
     jPanel1.add(topPanel, BorderLayout.NORTH);
@@ -633,39 +692,42 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     setupSearchField();
 }
 
+
 private JPanel createQuestionPanel(String question, String answer) {
     JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout(5, 5));
+    panel.setLayout(new BorderLayout(3, 3));
     panel.setBackground(new Color(255, 255, 255));
     panel.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        BorderFactory.createEmptyBorder(8, 8, 8, 8)
     ));
+    
+
     
     // Panel para la pregunta con icono Q (cabecera)
     JPanel questionPanel = new JPanel(new BorderLayout());
     questionPanel.setBackground(new Color(245, 245, 245));
-    questionPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    questionPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6)); // Reducido de 8,8,8,8 a 6,6,6,6
     questionPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     
-    JPanel iconAndQuestion = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+    JPanel iconAndQuestion = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0)); // Reducido el gap de 5 a 4
     iconAndQuestion.setBackground(new Color(245, 245, 245));
     
     // Icono Q
     JLabel iconLabel = new JLabel("Q");
-    iconLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    iconLabel.setFont(new Font("Segoe UI", Font.BOLD, 13)); // Reducido de 14 a 13
     iconLabel.setForeground(new Color(51, 102, 0));
     
     // Pregunta
     JLabel questionLabel = new JLabel(question);
-    questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Reducido de 13 a 12
     
     iconAndQuestion.add(iconLabel);
     iconAndQuestion.add(questionLabel);
     
     // Icono de flecha
     JLabel arrowLabel = new JLabel("▼");
-    arrowLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    arrowLabel.setFont(new Font("Segoe UI", Font.BOLD, 11)); // Reducido de 12 a 11
     arrowLabel.setForeground(new Color(100, 100, 100));
     
     questionPanel.add(iconAndQuestion, BorderLayout.WEST);
@@ -675,10 +737,10 @@ private JPanel createQuestionPanel(String question, String answer) {
     JPanel answerPanel = new JPanel();
     answerPanel.setLayout(new BorderLayout());
     answerPanel.setBackground(Color.WHITE);
-    answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 5, 15));
+    answerPanel.setBorder(BorderFactory.createEmptyBorder(8, 12, 4, 12)); // Reducido de 10,15,5,15 a 8,12,4,12
     
     JLabel answerLabel = new JLabel(answer);
-    answerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    answerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11)); // Reducido de 12 a 11
     answerPanel.add(answerLabel);
     
     // Inicialmente ocultar la respuesta
@@ -686,7 +748,6 @@ private JPanel createQuestionPanel(String question, String answer) {
     
     // Agregar el manejador de clics
     questionPanel.addMouseListener(new MouseAdapter() {
-        
         public void mouseClicked(MouseEvent e) {
             boolean isVisible = answerPanel.isVisible();
             answerPanel.setVisible(!isVisible);
@@ -869,15 +930,22 @@ private void addQuestionsToContainer(JPanel container) {
         container.add(Box.createRigidArea(new Dimension(0, 5)));
     }
 }
+
+private String normalizeString(String input) {
+    return java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD)
+        .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+        .toLowerCase();
+}
+
 private void searchQuestions(String searchText) {
     // Ignorar búsqueda si es el placeholder
     if (searchText.equals("Buscar pregunta...")) {
         return;
     }
     
-    searchText = searchText.toLowerCase().trim();
+    searchText = normalizeString(searchText.toLowerCase().trim());
     
-    // Obtener el panel contenedor de preguntas (el que está dentro del JScrollPane)
+    // Obtener el panel contenedor de preguntas
     JScrollPane scrollPane = null;
     for (Component comp : jPanel1.getComponents()) {
         if (comp instanceof JScrollPane) {
@@ -888,69 +956,63 @@ private void searchQuestions(String searchText) {
     
     if (scrollPane != null) {
         JViewport viewport = scrollPane.getViewport();
-        JPanel questionsContainer = (JPanel) viewport.getView();
-        
-        Component[] components = questionsContainer.getComponents();
-        
-        // Iterar sobre cada panel de pregunta
-        for (int i = 0; i < components.length; i++) {
-            Component comp = components[i];
-            if (comp instanceof JPanel) {
-                JPanel questionPanel = (JPanel) comp;
-                boolean found = false;
-                
-                // Buscar en el texto de la pregunta y respuesta
-                for (Component c : questionPanel.getComponents()) {
-                    if (c instanceof JPanel) {
-                        // Panel de la pregunta
-                        JPanel headerPanel = (JPanel) c;
-                        for (Component headerComp : headerPanel.getComponents()) {
-                            if (headerComp instanceof JLabel) {
-                                JLabel label = (JLabel) headerComp;
-                                if (label.getText().toLowerCase().contains(searchText)) {
-                                    found = true;
-                                    break;
+        if (viewport.getView() instanceof JPanel) {
+            JPanel containerPanel = (JPanel) viewport.getView();
+            // Buscar el panel que contiene las preguntas
+            for (Component comp : containerPanel.getComponents()) {
+                if (comp instanceof JPanel) {
+                    // Este es el panel que contiene las preguntas individuales
+                    JPanel questionsPanel = (JPanel) comp;
+                    for (Component questionComp : questionsPanel.getComponents()) {
+                        if (questionComp instanceof JPanel) {
+                            JPanel questionPanel = (JPanel) questionComp;
+                            // Buscar en el panel de la pregunta
+                            boolean found = false;
+                            
+                            // Obtener el panel del header que contiene la pregunta
+                            Component headerPanel = questionPanel.getComponent(0);
+                            if (headerPanel instanceof JPanel) {
+                                for (Component c : ((JPanel) headerPanel).getComponents()) {
+                                    if (c instanceof JPanel) {
+                                        // Este es el panel que contiene el texto de la pregunta
+                                        for (Component labelComp : ((JPanel) c).getComponents()) {
+                                            if (labelComp instanceof JLabel && !((JLabel) labelComp).getText().equals("Q")) {
+                                                String questionText = normalizeString(((JLabel) labelComp).getText());
+                                                found = questionText.contains(searchText);
+                                                if (found) break;
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    } else if (c instanceof JLabel) {
-                        // Panel de la respuesta
-                        JLabel answerLabel = (JLabel) c;
-                        String answerText = stripHTML(answerLabel.getText().toLowerCase());
-                        if (answerText.contains(searchText)) {
-                            found = true;
-                            break;
+                            
+                            questionPanel.setVisible(found || searchText.isEmpty());
                         }
                     }
                 }
-                
-                // Mostrar u ocultar el panel según el resultado de la búsqueda
-                questionPanel.setVisible(found || searchText.isEmpty());
-                
-                // Manejar el espacio rígido que sigue al panel (si existe)
-                if (i + 1 < components.length && components[i + 1] instanceof Box.Filler) {
-                    components[i + 1].setVisible(found || searchText.isEmpty());
-                }
             }
+            
+            // Refrescar el contenedor
+            containerPanel.revalidate();
+            containerPanel.repaint();
         }
-        
-        // Refrescar el contenedor
-        questionsContainer.revalidate();
-        questionsContainer.repaint();
     }
 }
 
-// Método auxiliar para eliminar etiquetas HTML del texto
+
 private String stripHTML(String html) {
-    return html.replaceAll("\\<.*?\\>", "")
-               .replaceAll("&nbsp;", " ")
-               .replaceAll("&bull;", "•")
-               .replaceAll("&middot;", "·")
-               .trim();
+    return html.replaceAll("\\<.*?\\>", "")  // Elimina todas las etiquetas HTML
+               .replaceAll("&nbsp;", " ")     // Reemplaza espacios HTML
+               .replaceAll("&bull;", "•")     // Reemplaza bullets HTML
+               .replaceAll("&middot;", "·")   // Reemplaza puntos medios HTML
+               .trim();                       // Elimina espacios al inicio y final
 }
 
-// Agregar el listener para la búsqueda en tiempo real
+// Modificar el setupSearchField para hacer el campo de búsqueda más ancho
 private void setupSearchField() {
+    // Hacer el campo de búsqueda más ancho
+    searchField1.setPreferredSize(new Dimension(250, searchField1.getPreferredSize().height));
+    
     searchField1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
         public void changedUpdate(javax.swing.event.DocumentEvent e) { 
             handleSearch(); 
@@ -989,6 +1051,9 @@ private void setupSearchField() {
 private void handleSearch() {
     SwingUtilities.invokeLater(() -> {
         String searchText = searchField1.getText();
+        if (searchText.equals("Buscar pregunta...")) {
+            searchText = "";
+        }
         searchQuestions(searchText);
     });
 }
@@ -1141,7 +1206,7 @@ private void enviarPregunta() {
     cancelButton.addActionListener(e -> dialog.dispose());
 
     // Configurar y mostrar el diálogo
-    dialog.setSize(500, 400);
+    dialog.setSize(600, 680);
     dialog.setLocationRelativeTo(this);
     dialog.setResizable(false);
     dialog.setVisible(true);
@@ -1265,7 +1330,9 @@ private void enviarCorreo(String asunto, String pregunta, String correoUsuario) 
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton menuButton1;
     private javax.swing.JButton recargar1;
