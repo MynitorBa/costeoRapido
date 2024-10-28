@@ -557,7 +557,7 @@ private void enviarCorreo(String destinatario) {
 
     private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
         // TODO add your handling code here:
-    JPopupMenu popupMenu = new JPopupMenu();
+       JPopupMenu popupMenu = new JPopupMenu();
    popupMenu.setBackground(Color.WHITE);
    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
@@ -681,7 +681,7 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
    popupMenu.add(logoutItem);
 
    // Mostrar el menú
-   popupMenu.show(menuButton, 0, menuButton.getHeight());
+   popupMenu.show(menuButton1, 0, menuButton1.getHeight());
     }//GEN-LAST:event_menuButton1ActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
