@@ -476,7 +476,80 @@ public void guardarProductoFavorito() {
            });
        }
 
-       // [El resto del código de los ActionListeners se mantiene igual]
+         // Agregar acciones a los items
+        inicioItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new GUI.GuiPrincipal(currentUser).setVisible(true);
+            });
+        });
+
+        perfilItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
+            });
+        });
+
+        costeoItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
+            });
+        });
+
+        productosItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new gestionProductos.Gui(currentUser).setVisible(true);
+            });
+        });
+
+        preguntasItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new preguntasFrecuentes.PreguntasFrecuentesForm(currentUser).setVisible(true);
+            });
+        });
+
+        historialItem.addActionListener(e -> {
+            // TODO: Implementar vista de historial
+            HistorialViewer viewer = new HistorialViewer(currentUser, this);
+            viewer.setVisible(true);
+        });
+
+        logoutItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que quieres cerrar sesión?",
+                "Confirmar Cierre de Sesión",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
+                });
+            }
+        });
+
+   logoutItem.addActionListener(e -> {
+       int confirm = JOptionPane.showConfirmDialog(
+           this,
+           "¿Estás seguro de que quieres cerrar sesión?",
+           "Confirmar Cierre de Sesión",
+           JOptionPane.YES_NO_OPTION
+       );
+       
+       if (confirm == JOptionPane.YES_OPTION) {
+           this.dispose();
+           SwingUtilities.invokeLater(() -> {
+               new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
+           });
+       }
+   });
+
 
        // Agregar items al menú
        popupMenu.add(inicioItem);
