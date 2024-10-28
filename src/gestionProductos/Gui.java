@@ -44,10 +44,27 @@ public class Gui extends javax.swing.JFrame {
     
     
     private void inicializarTabla() {
-        String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas", "Otros"};
-    modeloTabla = new DefaultTableModel(columnas, 0);
+    String[] columnas = {"ID", "Nombre", "Precio USD", "Precio Quetzales", "Cantidad", "Tipo", "Marca", "Etiquetas", "Otros"};
+    
+    // Crear un modelo de tabla que no permita edición
+    modeloTabla = new DefaultTableModel(columnas, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Hace que ninguna celda sea editable
+        }
+    };
+    
     jTable1.setModel(modeloTabla);
-    }
+    
+    // Configurar la selección de la tabla
+    jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite seleccionar solo una fila a la vez
+    
+    // Opcional: Configurar el aspecto de la tabla
+    jTable1.setShowGrid(true);
+    jTable1.setGridColor(Color.LIGHT_GRAY);
+    jTable1.getTableHeader().setReorderingAllowed(false); // Evita que se reordenen las columnas
+    jTable1.getTableHeader().setResizingAllowed(false); // Evita que se redimensionen las columnas
+}
 
     private void cargarProductos() {
         modeloTabla.setRowCount(0);
@@ -58,12 +75,91 @@ public class Gui extends javax.swing.JFrame {
     }
 
     private void configurarBotones() {
-    Agregar.addActionListener(e -> mostrarDialogoAgregar());
-    Editar.addActionListener(e -> mostrarDialogoEditar());
-    Eliminar.addActionListener(e -> mostrarDialogoEliminar());
-    Buscar.addActionListener(e -> mostrarDialogoBuscar());
+    // Configurar la visibilidad de los botones según el rol
+    boolean isAdmin = "admin".equals(currentUser);
+    
+    // Botones exclusivos del administrador
+    Agregar.setVisible(isAdmin);
+    Editar.setVisible(isAdmin);
+    Eliminar.setVisible(isAdmin);
+    
+    // Botones disponibles para todos los usuarios
+    Buscar.setVisible(true);
+    guardar.setVisible(true);
+    costear.setVisible(true);
+    
+    // Configurar los listeners de los botones
+    if (isAdmin) {
+        Agregar.addActionListener(e -> mostrarDialogoAgregar());
+        Editar.addActionListener(e -> mostrarDialogoEditar());
+        Eliminar.addActionListener(e -> mostrarDialogoEliminar());
+    }
+    
+    // Configurar los listeners para los botones comunes
+    Buscar.addActionListener(e -> {
+        JDialog dialogo = new JDialog(this, "Búsqueda de Productos", true);
+        dialogo.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        
+        // Campo de texto para la búsqueda
+        JTextField campoBusqueda = new JTextField(30);
+        campoBusqueda.setText("Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
+        campoBusqueda.setForeground(Color.GRAY);
+        
+        // Placeholder behavior
+        configurarPlaceholder(campoBusqueda, "Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
+        
+        // Botón de búsqueda
+        JButton botonBuscar = new JButton("Buscar");
+        
+        // Añadir componentes al diálogo
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        dialogo.add(new JLabel("Buscar:"), gbc);
+        
+        gbc.gridx = 1;
+        dialogo.add(campoBusqueda, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        dialogo.add(botonBuscar, gbc);
+        
+        botonBuscar.addActionListener(ev -> {
+            buscarYMostrarResultados(campoBusqueda.getText().trim(), modeloTabla);
+            dialogo.dispose();
+        });
+        
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
+    });
+    
     guardar.addActionListener(e -> guardarCambios());
     costear.addActionListener(e -> mostrarDialogoCostear());
+    
+    // Ajustar el layout si no es administrador
+    if (!isAdmin) {
+        // Reorganizar los botones visibles para que estén centrados
+        javax.swing.GroupLayout.SequentialGroup horizontalGroup = ((javax.swing.GroupLayout) jPanel2.getLayout())
+            .createSequentialGroup()
+            .addGap(16, 16, 16)
+            .addComponent(Buscar)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(guardar)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(costear);
+        
+        // Actualizar el layout del panel
+        ((javax.swing.GroupLayout) jPanel2.getLayout()).setHorizontalGroup(
+            ((javax.swing.GroupLayout) jPanel2.getLayout()).createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(horizontalGroup)
+            .addComponent(jScrollPane1)
+        );
+    }
 }
     
     private void mostrarDialogoBuscar() {
@@ -882,7 +978,7 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -908,7 +1004,9 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
