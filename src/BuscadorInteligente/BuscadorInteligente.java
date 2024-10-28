@@ -198,4 +198,11 @@ public class BuscadorInteligente {
         sinonimos.computeIfAbsent(termino.toLowerCase(), k -> new ArrayList<>())
                 .addAll(nuevosSinonimos);
     }
+    
+    public List<String[]> obtenerTodosLosProductos() {
+    // This should return all products from your database
+    // Implementation depends on your database structure
+    return procesarConsulta(""); // Empty query to get all products
+}
+    
 }

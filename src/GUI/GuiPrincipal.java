@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Timer;
 import java.awt.event.*;
+import java.util.Collections;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import preguntasFrecuentes.PreguntasFrecuentesForm;
@@ -49,6 +50,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
         buscador = new BuscadorInteligente();
         sugerenciasPopup = new JPopupMenu();
         configurarComponentes();
+        mostrarProductosAleatorios();
     }
     
     private void configurarComponentes() {
@@ -760,6 +762,81 @@ private void abrirPerfilUsuario() {
             }
         }
     }
+    
+private BuscadorInteligente buscador = new BuscadorInteligente();
+private Map<Integer, String[]> currentDisplayedProducts = new HashMap<>();
+
+private void mostrarProductosAleatorios() {
+    try {
+        // Get all products from BuscadorInteligente
+        List<String[]> todosLosProductos = buscador.obtenerTodosLosProductos();
+        
+        // Shuffle the products list
+        Collections.shuffle(todosLosProductos);
+        
+        // Get the first 4 products or less if there aren't enough products
+        int numProductosAMostrar = Math.min(4, todosLosProductos.size());
+        
+        // Array of product labels
+        JLabel[] productLabels = {
+            productoamostrar1,
+            productoamostrar2,
+            productoamostrar3,
+            productoamostrar4
+        };
+        
+        // Array of favorite buttons
+        JButton[] favoriteButtons = {
+            añadirFavorito,
+            añadirFavorito2,
+            añadirFavorito3,
+            añadirFavorito4
+        };
+        
+        // Array of costing buttons
+        JButton[] costButtons = {
+            costearProducto1,
+            costearProducto2,
+            costearProducto3,
+            costearProducto4
+        };
+        
+        // Clear the current displayed products map
+        currentDisplayedProducts.clear();
+        
+        // Display products
+        for (int i = 0; i < numProductosAMostrar; i++) {
+            String[] producto = todosLosProductos.get(i);
+            currentDisplayedProducts.put(i, producto);
+            
+            // Set product name and icon in label
+            String nombreProducto = producto[1];
+            productLabels[i].setText("📦 " + nombreProducto);
+            
+            // Configure favorite button
+            final int index = i;
+            favoriteButtons[i].setEnabled(true);
+            favoriteButtons[i].addActionListener(e -> agregarAFavoritos(currentDisplayedProducts.get(index)));
+            
+            // Configure costing button
+            costButtons[i].setEnabled(true);
+            costButtons[i].addActionListener(e -> costearProducto(currentDisplayedProducts.get(index)));
+        }
+        
+        // Disable remaining buttons if there aren't enough products
+        for (int i = numProductosAMostrar; i < 4; i++) {
+            productLabels[i].setText("No hay producto disponible");
+            favoriteButtons[i].setEnabled(false);
+            costButtons[i].setEnabled(false);
+        }
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al cargar productos aleatorios: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     
     
@@ -782,16 +859,15 @@ private void abrirPerfilUsuario() {
         costeoRapidoButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        addProductButton1 = new javax.swing.JButton();
+        productoamostrar1 = new javax.swing.JLabel();
+        favoritos1 = new javax.swing.JButton();
+        añadirFavorito = new javax.swing.JButton();
+        costearProducto1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        addProductButton2 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        addProductButton3 = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        addProductButton4 = new javax.swing.JButton();
+        productoamostrar2 = new javax.swing.JLabel();
+        costearProducto2 = new javax.swing.JButton();
+        añadirFavorito2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         flechaIzquierda = new javax.swing.JButton();
@@ -801,6 +877,18 @@ private void abrirPerfilUsuario() {
         favoritos = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         flechaDerecha = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        productoamostrar3 = new javax.swing.JLabel();
+        favoritos4 = new javax.swing.JButton();
+        añadirFavorito3 = new javax.swing.JButton();
+        costearProducto3 = new javax.swing.JButton();
+        jPanel13 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        productoamostrar4 = new javax.swing.JLabel();
+        favoritos6 = new javax.swing.JButton();
+        añadirFavorito4 = new javax.swing.JButton();
+        costearProducto4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -822,17 +910,37 @@ private void abrirPerfilUsuario() {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        addProductButton1.setText("Añadir");
-        addProductButton1.addActionListener(new java.awt.event.ActionListener() {
+        favoritos1.setText("❤");
+        favoritos1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductButton1ActionPerformed(evt);
+                favoritos1ActionPerformed(evt);
+            }
+        });
+
+        añadirFavorito.setText("❤");
+        añadirFavorito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirFavoritoActionPerformed(evt);
+            }
+        });
+
+        costearProducto1.setText("Costear");
+        costearProducto1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costearProducto1ActionPerformed(evt);
             }
         });
 
@@ -840,24 +948,36 @@ private void abrirPerfilUsuario() {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(addProductButton1)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addComponent(costearProducto1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(añadirFavorito, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(19, 19, 19))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(favoritos1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(56, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addProductButton1)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(añadirFavorito)
+                    .addComponent(costearProducto1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(74, 74, 74)
+                    .addComponent(favoritos1)
+                    .addContainerGap(74, Short.MAX_VALUE)))
         );
 
         jPanel7.setBackground(new java.awt.Color(204, 204, 204));
@@ -866,17 +986,30 @@ private void abrirPerfilUsuario() {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        addProductButton2.setText("Añadir");
-        addProductButton2.addActionListener(new java.awt.event.ActionListener() {
+        costearProducto2.setText("Costear");
+        costearProducto2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductButton2ActionPerformed(evt);
+                costearProducto2ActionPerformed(evt);
+            }
+        });
+
+        añadirFavorito2.setText("❤");
+        añadirFavorito2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirFavorito2ActionPerformed(evt);
             }
         });
 
@@ -885,111 +1018,25 @@ private void abrirPerfilUsuario() {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(addProductButton2)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addComponent(costearProducto2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(añadirFavorito2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addProductButton2)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-
-        jPanel8.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        addProductButton3.setText("Añadir");
-        addProductButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductButton3ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(addProductButton3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addProductButton3)
-                .addContainerGap(7, Short.MAX_VALUE))
-        );
-
-        jPanel9.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        addProductButton4.setText("Añadir");
-        addProductButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(addProductButton4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addProductButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(costearProducto2)
+                    .addComponent(añadirFavorito2))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
@@ -1082,6 +1129,158 @@ private void abrirPerfilUsuario() {
                 .addGap(21, 21, 21))
         );
 
+        jPanel12.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar3, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        favoritos4.setText("❤");
+        favoritos4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                favoritos4ActionPerformed(evt);
+            }
+        });
+
+        añadirFavorito3.setText("❤");
+        añadirFavorito3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirFavorito3ActionPerformed(evt);
+            }
+        });
+
+        costearProducto3.setText("Costear");
+        costearProducto3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costearProducto3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(costearProducto3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(añadirFavorito3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(19, 19, 19))
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel11Layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(favoritos4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(68, Short.MAX_VALUE)))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(añadirFavorito3)
+                    .addComponent(costearProducto3))
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel11Layout.createSequentialGroup()
+                    .addGap(74, 74, 74)
+                    .addComponent(favoritos4)
+                    .addContainerGap(74, Short.MAX_VALUE)))
+        );
+
+        jPanel14.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(productoamostrar4, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        favoritos6.setText("❤");
+        favoritos6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                favoritos6ActionPerformed(evt);
+            }
+        });
+
+        añadirFavorito4.setText("❤");
+        añadirFavorito4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirFavorito4ActionPerformed(evt);
+            }
+        });
+
+        costearProducto4.setText("Costear");
+        costearProducto4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costearProducto4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(costearProducto4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(añadirFavorito4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(19, 19, 19))
+            .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel13Layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(favoritos6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(56, Short.MAX_VALUE)))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(añadirFavorito4)
+                    .addComponent(costearProducto4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel13Layout.createSequentialGroup()
+                    .addGap(74, 74, 74)
+                    .addComponent(favoritos6)
+                    .addContainerGap(76, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1090,26 +1289,26 @@ private void abrirPerfilUsuario() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addGap(44, 44, 44)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(20, 20, 20)
-                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(81, 81, 81)
                             .addComponent(jLabel1)
-                            .addGap(39, 39, 39)))
+                            .addGap(39, 39, 39))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGap(44, 44, 44)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(72, 72, 72)
                         .addComponent(costeoRapidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1123,11 +1322,11 @@ private void abrirPerfilUsuario() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1144,33 +1343,12 @@ private void abrirPerfilUsuario() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addProductButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton4ActionPerformed
+    private void costearProducto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
     new Gui(currentUser).setVisible(true);
     this.dispose();
-    }//GEN-LAST:event_addProductButton4ActionPerformed
-
-    private void addProductButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton3ActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-    new Gui(currentUser).setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_addProductButton3ActionPerformed
-
-    private void addProductButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton2ActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-    new Gui(currentUser).setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_addProductButton2ActionPerformed
-
-    private void addProductButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButton1ActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-    new Gui(currentUser).setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_addProductButton1ActionPerformed
+    }//GEN-LAST:event_costearProducto2ActionPerformed
 
     private void costeoRapidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costeoRapidoButtonActionPerformed
         // TODO add your handling code here:
@@ -1219,6 +1397,46 @@ private void abrirPerfilUsuario() {
         JOptionPane.showMessageDialog(this, "Página recargada");
     }//GEN-LAST:event_recargarActionPerformed
 
+    private void añadirFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavoritoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirFavoritoActionPerformed
+
+    private void costearProducto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costearProducto1ActionPerformed
+
+    private void añadirFavorito2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirFavorito2ActionPerformed
+
+    private void añadirFavorito3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirFavorito3ActionPerformed
+
+    private void costearProducto3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costearProducto3ActionPerformed
+
+    private void añadirFavorito4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirFavorito4ActionPerformed
+
+    private void costearProducto4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costearProducto4ActionPerformed
+
+    private void favoritos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritos1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_favoritos1ActionPerformed
+
+    private void favoritos6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritos6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_favoritos6ActionPerformed
+
+    private void favoritos4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritos4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_favoritos4ActionPerformed
+
     
     
     /**
@@ -1258,26 +1476,37 @@ private void abrirPerfilUsuario() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addProductButton1;
-    private javax.swing.JButton addProductButton2;
-    private javax.swing.JButton addProductButton3;
-    private javax.swing.JButton addProductButton4;
+    private javax.swing.JButton añadirFavorito;
+    private javax.swing.JButton añadirFavorito2;
+    private javax.swing.JButton añadirFavorito3;
+    private javax.swing.JButton añadirFavorito4;
+    private javax.swing.JButton costearProducto1;
+    private javax.swing.JButton costearProducto2;
+    private javax.swing.JButton costearProducto3;
+    private javax.swing.JButton costearProducto4;
     private javax.swing.JButton costeoRapidoButton;
     private javax.swing.JButton favoritos;
+    private javax.swing.JButton favoritos1;
+    private javax.swing.JButton favoritos4;
+    private javax.swing.JButton favoritos6;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JButton menuButton;
+    private javax.swing.JLabel productoamostrar1;
+    private javax.swing.JLabel productoamostrar2;
+    private javax.swing.JLabel productoamostrar3;
+    private javax.swing.JLabel productoamostrar4;
     private javax.swing.JButton recargar;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
