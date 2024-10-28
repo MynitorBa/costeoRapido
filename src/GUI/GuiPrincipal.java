@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Timer;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import preguntasFrecuentes.PreguntasFrecuentesForm;
@@ -31,8 +32,9 @@ import productosFavoritos.ProductoFavorito;
  */
 
 public class GuiPrincipal extends javax.swing.JFrame {
-
-    private BuscadorInteligente buscador;
+    
+    private SistemaBusquedaIntegrado sistemaBusqueda;
+    private int currentUserId; 
     private JPopupMenu sugerenciasPopup;
     private JPopupMenu popupMenu;
     private String currentUser;
@@ -43,13 +45,13 @@ public class GuiPrincipal extends javax.swing.JFrame {
      * Creates new form GuiPrincipal
      */
     public GuiPrincipal(String username) {
-        this.currentUser = username;
-        initComponents();
-        customizeComponents();
-        buscador = new BuscadorInteligente();
-        sugerenciasPopup = new JPopupMenu();
-        configurarComponentes();
-    }
+    this.currentUser = username;
+    this.currentUserId = Integer.parseInt(username); // Asumiendo que username es un número
+    initComponents();
+    customizeComponents();
+    sistemaBusqueda = new SistemaBusquedaIntegrado();
+    configurarComponentes();
+}
     
     private void configurarComponentes() {
         configurarPlaceholder();
@@ -167,89 +169,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
         }
     });
 }
-    private Timer delayTimer;
-private static final int DELAY = 300; // milisegundos
-
-private void actualizarSugerenciasDelayado() {
-    if (delayTimer != null && delayTimer.isRunning()) {
-        delayTimer.restart();
-    } else {
-        delayTimer = new Timer(DELAY, e -> {
-            SwingUtilities.invokeLater(this::actualizarSugerencias);
-        });
-        delayTimer.setRepeats(false);
-        delayTimer.start();
-    }
-}
-
-
-    
-    
-    
-private void manejarCambioTexto() {
-    // Eliminamos la verificación de isUpdatingSuggestions que estaba causando el problema
-    if (searchField.getText().equals("Buscar")) {
-        return;
-    }
-    
-    SwingUtilities.invokeLater(() -> {
-        String texto = searchField.getText();
-        if (!texto.isEmpty() && !texto.equals("Buscar")) {
-            List<String> sugerencias = buscador.obtenerSugerencias(texto);
-            mostrarSugerencias(sugerencias);
-        } else {
-            sugerenciasPopup.setVisible(false);
-        }
-    });
-}
-    private void configurarBuscadorInteligente() {
-        sugerenciasPopup = new JPopupMenu();
-        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { 
-                if (!searchField.getText().equals("Buscar")) {
-                    actualizarSugerencias(); 
-                }
-            }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { 
-                if (!searchField.getText().equals("Buscar")) {
-                    actualizarSugerencias(); 
-                }
-            }
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { 
-                if (!searchField.getText().equals("Buscar")) {
-                    actualizarSugerencias(); 
-                }
-            }});
-
-        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-                    realizarBusqueda();
-                }
-            }
-        });
-
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                realizarBusqueda();
-            }
-        });
-    }
-
-    private void actualizarSugerencias() {
-        if (isProcessingEvent) return;
-        
-        String texto = searchField.getText();
-        if (texto.equals("Buscar") || texto.isEmpty()) {
-            sugerenciasPopup.setVisible(false);
-            return;
-        }
-
-        List<String> sugerencias = buscador.obtenerSugerencias(texto);
-        mostrarSugerencias(sugerencias);
-    }
-    
-    
+ 
     private void mostrarSugerencias(List<String> sugerencias) {
     isProcessingEvent = true;
     try {
@@ -303,43 +223,131 @@ private void manejarCambioTexto() {
 }
 
     private void realizarBusqueda() {
-        if (searchField.getText().equals("Buscar")) {
-            return;
-        }
-        
-        String consulta = searchField.getText();
-        
-        // Cerrar el popup de sugerencias si está visible
-        sugerenciasPopup.setVisible(false);
-        
-        // Ejecutar la búsqueda en un hilo separado para no bloquear la UI
-        SwingWorker<List<String[]>, Void> worker = new SwingWorker<>() {
-            @Override
-            protected List<String[]> doInBackground() {
-                List<String[]> resultados = buscador.procesarConsulta(consulta);
-                Map<String, String> filtros = new HashMap<>();
-                resultados = buscador.filtrarResultados(resultados, filtros);
-                return buscador.ordenarResultados(resultados, consulta, "relevancia");
-            }
-            
-            @Override
-            protected void done() {
-                try {
-                    List<String[]> resultados = get();
-                    mostrarResultados(resultados);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(GuiPrincipal.this,
-                        "Error al realizar la búsqueda: " + ex.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        };
-        
-        worker.execute();
+    if (searchField.getText().equals("Buscar")) {
+        return;
     }
     
-    private void mostrarResultados(List<String[]> resultados) {
+    String consulta = searchField.getText();
+    
+    // Cerrar el popup de sugerencias si está visible
+    sugerenciasPopup.setVisible(false);
+    
+    // Ejecutar la búsqueda en un hilo separado para no bloquear la UI
+    SwingWorker<List<String[]>, Void> worker = new SwingWorker<>() {
+        @Override
+        protected List<String[]> doInBackground() {
+            return sistemaBusqueda.buscarProductos(consulta, currentUserId);
+        }
+        
+        @Override
+        protected void done() {
+            try {
+                List<String[]> resultados = get();
+                mostrarResultados(resultados);
+                
+                // Obtener y mostrar recomendaciones
+                mostrarRecomendaciones();
+                
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(GuiPrincipal.this,
+                    "Error al realizar la búsqueda: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    };
+    
+    worker.execute();
+}
+    
+    private void mostrarRecomendaciones() {
+    SwingWorker<List<String[]>, Void> worker = new SwingWorker<>() {
+        @Override
+        protected List<String[]> doInBackground() {
+            return sistemaBusqueda.obtenerRecomendaciones(currentUserId);
+        }
+        
+        @Override
+        protected void done() {
+            try {
+                List<String[]> recomendaciones = get();
+                if (!recomendaciones.isEmpty()) {
+                    mostrarPanelRecomendaciones(recomendaciones);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
+    
+    worker.execute();
+}
+
+// Método para mostrar el panel de recomendaciones
+private void mostrarPanelRecomendaciones(List<String[]> recomendaciones) {
+    JPanel recomendacionesPanel = new JPanel();
+    recomendacionesPanel.setLayout(new BoxLayout(recomendacionesPanel, BoxLayout.Y_AXIS));
+    
+    JLabel titleLabel = new JLabel("Productos Recomendados");
+    titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+    recomendacionesPanel.add(titleLabel);
+    recomendacionesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    
+    for (String[] producto : recomendaciones) {
+        JPanel productoPanel = new JPanel(new BorderLayout());
+        productoPanel.setBorder(BorderFactory.createEtchedBorder());
+        
+        JLabel nombreLabel = new JLabel(producto[1]);
+        nombreLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JLabel precioLabel = new JLabel("Precio: " + producto[2]);
+        
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.add(nombreLabel);
+        infoPanel.add(precioLabel);
+        
+        productoPanel.add(infoPanel, BorderLayout.CENTER);
+        
+        // Verificar si el producto está en favoritos
+        boolean esFavorito = false;
+        if (producto.length > 8) {
+            esFavorito = Boolean.parseBoolean(producto[8]);
+        }
+        
+        JButton favButton = new JButton(esFavorito ? "★" : "☆");
+        favButton.addActionListener(e -> {
+            if (!esFavorito) {
+                ProductoFavorito nuevoFavorito = new ProductoFavorito(
+                    currentUser,
+                    producto[1],
+                    producto[2],
+                    LocalDateTime.now()
+                );
+                sistemaBusqueda.agregarFavorito(nuevoFavorito);
+                favButton.setText("★");
+            } else {
+                sistemaBusqueda.eliminarFavorito(currentUser, producto[1]);
+                favButton.setText("☆");
+            }
+        });
+        
+        productoPanel.add(favButton, BorderLayout.EAST);
+        recomendacionesPanel.add(productoPanel);
+        recomendacionesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    }
+    
+    // Mostrar el panel en una ventana separada o en un área específica de tu GUI
+    JDialog dialog = new JDialog();
+    dialog.setTitle("Recomendaciones");
+    dialog.setModal(false);
+    dialog.add(new JScrollPane(recomendacionesPanel));
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+}
+
+private void mostrarResultados(List<String[]> resultados) {
     JPanel resultPanel = new JPanel();
     resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
 
@@ -366,13 +374,29 @@ private void manejarCambioTexto() {
         JPanel botonesPanel = new JPanel();
         botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
 
-        JButton favoritosButton = new JButton("Añadir a favoritos");
-        favoritosButton.addActionListener(e -> agregarAFavoritos(producto));
-        botonesPanel.add(favoritosButton);
+        // Verificar si el producto está en favoritos
+        boolean esFavorito = false;
+        if (producto.length > 8) {
+            esFavorito = Boolean.parseBoolean(producto[8]);
+        }
 
-        JButton costearButton = new JButton("Costear");
-        costearButton.addActionListener(e -> costearProducto(producto));
-        botonesPanel.add(costearButton);
+        JButton favoritosButton = new JButton(esFavorito ? "★ En Favoritos" : "☆ Añadir a favoritos");
+        favoritosButton.addActionListener(e -> {
+            if (!esFavorito) {
+                ProductoFavorito nuevoFavorito = new ProductoFavorito(
+                    currentUser,
+                    producto[1],
+                    producto[2],
+                    LocalDateTime.now()
+                );
+                sistemaBusqueda.agregarFavorito(nuevoFavorito);
+                favoritosButton.setText("★ En Favoritos");
+            } else {
+                sistemaBusqueda.eliminarFavorito(currentUser, producto[1]);
+                favoritosButton.setText("☆ Añadir a favoritos");
+            }
+        });
+        botonesPanel.add(favoritosButton);
 
         productoPanel.add(botonesPanel, BorderLayout.EAST);
 
@@ -381,11 +405,16 @@ private void manejarCambioTexto() {
     }
 
     JScrollPane scrollPane = new JScrollPane(resultPanel);
-    scrollPane.setPreferredSize(new Dimension(400, 300));
+    scrollPane.setPreferredSize(new Dimension(600, 400));
 
-    JOptionPane.showMessageDialog(this, scrollPane, "Resultados de la búsqueda", 
-                                JOptionPane.PLAIN_MESSAGE);
+    // Mostrar en un diálogo no modal para permitir interacción con la ventana principal
+    JDialog resultDialog = new JDialog(this, "Resultados de la búsqueda", false);
+    resultDialog.add(scrollPane);
+    resultDialog.pack();
+    resultDialog.setLocationRelativeTo(this);
+    resultDialog.setVisible(true);
 }
+    
     
     
     private void agregarAFavoritos(String[] producto) {
@@ -1184,6 +1213,8 @@ private void abrirPerfilUsuario() {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        realizarBusqueda();
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
@@ -1199,6 +1230,8 @@ private void abrirPerfilUsuario() {
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
+        realizarBusqueda();
+
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
