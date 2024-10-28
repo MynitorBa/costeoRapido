@@ -8,6 +8,7 @@ package GUI;
 import BuscadorInteligente.BuscadorInteligente;
 import BuscadorInteligente.RandomProductDisplay;
 import Historial.HistorialViewer;
+import Historial.NavigationManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,6 +28,7 @@ import javax.swing.event.PopupMenuListener;
 import preguntasFrecuentes.PreguntasFrecuentesForm;
 import productosFavoritos.FavoritosManager;
 import productosFavoritos.ProductoFavorito;
+
 /**
  *
  * @author mynit
@@ -48,12 +50,14 @@ public class GuiPrincipal extends javax.swing.JFrame {
     public GuiPrincipal(String username) {
         this.currentUser = username;
         initComponents();
+        NavigationManager.getInstance().pushFrame(this);
         customizeComponents();
         initializeRandomProductDisplay();
         this.buscador = new BuscadorInteligente();
         this.sugerenciasPopup = new JPopupMenu();
         configurarComponentes();
         initializeRandomProductDisplay();
+        
         if (randomProductDisplay != null) {
             SwingUtilities.invokeLater(() -> randomProductDisplay.displayRandomProducts());
         }
@@ -1359,13 +1363,27 @@ public void refreshRandomProducts() {
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-        
-        JOptionPane.showMessageDialog(this, "Navegando hacia atrás");
+      if (NavigationManager.getInstance().canGoBack()) {
+        NavigationManager.getInstance().goBack();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
         // TODO add your handling code here:
-         JOptionPane.showMessageDialog(this, "Navegando hacia adelante");
+       if (NavigationManager.getInstance().canGoForward()) {
+        NavigationManager.getInstance().goForward();
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaDerechaActionPerformed
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.List;
 import GUI.GuiPrincipal;
 import Historial.HistorialViewer;
+import Historial.NavigationManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -36,6 +37,7 @@ public class Gui extends javax.swing.JFrame {
     public Gui(String username) {
         this.currentUser = username;
         initComponents();
+        NavigationManager.getInstance().pushFrame(this);
         gestorProductos = new GestorProductos2();
         inicializarTabla();
         cargarProductos();
@@ -876,6 +878,11 @@ private void buscarYMostrarResultados(String valorBusqueda, DefaultTableModel mo
 
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
+        flechaDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaDerechaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1246,11 +1253,15 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-        
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new GuiPrincipal(currentUser).setVisible(true);
-        });
+    if (NavigationManager.getInstance().canGoBack()) {
+        this.setVisible(false);
+        NavigationManager.getInstance().goBack();
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
@@ -1291,6 +1302,20 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
         logAndShowError("Error reloading window", e);
     }
     }//GEN-LAST:event_recargarActionPerformed
+
+    private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
+        // TODO add your handling code here:
+        
+        if (NavigationManager.getInstance().canGoForward()) {
+        this.setVisible(false);
+        NavigationManager.getInstance().goForward();
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_flechaDerechaActionPerformed
 private void logAndShowError(String message, Exception e) {
     // Log the full stack trace
     System.err.println(message);

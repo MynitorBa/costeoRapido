@@ -7,6 +7,7 @@ import GUI.GuiPrincipal;
 import Historial.HistorialEntry;
 import Historial.HistorialManager;
 import Historial.HistorialViewer;
+import Historial.NavigationManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -35,6 +36,7 @@ public class CosteoFinal extends javax.swing.JFrame {
     public CosteoFinal(String username) {
         this.currentUser = username;
         initComponents();
+        NavigationManager.getInstance().pushFrame(this);
     }
     
     private double parseNumber(String text) throws ParseException {
@@ -309,6 +311,11 @@ public void guardarProductoFavorito() {
 
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
+        flechaDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaDerechaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -433,10 +440,15 @@ public void guardarProductoFavorito() {
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
+        if (NavigationManager.getInstance().canGoBack()) {
+        this.setVisible(false);
+        NavigationManager.getInstance().goBack();
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
@@ -598,6 +610,19 @@ public void guardarProductoFavorito() {
         HistorialViewer viewer = new HistorialViewer(currentUser, this);
         viewer.setVisible(true);
     }//GEN-LAST:event_botonVerHistorialActionPerformed
+
+    private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
+        // TODO add your handling code here:
+        if (NavigationManager.getInstance().canGoForward()) {
+        this.setVisible(false);
+        NavigationManager.getInstance().goForward();
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_flechaDerechaActionPerformed
 
     
 
