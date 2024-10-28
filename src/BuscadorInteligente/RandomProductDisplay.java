@@ -23,6 +23,7 @@ public class RandomProductDisplay {
     private final JButton[] costButtons;
     private final int MAX_PRODUCTS = 4;
     private static final String ARCHIVO_EXCEL = "resources\\productos.xlsx";
+    private List<String[]> recentlyDisplayedProducts = new ArrayList<>(); // Nueva lista para evitar repeticiones
 
     public RandomProductDisplay(JFrame parentFrame, JLabel[] productLabels, JButton[] favoriteButtons, JButton[] costButtons) {
         if (productLabels.length != MAX_PRODUCTS || favoriteButtons.length != MAX_PRODUCTS || costButtons.length != MAX_PRODUCTS) {
@@ -45,13 +46,23 @@ public class RandomProductDisplay {
                 return;
             }
 
+            // Remover productos mostrados recientemente para evitar repetición
+            products.removeAll(recentlyDisplayedProducts);
+
+            // Si hay pocos productos en la lista después de remover los recientes, agregar los recientes de nuevo
+            if (products.size() < MAX_PRODUCTS) {
+                products.addAll(recentlyDisplayedProducts);
+            }
+
             Collections.shuffle(products);
             currentDisplayedProducts.clear();
 
             int productsToShow = Math.min(MAX_PRODUCTS, products.size());
+            recentlyDisplayedProducts.clear(); // Limpiar la lista de productos recientes
             for (int i = 0; i < MAX_PRODUCTS; i++) {
                 if (i < productsToShow) {
                     displayProduct(i, products.get(i));
+                    recentlyDisplayedProducts.add(products.get(i)); // Agregar producto mostrado a la lista reciente
                 } else {
                     clearProductSlot(i);
                 }
@@ -61,6 +72,7 @@ public class RandomProductDisplay {
         }
     }
 
+    // Resto del código se mantiene igual
     private List<String[]> readProductsFromExcel() {
         List<String[]> products = new ArrayList<>();
         File file = new File(ARCHIVO_EXCEL);
@@ -69,7 +81,7 @@ public class RandomProductDisplay {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
 
-            if (rowIterator.hasNext()) rowIterator.next(); // Skip header row
+            if (rowIterator.hasNext()) rowIterator.next(); // Saltar la fila de encabezado
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
@@ -92,7 +104,6 @@ public class RandomProductDisplay {
 
         return products;
     }
-
     private String getCellValueAsString(Cell cell) {
         if (cell == null) return "";
         

@@ -138,6 +138,11 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         });
 
         recargar.setText("🔄");
+        recargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recargarActionPerformed(evt);
+            }
+        });
 
         menuButton.setText("☰");
         menuButton.addActionListener(new java.awt.event.ActionListener() {
@@ -731,6 +736,10 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
                 JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_favoritosActionPerformed
+
+    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_recargarActionPerformed
     
     
     

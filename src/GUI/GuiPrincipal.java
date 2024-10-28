@@ -1357,9 +1357,13 @@ public void refreshRandomProducts() {
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         // TODO add your handling code here:
-        customizeComponents();
-        SwingUtilities.updateComponentTreeUI(this);
-        JOptionPane.showMessageDialog(this, "Página recargada");
+         // Almacena el tamaño actual de la ventana
+    Dimension currentSize = this.getSize();
+
+    // Cierra y vuelve a abrir la ventana para recargarla
+    this.dispose(); // Cierra el JFrame actual
+    this.setVisible(true); // Vuelve a hacer visible el JFrame
+    this.setSize(currentSize); // Restaura el tamaño original de la ventana
     }//GEN-LAST:event_recargarActionPerformed
 
     private void añadirFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavoritoActionPerformed
