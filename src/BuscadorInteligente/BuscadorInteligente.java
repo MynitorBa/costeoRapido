@@ -15,6 +15,7 @@ public class BuscadorInteligente {
     private static final int MAX_SUGERENCIAS = 5;
     private Map<String, Integer> historialBusquedas;
     private Map<String, List<String>> sinonimos;
+    private RandomProductDisplay randomProductDisplay;
 
     public BuscadorInteligente() {
         gestorProductos = new GestorProductos2();
@@ -204,5 +205,7 @@ public class BuscadorInteligente {
     // Implementation depends on your database structure
     return procesarConsulta(""); // Empty query to get all products
 }
+    
+    
     
 }

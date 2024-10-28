@@ -6,6 +6,7 @@ package GUI;
 
 
 import BuscadorInteligente.BuscadorInteligente;
+import BuscadorInteligente.RandomProductDisplay;
 import Historial.HistorialViewer;
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class GuiPrincipal extends javax.swing.JFrame {
     private String currentUser;
     private boolean isUpdatingSuggestions = false;
     private boolean isProcessingEvent = false;
+    private RandomProductDisplay randomProductDisplay;
     
     /**
      * Creates new form GuiPrincipal
@@ -47,11 +49,77 @@ public class GuiPrincipal extends javax.swing.JFrame {
         this.currentUser = username;
         initComponents();
         customizeComponents();
-        buscador = new BuscadorInteligente();
-        sugerenciasPopup = new JPopupMenu();
+        initializeRandomProductDisplay();
+        this.buscador = new BuscadorInteligente();
+        this.sugerenciasPopup = new JPopupMenu();
         configurarComponentes();
-        mostrarProductosAleatorios();
+        initializeRandomProductDisplay();
+        if (randomProductDisplay != null) {
+            SwingUtilities.invokeLater(() -> randomProductDisplay.displayRandomProducts());
+        }
+        
+        
     }
+    
+    private void initializeRandomProductDisplay() {
+    try {
+        // Verify components exist before creating arrays
+        if (productoamostrar1 == null || añadirFavorito == null || costearProducto1 == null) {
+            throw new IllegalStateException("UI components not properly initialized");
+        }
+
+        JLabel[] productLabels = {
+            productoamostrar1,
+            productoamostrar2,
+            productoamostrar3,
+            productoamostrar4
+        };
+
+        JButton[] favoriteButtons = {
+            añadirFavorito,
+            añadirFavorito2,
+            añadirFavorito3,
+            añadirFavorito4
+        };
+
+        JButton[] costButtons = {
+            costearProducto1,
+            costearProducto2,
+            costearProducto3,
+            costearProducto4
+        };
+
+        // Verify all components are non-null
+        for (JLabel label : productLabels) {
+            if (label == null) throw new IllegalStateException("Product label not initialized");
+        }
+        for (JButton button : favoriteButtons) {
+            if (button == null) throw new IllegalStateException("Favorite button not initialized");
+        }
+        for (JButton button : costButtons) {
+            if (button == null) throw new IllegalStateException("Cost button not initialized");
+        }
+
+        this.randomProductDisplay = new RandomProductDisplay(
+            this,
+            productLabels,
+            favoriteButtons,
+            costButtons
+        );
+
+        // Call to display products should be after initialization
+        SwingUtilities.invokeLater(() -> randomProductDisplay.displayRandomProducts());
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error initializing product display: " + e.getMessage(),
+            "Initialization Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+    
+    
     
     private void configurarComponentes() {
         configurarPlaceholder();
@@ -391,32 +459,24 @@ private void manejarCambioTexto() {
     
     
     private void agregarAFavoritos(String[] producto) {
-        // TODO: Implementar la lógica para agregar a favoritos
-        try {
-        // Convertir el precio a double, limpiando caracteres especiales
+    try {
         String precioStr = producto[2].replaceAll("[^0-9.]", "");
         double precioFOB = Double.parseDouble(precioStr);
         
-        // Calcular los valores necesarios
         double costoUSDFinal = precioFOB * 1.1; 
         double costoQuetzales = costoUSDFinal * 7.85; 
         double margen = 30.0; 
-        double precioVenta = costoQuetzales * (1 + (margen/100));
-        double precioConIVA = precioVenta * 1.12; 
+        double precioVenta = costoQuetzales * (1 + (margen / 100));
         
-        // Crear el producto favorito usando el constructor correcto
         ProductoFavorito favorito = new ProductoFavorito(
-            currentUser,    // usuario actual
-            producto[1],    // nombre
-            precioFOB,     // costoFobUSD
-            costoUSDFinal, // costoUSDFinal
-            costoQuetzales,// costoQuetzales
-            precioVenta,   // precioVenta
-            precioConIVA,  // precioConIVA
-            margen         // margen
+            currentUser,    
+            producto[1],    
+            precioFOB,     
+            costoUSDFinal, 
+            costoQuetzales,
+            precioVenta
         );
         
-        // Guardar en favoritos con el usuario actual
         FavoritosManager favoritosManager = new FavoritosManager();
         favoritosManager.guardarFavorito(favorito, currentUser);
         
@@ -438,24 +498,17 @@ private void manejarCambioTexto() {
     }
 }
 
+
     
     
     
     private void costearProducto(String[] producto) {
     try {
-        // Extract only the name and price from the product array
         final String nombre = producto[1];
         
-        // Convert price string to double, removing special characters
-        final double costoFob;
         String precioStr = producto[2].replaceAll("[^0-9.]", "");
-        if (!precioStr.isEmpty()) {
-            costoFob = Double.parseDouble(precioStr);
-        } else {
-            costoFob = 0.0;
-        }
-        
-        // Open CosteoForm_Ingresar with just name and price
+        double costoFob = Double.parseDouble(precioStr);
+
         SwingUtilities.invokeLater(() -> {
             CosteoForm_Ingresar costeoForm = new CosteoForm_Ingresar(
                 currentUser,
@@ -763,80 +816,41 @@ private void abrirPerfilUsuario() {
         }
     }
     
-private BuscadorInteligente buscador = new BuscadorInteligente();
-private Map<Integer, String[]> currentDisplayedProducts = new HashMap<>();
+
 
 private void mostrarProductosAleatorios() {
     try {
-        // Get all products from BuscadorInteligente
-        List<String[]> todosLosProductos = buscador.obtenerTodosLosProductos();
-        
-        // Shuffle the products list
-        Collections.shuffle(todosLosProductos);
-        
-        // Get the first 4 products or less if there aren't enough products
-        int numProductosAMostrar = Math.min(4, todosLosProductos.size());
-        
-        // Array of product labels
-        JLabel[] productLabels = {
-            productoamostrar1,
-            productoamostrar2,
-            productoamostrar3,
-            productoamostrar4
-        };
-        
-        // Array of favorite buttons
-        JButton[] favoriteButtons = {
-            añadirFavorito,
-            añadirFavorito2,
-            añadirFavorito3,
-            añadirFavorito4
-        };
-        
-        // Array of costing buttons
-        JButton[] costButtons = {
-            costearProducto1,
-            costearProducto2,
-            costearProducto3,
-            costearProducto4
-        };
-        
-        // Clear the current displayed products map
-        currentDisplayedProducts.clear();
-        
-        // Display products
-        for (int i = 0; i < numProductosAMostrar; i++) {
-            String[] producto = todosLosProductos.get(i);
-            currentDisplayedProducts.put(i, producto);
-            
-            // Set product name and icon in label
-            String nombreProducto = producto[1];
-            productLabels[i].setText("📦 " + nombreProducto);
-            
-            // Configure favorite button
-            final int index = i;
-            favoriteButtons[i].setEnabled(true);
-            favoriteButtons[i].addActionListener(e -> agregarAFavoritos(currentDisplayedProducts.get(index)));
-            
-            // Configure costing button
-            costButtons[i].setEnabled(true);
-            costButtons[i].addActionListener(e -> costearProducto(currentDisplayedProducts.get(index)));
+        if (randomProductDisplay != null) {
+            randomProductDisplay.displayRandomProducts();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Error: Sistema de visualización no inicializado",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
-        
-        // Disable remaining buttons if there aren't enough products
-        for (int i = numProductosAMostrar; i < 4; i++) {
-            productLabels[i].setText("No hay producto disponible");
-            favoriteButtons[i].setEnabled(false);
-            costButtons[i].setEnabled(false);
-        }
-        
     } catch (Exception e) {
+        String errorMessage = "Error displaying random products: " + e.getMessage();
+        System.err.println(errorMessage);
         JOptionPane.showMessageDialog(this,
-            "Error al cargar productos aleatorios: " + e.getMessage(),
-            "Error",
+            errorMessage,
+            "Display Error",
             JOptionPane.ERROR_MESSAGE);
     }
 }
+
+        
+        
+        
+        
+public String getCurrentUser() {
+        return currentUser;
+    }
+public RandomProductDisplay getRandomProductDisplay() {
+        return randomProductDisplay;
+    }
+public void refreshRandomProducts() {
+        SwingUtilities.invokeLater(this::mostrarProductosAleatorios);
+    }
 
     
     
@@ -905,23 +919,8 @@ private void mostrarProductosAleatorios() {
         });
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel6.add(productoamostrar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 114, 88));
 
         favoritos1.setText("❤");
         favoritos1.addActionListener(new java.awt.event.ActionListener() {
@@ -949,14 +948,14 @@ private void mostrarProductosAleatorios() {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(costearProducto1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(añadirFavorito, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                .addGap(22, 22, 22))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(56, 56, 56)
@@ -981,23 +980,8 @@ private void mostrarProductosAleatorios() {
         );
 
         jPanel7.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel7.add(productoamostrar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 114, 88));
 
         costearProducto2.setText("Costear");
         costearProducto2.addActionListener(new java.awt.event.ActionListener() {
@@ -1130,23 +1114,8 @@ private void mostrarProductosAleatorios() {
         );
 
         jPanel12.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar3, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel12.add(productoamostrar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 114, 88));
 
         favoritos4.setText("❤");
         favoritos4.addActionListener(new java.awt.event.ActionListener() {
@@ -1174,7 +1143,7 @@ private void mostrarProductosAleatorios() {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel11Layout.createSequentialGroup()
@@ -1197,7 +1166,7 @@ private void mostrarProductosAleatorios() {
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(añadirFavorito3)
                     .addComponent(costearProducto3))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addGap(74, 74, 74)
@@ -1206,23 +1175,8 @@ private void mostrarProductosAleatorios() {
         );
 
         jPanel14.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(productoamostrar4, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel14.add(productoamostrar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 114, 88));
 
         favoritos6.setText("❤");
         favoritos6.addActionListener(new java.awt.event.ActionListener() {
@@ -1345,9 +1299,8 @@ private void mostrarProductosAleatorios() {
 
     private void costearProducto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto2ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-    new Gui(currentUser).setVisible(true);
-    this.dispose();
+         String[] producto = randomProductDisplay.getRandomProducts()[1]; // Obtener el segundo producto aleatorio
+    costearProducto(producto);
     }//GEN-LAST:event_costearProducto2ActionPerformed
 
     private void costeoRapidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costeoRapidoButtonActionPerformed
@@ -1399,30 +1352,45 @@ private void mostrarProductosAleatorios() {
 
     private void añadirFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavoritoActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[0]; // Obtener el primer producto aleatorio
+    agregarAFavoritos(producto);
     }//GEN-LAST:event_añadirFavoritoActionPerformed
 
     private void costearProducto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto1ActionPerformed
         // TODO add your handling code here:
+        
+        String[] producto = randomProductDisplay.getRandomProducts()[0]; // Obtener el primer producto aleatorio
+    costearProducto(producto);
     }//GEN-LAST:event_costearProducto1ActionPerformed
 
     private void añadirFavorito2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito2ActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[1]; // Obtener el segundo producto aleatorio
+    agregarAFavoritos(producto);
     }//GEN-LAST:event_añadirFavorito2ActionPerformed
 
     private void añadirFavorito3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito3ActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[2]; // Obtener el tercer producto aleatorio
+    agregarAFavoritos(producto);
     }//GEN-LAST:event_añadirFavorito3ActionPerformed
 
     private void costearProducto3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto3ActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[2]; // Obtener el tercer producto aleatorio
+    costearProducto(producto);
     }//GEN-LAST:event_costearProducto3ActionPerformed
 
     private void añadirFavorito4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavorito4ActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[3]; // Obtener el cuarto producto aleatorio
+    agregarAFavoritos(producto);
     }//GEN-LAST:event_añadirFavorito4ActionPerformed
 
     private void costearProducto4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costearProducto4ActionPerformed
         // TODO add your handling code here:
+        String[] producto = randomProductDisplay.getRandomProducts()[3]; // Obtener el cuarto producto aleatorio
+    costearProducto(producto);
     }//GEN-LAST:event_costearProducto4ActionPerformed
 
     private void favoritos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritos1ActionPerformed

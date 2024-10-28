@@ -31,9 +31,7 @@ public class ProductoFavorito implements Serializable {
     private double margen;
     
     // Constructor actualizado para incluir usuario
-     public ProductoFavorito(String usuario, String nombre, double costoFobUSD, 
-            double costoUSDFinal, double costoQuetzales, double precioVenta, 
-            double precioConIVA, double margen) {
+     public ProductoFavorito(String usuario, String nombre, double costoFobUSD, double costoUSDFinal, double costoQuetzales, double precioVenta) {
         this.usuario = usuario;
         this.nombre = nombre; // Corregido: ahora usa el parámetro nombre
         this.costoFobUSD = costoFobUSD;
