@@ -4,6 +4,7 @@
  */
 package paqueteSolicitudDePedido;
     
+import Historial.NavigationManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -54,6 +55,7 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
     this.currentUser = username;
     this.adminUsuario = new AdministradorUsuario();
     initComponents();
+    NavigationManager.getInstance().pushFrame(this);
     cargarEmailUsuario();
     
 }
@@ -161,6 +163,11 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
 
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
+        flechaDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaDerechaActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 144, 47));
@@ -550,11 +557,15 @@ private void enviarCorreo(String destinatario) {
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-        
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-        new CosteoFinal(currentUser).setVisible(true);
-    });
+        if (NavigationManager.getInstance().canGoBack()) {
+        NavigationManager.getInstance().goBack();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void recibirCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recibirCorreoActionPerformed
@@ -809,6 +820,19 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
         logAndShowError("Error reloading window", e);
     }
     }//GEN-LAST:event_recargarActionPerformed
+
+    private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
+        // TODO add your handling code here:
+            if (NavigationManager.getInstance().canGoForward()) {
+        NavigationManager.getInstance().goForward();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_flechaDerechaActionPerformed
     
     
     private void logAndShowError(String message, Exception e) {

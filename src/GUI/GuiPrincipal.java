@@ -1376,8 +1376,9 @@ public void refreshRandomProducts() {
 
     private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
         // TODO add your handling code here:
-       if (NavigationManager.getInstance().canGoForward()) {
+        if (NavigationManager.getInstance().canGoForward()) {
         NavigationManager.getInstance().goForward();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
     } else {
         JOptionPane.showMessageDialog(this, 
             "No hay páginas para avanzar", 

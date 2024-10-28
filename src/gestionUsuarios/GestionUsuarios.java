@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.util.List;
 import paqueteInicioSesion.AdministradorUsuario;
 import GUI.GuiPrincipal;
+import Historial.NavigationManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         this.currentUser = username;
         this.adminUsuario = new AdministradorUsuario();
         initComponents();
+        NavigationManager.getInstance().pushFrame(this);
         setupTable();
         loadUsers();
         configurarBuscador();
@@ -178,6 +180,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
         flechaIzquierda.setText("←");
         flechaIzquierda.setToolTipText("");
+        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaIzquierdaActionPerformed(evt);
+            }
+        });
 
         searchButton.setText("🔍");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +217,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
+        flechaDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaDerechaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -734,6 +746,33 @@ private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
         // TODO add your handling code here:
         realizarBusqueda();
     }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
+        // TODO add your handling code here:
+        if (NavigationManager.getInstance().canGoBack()) {
+        NavigationManager.getInstance().goBack();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
+
+    private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
+        // TODO add your handling code here:
+        
+             if (NavigationManager.getInstance().canGoForward()) {
+        NavigationManager.getInstance().goForward();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_flechaDerechaActionPerformed
 
     
     // Método para costear un producto favorito

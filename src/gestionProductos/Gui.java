@@ -1254,8 +1254,8 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
     if (NavigationManager.getInstance().canGoBack()) {
-        this.setVisible(false);
         NavigationManager.getInstance().goBack();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
     } else {
         JOptionPane.showMessageDialog(this, 
             "No hay páginas anteriores", 
@@ -1306,9 +1306,9 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
     private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
         // TODO add your handling code here:
         
-        if (NavigationManager.getInstance().canGoForward()) {
-        this.setVisible(false);
+       if (NavigationManager.getInstance().canGoForward()) {
         NavigationManager.getInstance().goForward();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
     } else {
         JOptionPane.showMessageDialog(this, 
             "No hay páginas para avanzar", 

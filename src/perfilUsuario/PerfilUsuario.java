@@ -5,6 +5,7 @@
 package perfilUsuario;
 
 import GUI.GuiPrincipal;
+import Historial.NavigationManager;
 import paqueteInicioSesion.AdministradorUsuario;
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
          this.currentUser = username;
         this.adminUsuario = new AdministradorUsuario();
         initComponents();
+        NavigationManager.getInstance().pushFrame(this);
         cargarDatosUsuario();
         configurarBotonesExistentes();
     }
@@ -663,14 +665,30 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
 
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new GuiPrincipal(currentUser).setVisible(true);
-        });
+        if (NavigationManager.getInstance().canGoBack()) {
+        NavigationManager.getInstance().goBack();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas anteriores", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void flechaDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaDerechaActionPerformed
         // TODO add your handling code here:
+        
+        if (NavigationManager.getInstance().canGoForward()) {
+        NavigationManager.getInstance().goForward();
+        this.dispose(); // Importante: liberar los recursos de la ventana actual
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "No hay páginas para avanzar", 
+            "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+        
     }//GEN-LAST:event_flechaDerechaActionPerformed
 
     private void btnEditarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarCorreoActionPerformed
