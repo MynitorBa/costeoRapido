@@ -505,34 +505,33 @@ private void manejarCambioTexto() {
         JOptionPane.showMessageDialog(this, 
             "Gestionando producto " + numeroProducto);
     }
+    
 
    private void createPopupMenu() {
     popupMenu = new JPopupMenu();
     popupMenu.setBackground(Color.WHITE);
     popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-    
-    JTextField searchField = new JTextField(15);
-    searchField.setBorder(BorderFactory.createCompoundBorder(
-        searchField.getBorder(), 
-        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
     popupMenu.addSeparator();
 
-    // Agregar la opción de Perfil de Usuario
-    addMenuItem("Perfil de Usuario", "\uD83D\uDC64", e -> abrirPerfilUsuario());
-    addMenuItem("Costeo Rápido", "\uD83D\uDCB0", e -> abrirCosteoRapido());
-    addMenuItem("Productos", "\uD83D\uDCE6", e -> abrirGestionProductos());
-    addMenuItem("Preguntas Frecuentes", "❓", e -> abrirPreguntasFrecuentes());
-    
+    // Agregar opciones al menú
+    addMenuItem("👤 Perfil de Usuario", e -> abrirPerfilUsuario());
+    addMenuItem("💰 Costeo Rápido", e -> abrirCosteoRapido());
+    addMenuItem("📦 Productos", e -> abrirGestionProductos());
+    addMenuItem("❓Preguntas Frecuentes", e -> abrirPreguntasFrecuentes());
+    // Opción para administradores
     if ("admin".equals(currentUser)) {
-        addMenuItem("Gestión de Usuarios", "\uD83D\uDC65", e -> abrirGestionUsuarios());
+        addMenuItem("👥 Gestión de Usuarios", e -> abrirGestionUsuarios());
     }
-    
 
-
-    
     popupMenu.addSeparator();
-    addMenuItem("Cerrar Sesión", "\uD83D\uDEAA", e -> logout());
+    addMenuItem("🔚 Cerrar Sesión", e -> logout());
+}
+    
+   private void addMenuItem(String text, ActionListener action) {
+    JMenuItem menuItem = new JMenuItem(text);
+    menuItem.addActionListener(action);
+    popupMenu.add(menuItem);
 }
 
    
