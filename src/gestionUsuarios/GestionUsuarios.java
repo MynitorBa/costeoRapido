@@ -494,134 +494,131 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
-        // TODO add your handling code here:
-        JPopupMenu popupMenu = new JPopupMenu();
-    popupMenu.setBackground(Color.WHITE);
-    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+    JPopupMenu popupMenu = new JPopupMenu();
+   popupMenu.setBackground(Color.WHITE);
+   popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
-    // Crear los items del menú
-    JMenuItem inicioItem = new JMenuItem("\uD83C\uDFE0 Inicio");
-    JMenuItem perfilItem = new JMenuItem("\uD83D\uDC64 Perfil");
-    JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
-    JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
-    JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
-    JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
+   // Crear los items del menú
+   JMenuItem inicioItem = new JMenuItem("🏠 Inicio");
+JMenuItem perfilItem = new JMenuItem("👤 Perfil");
+JMenuItem costeoItem = new JMenuItem("💰 Costeo Rápido");
+JMenuItem productosItem = new JMenuItem("📦 Productos");
+JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
+JMenuItem historialItem = new JMenuItem("📋 Historial");
+JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
 
-    // Personalizar apariencia de los items
-    Font menuFont = new Font("Arial", Font.PLAIN, 14);
-    Color hoverColor = new Color(240, 240, 240);
-    
-    for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem,  logoutItem}) {
-        item.setFont(menuFont);
-        item.setBackground(Color.WHITE);
-        item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        item.setOpaque(true);
-        
-        // Efecto hover
-        item.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                item.setBackground(hoverColor);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                item.setBackground(Color.WHITE);
-            }
-        });
-    }
+   // Personalizar apariencia de los items
+   Font menuFont = new Font("Segoe UI Emoji", Font.PLAIN, 14);
+   Color hoverColor = new Color(240, 240, 240);
+   
+   for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
+       productosItem, preguntasItem, logoutItem}) {
+       item.setFont(menuFont);
+       item.setBackground(Color.WHITE);
+       item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+       item.setOpaque(true);
+       
+       // Efecto hover
+       item.addMouseListener(new java.awt.event.MouseAdapter() {
+           public void mouseEntered(java.awt.event.MouseEvent evt) {
+               item.setBackground(hoverColor);
+           }
+           public void mouseExited(java.awt.event.MouseEvent evt) {
+               item.setBackground(Color.WHITE);
+           }
+       });
+   }
 
-    // Agregar acciones a los items
-    inicioItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new GUI.GuiPrincipal(currentUser).setVisible(true);
-        });
-    });
+   // Agregar acciones a los items
+   inicioItem.addActionListener(e -> {
+       this.dispose();
+       SwingUtilities.invokeLater(() -> {
+           new GUI.GuiPrincipal(currentUser).setVisible(true);
+       });
+   });
 
-    perfilItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
-        });
-    });
+   perfilItem.addActionListener(e -> {
+       this.dispose();
+       SwingUtilities.invokeLater(() -> {
+           new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
+       });
+   });
 
-    costeoItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
-    });
+   costeoItem.addActionListener(e -> {
+       this.dispose();
+       SwingUtilities.invokeLater(() -> {
+           new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
+       });
+   });
 
-    productosItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new gestionProductos.Gui(currentUser).setVisible(true);
-        });
-    });
+   productosItem.addActionListener(e -> {
+       this.dispose();
+       SwingUtilities.invokeLater(() -> {
+           new gestionProductos.Gui(currentUser).setVisible(true);
+       });
+   });
 
-    preguntasItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new preguntasFrecuentes.PreguntasFrecuentesForm(currentUser).setVisible(true);
-        });
-    });
+   preguntasItem.addActionListener(e -> {
+       this.dispose();
+       SwingUtilities.invokeLater(() -> {
+           new preguntasFrecuentes.PreguntasFrecuentesForm(currentUser).setVisible(true);
+       });
+   });
 
-    
+   logoutItem.addActionListener(e -> {
+       int confirm = JOptionPane.showConfirmDialog(
+           this,
+           "¿Estás seguro de que quieres cerrar sesión?",
+           "Confirmar Cierre de Sesión",
+           JOptionPane.YES_NO_OPTION
+       );
+       
+       if (confirm == JOptionPane.YES_OPTION) {
+           this.dispose();
+           SwingUtilities.invokeLater(() -> {
+               new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
+           });
+       }
+   });
 
-    logoutItem.addActionListener(e -> {
-        int confirm = JOptionPane.showConfirmDialog(
-            this,
-            "¿Estás seguro de que quieres cerrar sesión?",
-            "Confirmar Cierre de Sesión",
-            JOptionPane.YES_NO_OPTION
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            SwingUtilities.invokeLater(() -> {
-                new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
-            });
-        }
-    });
+   // Agregar items al menú
+   popupMenu.add(inicioItem);
+   popupMenu.addSeparator();
+   popupMenu.add(perfilItem);
+   popupMenu.add(costeoItem);
+   popupMenu.add(productosItem);
+   popupMenu.add(preguntasItem);
+   
+   // Agregar gestión de usuarios solo para admin
+   if ("admin".equals(currentUser)) {
+       JMenuItem adminItem = new JMenuItem("\uD83D\uDC65 Gestión de Usuarios");
+       adminItem.setFont(menuFont);
+       adminItem.setBackground(Color.WHITE);
+       adminItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+       adminItem.setOpaque(true);
+       adminItem.addMouseListener(new java.awt.event.MouseAdapter() {
+           public void mouseEntered(java.awt.event.MouseEvent evt) {
+               adminItem.setBackground(hoverColor);
+           }
+           public void mouseExited(java.awt.event.MouseEvent evt) {
+               adminItem.setBackground(Color.WHITE);
+           }
+       });
+       adminItem.addActionListener(e -> {
+           this.dispose();
+           SwingUtilities.invokeLater(() -> {
+               new gestionUsuarios.GestionUsuarios(currentUser).setVisible(true);
+           });
+       });
+       popupMenu.add(adminItem);
+   }
+   
+   popupMenu.addSeparator();
+   popupMenu.addSeparator();
+   popupMenu.add(logoutItem);
 
-    // Agregar items al menú
-    popupMenu.add(inicioItem);
-    popupMenu.addSeparator();
-    popupMenu.add(perfilItem);
-    popupMenu.add(costeoItem);
-    popupMenu.add(productosItem);
-    popupMenu.add(preguntasItem);
-    
-    // Agregar gestión de usuarios solo para admin
-    if ("admin".equals(currentUser)) {
-        JMenuItem adminItem = new JMenuItem("\uD83D\uDC65 Gestión de Usuarios");
-        adminItem.setFont(menuFont);
-        adminItem.setBackground(Color.WHITE);
-        adminItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        adminItem.setOpaque(true);
-        adminItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                adminItem.setBackground(hoverColor);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                adminItem.setBackground(Color.WHITE);
-            }
-        });
-        adminItem.addActionListener(e -> {
-            this.dispose();
-            SwingUtilities.invokeLater(() -> {
-                new gestionUsuarios.GestionUsuarios(currentUser).setVisible(true);
-            });
-        });
-        popupMenu.add(adminItem);
-    }
-    
-    popupMenu.addSeparator();
-  
-    popupMenu.addSeparator();
-    popupMenu.add(logoutItem);
-
-    // Mostrar el menú
-    popupMenu.show(menuButton, 0, menuButton.getHeight());
+   // Mostrar el menú
+   popupMenu.show(menuButton, 0, menuButton.getHeight());
     }//GEN-LAST:event_menuButtonActionPerformed
 
     private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
