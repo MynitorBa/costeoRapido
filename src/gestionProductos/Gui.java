@@ -82,10 +82,10 @@ public class Gui extends javax.swing.JFrame {
     Agregar.setVisible(isAdmin);
     Editar.setVisible(isAdmin);
     Eliminar.setVisible(isAdmin);
+    guardar.setVisible(isAdmin); // Solo visible para admin
     
     // Botones disponibles para todos los usuarios
     Buscar.setVisible(true);
-    guardar.setVisible(true);
     costear.setVisible(true);
     
     // Configurar los listeners de los botones
@@ -93,73 +93,67 @@ public class Gui extends javax.swing.JFrame {
         Agregar.addActionListener(e -> mostrarDialogoAgregar());
         Editar.addActionListener(e -> mostrarDialogoEditar());
         Eliminar.addActionListener(e -> mostrarDialogoEliminar());
+        guardar.addActionListener(e -> guardarCambios());
+    }
+    
+    // Botón favoritos (reemplaza al botón guardar para usuarios no admin)
+    if (!isAdmin) {
+        // Cambiar el texto y función del botón guardar para convertirlo en favoritos
+        guardar.setText("Añadir a Favoritos");
+        guardar.setVisible(true);
+        guardar.addActionListener(e -> {
+            int filaSeleccionada = jTable1.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                try {
+                    // Obtener los datos del producto seleccionado
+                    String nombre = modeloTabla.getValueAt(filaSeleccionada, 1).toString();
+                    String precioStr = modeloTabla.getValueAt(filaSeleccionada, 2).toString().replace("$", "").replace(",", "");
+                    double precioFOB = Double.parseDouble(precioStr);
+                    
+                    // Calcular los valores necesarios
+                    double costoUSDFinal = precioFOB * 1.1;
+                    double costoQuetzales = costoUSDFinal * 7.85;
+                    double margen = 0.30; // 30% por defecto
+                    double precioVenta = costoQuetzales * (1 + margen);
+                    double precioConIVA = precioVenta * 1.12;
+                    
+                    // Crear el objeto usando el constructor vacío y setters
+                    ProductoFavorito favorito = new ProductoFavorito();
+                    favorito.setUsuario(currentUser);
+                    favorito.setNombre(nombre);
+                    favorito.setCostoFobUSD(precioFOB);
+                    favorito.setCostoUSDFinal(costoUSDFinal);
+                    favorito.setCostoQuetzales(costoQuetzales);
+                    favorito.setPrecioVenta(precioVenta);
+                    favorito.setPrecioConIVA(precioConIVA);
+                    favorito.setMargen(margen);
+                    
+                    FavoritosManager favoritosManager = new FavoritosManager();
+                    favoritosManager.guardarFavorito(favorito, currentUser);
+                    
+                    JOptionPane.showMessageDialog(this,
+                        "Producto '" + nombre + "' añadido a favoritos",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+                        
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this,
+                        "Error al añadir a favoritos: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor, seleccione un producto para añadir a favoritos",
+                    "Selección requerida",
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        });
     }
     
     // Configurar los listeners para los botones comunes
-    Buscar.addActionListener(e -> {
-        JDialog dialogo = new JDialog(this, "Búsqueda de Productos", true);
-        dialogo.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        
-        // Campo de texto para la búsqueda
-        JTextField campoBusqueda = new JTextField(30);
-        campoBusqueda.setText("Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
-        campoBusqueda.setForeground(Color.GRAY);
-        
-        // Placeholder behavior
-        configurarPlaceholder(campoBusqueda, "Buscar por ID, Nombre, Tipo, Marca o Etiqueta");
-        
-        // Botón de búsqueda
-        JButton botonBuscar = new JButton("Buscar");
-        
-        // Añadir componentes al diálogo
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        dialogo.add(new JLabel("Buscar:"), gbc);
-        
-        gbc.gridx = 1;
-        dialogo.add(campoBusqueda, gbc);
-        
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        dialogo.add(botonBuscar, gbc);
-        
-        botonBuscar.addActionListener(ev -> {
-            buscarYMostrarResultados(campoBusqueda.getText().trim(), modeloTabla);
-            dialogo.dispose();
-        });
-        
-        dialogo.pack();
-        dialogo.setLocationRelativeTo(this);
-        dialogo.setVisible(true);
-    });
-    
-    guardar.addActionListener(e -> guardarCambios());
+    Buscar.addActionListener(e -> mostrarDialogoBuscar());
     costear.addActionListener(e -> mostrarDialogoCostear());
-    
-    // Ajustar el layout si no es administrador
-    if (!isAdmin) {
-        // Reorganizar los botones visibles para que estén centrados
-        javax.swing.GroupLayout.SequentialGroup horizontalGroup = ((javax.swing.GroupLayout) jPanel2.getLayout())
-            .createSequentialGroup()
-            .addGap(16, 16, 16)
-            .addComponent(Buscar)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(guardar)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(costear);
-        
-        // Actualizar el layout del panel
-        ((javax.swing.GroupLayout) jPanel2.getLayout()).setHorizontalGroup(
-            ((javax.swing.GroupLayout) jPanel2.getLayout()).createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(horizontalGroup)
-            .addComponent(jScrollPane1)
-        );
-    }
 }
     
     private void mostrarDialogoBuscar() {
