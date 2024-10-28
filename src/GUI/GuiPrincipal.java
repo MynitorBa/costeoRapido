@@ -719,59 +719,71 @@ private void abrirPerfilUsuario() {
     }
 
     private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout(10, 10));
-        panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200)),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        
-        // Panel de información
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        
-        // Nombre del producto en negrita
-        JLabel nombreLabel = new JLabel(favorito.getNombre());
-        nombreLabel.setFont(new Font(nombreLabel.getFont().getName(), Font.BOLD, 14));
-        infoPanel.add(nombreLabel);
-        
-        // Detalles del producto
-        String detalles = String.format("<html>Costo FOB: $%.2f<br>" +
-                                      "Costo Final USD: $%.2f<br>" +
-                                      "Costo en Q.: Q%.2f<br>" +
-                                      "Precio Venta: Q%.2f<br>" +
-                                      "Margen: %.1f%%</html>",
-            favorito.getCostoFobUSD(),
-            favorito.getCostoUSDFinal(),
-            favorito.getCostoQuetzales(),
-            favorito.getPrecioVenta(),
-            favorito.getMargen() * 100);
-        
-        JLabel detallesLabel = new JLabel(detalles);
-        detallesLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        infoPanel.add(detallesLabel);
-        
-        panel.add(infoPanel, BorderLayout.CENTER);
-        
-        // Panel de botones
-        JPanel botonesPanel = new JPanel();
-        botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
-        
-        // Botón de costear
-        JButton costearButton = new JButton("Costear");
-        costearButton.addActionListener(e -> costearProductoFavorito(favorito));
-        botonesPanel.add(costearButton);
-        botonesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        
-        // Botón de eliminar
-        JButton eliminarButton = new JButton("Eliminar");
-        eliminarButton.addActionListener(e -> eliminarProductoFavorito(favorito));
-        botonesPanel.add(eliminarButton);
-        
-        panel.add(botonesPanel, BorderLayout.EAST);
-        
-        return panel;
-    }
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout(8, 8));
+    panel.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(180, 180, 180), 1, true),
+        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+    ));
+    panel.setBackground(Color.WHITE); // Fondo blanco limpio
+
+    // Panel de información
+    JPanel infoPanel = new JPanel();
+    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+    infoPanel.setBackground(Color.WHITE); // Fondo blanco
+    infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    
+    // Nombre del producto en negrita y verde oscuro
+    JLabel nombreLabel = new JLabel(favorito.getNombre());
+    nombreLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
+    nombreLabel.setForeground(new Color(0, 128, 0)); // Verde oscuro
+    infoPanel.add(nombreLabel);
+    
+    // Costo FOB en gris oscuro
+    String detalles = String.format("<html><span style='color:gray;'>Costo FOB:</span> <span style='font-weight:bold;'>$%.2f</span></html>", 
+                                    favorito.getCostoFobUSD());
+    JLabel detallesLabel = new JLabel(detalles);
+    detallesLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+    detallesLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+    infoPanel.add(detallesLabel);
+    
+    panel.add(infoPanel, BorderLayout.CENTER);
+
+    // Panel de botones con diseño vertical y compacto
+    JPanel botonesPanel = new JPanel();
+    botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+    botonesPanel.setBackground(Color.WHITE); // Fondo blanco
+    
+    // Botón de costear en verde suave
+    JButton costearButton = new JButton("Costear");
+    costearButton.setBackground(new Color(0, 150, 0)); // Verde suave
+    costearButton.setForeground(Color.WHITE);
+    costearButton.setFont(new Font("SansSerif", Font.PLAIN, 11));
+    costearButton.setFocusPainted(false);
+    costearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    costearButton.setMaximumSize(new Dimension(80, 25));
+    costearButton.addActionListener(e -> costearProductoFavorito(favorito));
+    botonesPanel.add(costearButton);
+    botonesPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre botones
+
+    // Botón de eliminar en gris oscuro
+    JButton eliminarButton = new JButton("Eliminar");
+    eliminarButton.setBackground(new Color(60, 60, 60)); // Gris oscuro
+    eliminarButton.setForeground(Color.WHITE);
+    eliminarButton.setFont(new Font("SansSerif", Font.PLAIN, 11));
+    eliminarButton.setFocusPainted(false);
+    eliminarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    eliminarButton.setMaximumSize(new Dimension(80, 25));
+    eliminarButton.addActionListener(e -> eliminarProductoFavorito(favorito));
+    botonesPanel.add(eliminarButton);
+
+    panel.add(botonesPanel, BorderLayout.EAST);
+
+    return panel;
+}
+
+
+
     
     private void costearProductoFavorito(ProductoFavorito favorito) {
         SwingUtilities.invokeLater(() -> {
