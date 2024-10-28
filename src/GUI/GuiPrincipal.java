@@ -1377,6 +1377,8 @@ public void refreshRandomProducts() {
             throw new IllegalStateException("Current window is not a GuiPrincipal instance");
         }
         
+        
+        
         GuiPrincipal frameActual = (GuiPrincipal) ventanaActual;
         String currentUser = frameActual.getCurrentUser();
         

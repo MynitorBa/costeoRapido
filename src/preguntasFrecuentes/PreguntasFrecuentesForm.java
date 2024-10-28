@@ -110,6 +110,11 @@ public class PreguntasFrecuentesForm extends javax.swing.JFrame {
         });
 
         recargar1.setText("🔄");
+        recargar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recargar1ActionPerformed(evt);
+            }
+        });
 
         menuButton1.setText("☰");
         menuButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -483,6 +488,73 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
         });
     }//GEN-LAST:event_flechaIzquierda1ActionPerformed
 
+    private void recargar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargar1ActionPerformed
+        // TODO add your handling code here:
+        try {
+        // Get current window location and size
+        Point location = this.getLocation();
+        Dimension size = this.getSize();
+        boolean isMaximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+        
+        // Save current search field state
+        String currentSearchText = searchField1.getText();
+        boolean wasSearchingMode = !currentSearchText.equals("Buscar pregunta...");
+        
+        // Create and configure new window
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Create new instance with same user
+                PreguntasFrecuentesForm nuevaVentana = new PreguntasFrecuentesForm(currentUser);
+                
+                // Set window state
+                if (isMaximized) {
+                    nuevaVentana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    nuevaVentana.setLocation(location);
+                    nuevaVentana.setSize(size);
+                }
+                
+                // Restore search if it was active
+                if (wasSearchingMode) {
+                    nuevaVentana.searchField1.setText(currentSearchText);
+                    nuevaVentana.searchField1.setForeground(Color.BLACK);
+                    nuevaVentana.searchQuestions(currentSearchText);
+                }
+                
+                // Setup the FAQ panel
+                nuevaVentana.setupFAQs();
+                
+                // Setup search functionality
+                nuevaVentana.setupSearchField();
+                
+                // Show new window and dispose old one
+                nuevaVentana.setVisible(true);
+                dispose();
+                
+            } catch (Exception e) {
+                logAndShowError("Error creating new window", e);
+            }
+        });
+        
+    } catch (Exception e) {
+        logAndShowError("Error reloading window", e);
+    }
+    }//GEN-LAST:event_recargar1ActionPerformed
+
+    private void logAndShowError(String message, Exception e) {
+    // Log the full stack trace
+    System.err.println(message);
+    e.printStackTrace();
+    
+    // Show a user-friendly error message
+    SwingUtilities.invokeLater(() -> {
+        String errorDetails = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        JOptionPane.showMessageDialog(null,
+            message + ": " + errorDetails,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    });
+}
     
     // Método auxiliar para crear el panel de cada producto favorito
 private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {

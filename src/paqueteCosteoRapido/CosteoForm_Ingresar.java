@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.util.List;
 import productosFavoritos.FavoritosManager;
 import productosFavoritos.ProductoFavorito;
@@ -443,6 +444,11 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         });
 
         recargar.setText("🔄");
+        recargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recargarActionPerformed(evt);
+            }
+        });
 
         menuButton.setText("☰");
         menuButton.addActionListener(new java.awt.event.ActionListener() {
@@ -777,6 +783,87 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
         resetearCampos();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
+        // TODO add your handling code here:
+        try {
+        // Get the current window location and size
+        Point location = this.getLocation();
+        Dimension size = this.getSize();
+        boolean isMaximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+        
+        // Save current field values
+        String currentNombre = nombreDescripcionProducto.getText();
+        String currentCostoFob = costoFobUSD$_Ingresar.getText();
+        String currentFlete = flete_Ingresar.getText();
+        String currentMargen = MargenVenta_Ingresar.getText();
+        int currentDAIIndex = ClasificacionDAI_elegir.getSelectedIndex();
+        
+        // Create and configure new window
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Create new instance with same values
+                CosteoForm_Ingresar nuevaVentana = new CosteoForm_Ingresar(currentUser);
+                
+                // Restore window state
+                if (isMaximized) {
+                    nuevaVentana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    nuevaVentana.setLocation(location);
+                    nuevaVentana.setSize(size);
+                }
+                
+                // Restore field values only if they're not placeholder values
+                if (!currentNombre.equals("Nombre o descripción del producto")) {
+                    nuevaVentana.nombreDescripcionProducto.setText(currentNombre);
+                    nuevaVentana.nombreDescripcionProducto.setForeground(TEXT_COLOR);
+                }
+                
+                if (!currentCostoFob.equals("$0.00")) {
+                    nuevaVentana.costoFobUSD$_Ingresar.setText(currentCostoFob);
+                    nuevaVentana.costoFobUSD$_Ingresar.setForeground(TEXT_COLOR);
+                }
+                
+                if (!currentFlete.equals("0%")) {
+                    nuevaVentana.flete_Ingresar.setText(currentFlete);
+                    nuevaVentana.flete_Ingresar.setForeground(TEXT_COLOR);
+                }
+                
+                if (!currentMargen.equals("0%")) {
+                    nuevaVentana.MargenVenta_Ingresar.setText(currentMargen);
+                    nuevaVentana.MargenVenta_Ingresar.setForeground(TEXT_COLOR);
+                }
+                
+                nuevaVentana.ClasificacionDAI_elegir.setSelectedIndex(currentDAIIndex);
+                
+                // Show new window and dispose old one
+                nuevaVentana.setVisible(true);
+                dispose();
+                
+            } catch (Exception e) {
+                logAndShowError("Error creating new window", e);
+            }
+        });
+        
+    } catch (Exception e) {
+        logAndShowError("Error reloading window", e);
+    }
+    }//GEN-LAST:event_recargarActionPerformed
+
+    
+    private void logAndShowError(String message, Exception e) {
+    // Log the full stack trace
+    System.err.println(message);
+    e.printStackTrace();
+    
+    // Show a user-friendly error message
+    SwingUtilities.invokeLater(() -> {
+        String errorDetails = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        JOptionPane.showMessageDialog(null,
+            message + ": " + errorDetails,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    });
+}
     
     // Método auxiliar para crear el panel de cada producto favorito
 private JPanel crearPanelProductoFavorito(ProductoFavorito favorito) {

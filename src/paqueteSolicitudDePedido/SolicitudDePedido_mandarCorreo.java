@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -739,8 +740,91 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         // TODO add your handling code here:
+        try {
+        // Get current window state
+        Point location = this.getLocation();
+        Dimension size = this.getSize();
+        boolean isMaximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+        
+        // Save current form data
+        String currentNombre = nombreDescripcionProductoFINAL.getText();
+        String currentCostoFob = costoFOBUSD$_FINAL.getText();
+        String currentCostoUSD = CostoUSD$_FINAL.getText();
+        String currentCostoQuetzales = costoQuetzales_FINAL.getText();
+        String currentPrecioVenta = PrecioVenta_FINAL.getText();
+        String currentConIVA = ConIVA_FINAL.getText();
+        String currentMargen = margen_FINAL.getText();
+        String currentEmail = recibirCorreo.getText();
+        
+        // Create and configure new window
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Create new instance
+                SolicitudDePedido_mandarCorreo nuevaVentana = new SolicitudDePedido_mandarCorreo(currentUser);
+                
+                // Restore window state
+                if (isMaximized) {
+                    nuevaVentana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    nuevaVentana.setLocation(location);
+                    nuevaVentana.setSize(size);
+                }
+                
+                // Restore form data using the setDatos method
+                // Convert the stored values back to numbers removing currency symbols
+                try {
+                    double costoFob = Double.parseDouble(currentCostoFob.replace("$", "").replace(",", ""));
+                    double costoUSD = Double.parseDouble(currentCostoUSD.replace("$", "").replace(",", ""));
+                    double costoQuetzales = Double.parseDouble(currentCostoQuetzales.replace("Q", "").replace(",", ""));
+                    double precioVenta = Double.parseDouble(currentPrecioVenta.replace("Q", "").replace(",", ""));
+                    double conIVA = Double.parseDouble(currentConIVA.replace("Q", "").replace(",", ""));
+                    double margen = Double.parseDouble(currentMargen.replace("%", "")) / 100;
+                    
+                    nuevaVentana.setDatos(
+                        currentNombre,
+                        costoFob,
+                        costoUSD,
+                        costoQuetzales,
+                        precioVenta,
+                        conIVA,
+                        margen
+                    );
+                } catch (NumberFormatException e) {
+                    logAndShowError("Error al procesar los números", e);
+                }
+                
+                // Restore email
+                nuevaVentana.recibirCorreo.setText(currentEmail);
+                
+                // Show new window and dispose old one
+                nuevaVentana.setVisible(true);
+                dispose();
+                
+            } catch (Exception e) {
+                logAndShowError("Error creating new window", e);
+            }
+        });
+        
+    } catch (Exception e) {
+        logAndShowError("Error reloading window", e);
+    }
     }//GEN-LAST:event_recargarActionPerformed
     
+    
+    private void logAndShowError(String message, Exception e) {
+    // Log the full stack trace
+    System.err.println(message);
+    e.printStackTrace();
+    
+    // Show a user-friendly error message
+    SwingUtilities.invokeLater(() -> {
+        String errorDetails = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        JOptionPane.showMessageDialog(null,
+            message + ": " + errorDetails,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    });
+}
     
     
     

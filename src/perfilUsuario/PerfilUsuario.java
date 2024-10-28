@@ -264,6 +264,11 @@ public class PerfilUsuario extends javax.swing.JFrame {
         });
 
         recargar.setText("🔄");
+        recargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recargarActionPerformed(evt);
+            }
+        });
 
         menuButton.setText("☰");
         menuButton.addActionListener(new java.awt.event.ActionListener() {
@@ -672,7 +677,61 @@ JMenuItem logoutItem = new JMenuItem("🚪 Cerrar Sesión");
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarCorreoActionPerformed
 
+    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
+        // TODO add your handling code here:
+        try {
+        // Get current window location and size
+        Point location = this.getLocation();
+        Dimension size = this.getSize();
+        boolean isMaximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+        
+        // Create and configure new window
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Create new instance with same user
+                PerfilUsuario nuevaVentana = new PerfilUsuario(currentUser);
+                
+                // Set window state
+                if (isMaximized) {
+                    nuevaVentana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    nuevaVentana.setLocation(location);
+                    nuevaVentana.setSize(size);
+                }
+                
+                // The cargarDatosUsuario method will be called automatically in the constructor
+                
+                // Make sure all buttons are properly configured
+                nuevaVentana.configurarBotonesExistentes();
+                
+                // Show new window and dispose old one
+                nuevaVentana.setVisible(true);
+                dispose();
+                
+            } catch (Exception e) {
+                logAndShowError("Error creating new window", e);
+            }
+        });
+        
+    } catch (Exception e) {
+        logAndShowError("Error reloading window", e);
+    }
+    }//GEN-LAST:event_recargarActionPerformed
+
+    private void logAndShowError(String message, Exception e) {
+    // Log the full stack trace
+    System.err.println(message);
+    e.printStackTrace();
     
+    // Show a user-friendly error message
+    SwingUtilities.invokeLater(() -> {
+        String errorDetails = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        JOptionPane.showMessageDialog(null,
+            message + ": " + errorDetails,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    });
+}
     
     
     // Método auxiliar para crear el panel de cada producto favorito
