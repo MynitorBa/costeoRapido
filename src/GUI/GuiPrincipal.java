@@ -866,7 +866,20 @@ public void refreshRandomProducts() {
 
     
     
+    private void logAndShowError(String message, Exception e) {
+    // Log the full stack trace
+    System.err.println(message);
+    e.printStackTrace();
     
+    // Show a user-friendly error message
+    SwingUtilities.invokeLater(() -> {
+        String errorDetails = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        JOptionPane.showMessageDialog(null,
+            message + ": " + errorDetails,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    });
+}
   
     
     
@@ -1358,39 +1371,50 @@ public void refreshRandomProducts() {
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         // TODO add your handling code here:
      try {
-        // Obtener la ventana actual
+        // Get the current window and verify it's the correct type
         Window ventanaActual = SwingUtilities.getWindowAncestor((Component) evt.getSource());
-        
-        if (ventanaActual instanceof GuiPrincipal) {
-            GuiPrincipal frameActual = (GuiPrincipal) ventanaActual;
-            
-            // Guardar la posición y tamaño actuales
-            Point location = frameActual.getLocation();
-            Dimension size = frameActual.getSize();
-            
-            // Crear una nueva instancia totalmente fresca
-            GuiPrincipal nuevaVentana = new GuiPrincipal();
-            
-            // Mantener la misma posición y tamaño
-            nuevaVentana.setLocation(location);
-            nuevaVentana.setSize(size);
-            
-            // Mostrar la nueva ventana
-            nuevaVentana.setVisible(true);
-            
-            // Cerrar la ventana anterior
-            frameActual.dispose();
-            
+        if (!(ventanaActual instanceof GuiPrincipal)) {
+            throw new IllegalStateException("Current window is not a GuiPrincipal instance");
         }
+        
+        GuiPrincipal frameActual = (GuiPrincipal) ventanaActual;
+        String currentUser = frameActual.getCurrentUser();
+        
+        // Save current window state
+        Point location = frameActual.getLocation();
+        Dimension size = frameActual.getSize();
+        boolean isMaximized = (frameActual.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+        
+        // Create and configure new window
+        SwingUtilities.invokeLater(() -> {
+            try {
+                GuiPrincipal nuevaVentana = new GuiPrincipal(currentUser);
+                
+                if (isMaximized) {
+                    nuevaVentana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    nuevaVentana.setLocation(location);
+                    nuevaVentana.setSize(size);
+                }
+                
+                // Ensure random products are refreshed in the new window
+                RandomProductDisplay randomProductDisplay = nuevaVentana.getRandomProductDisplay();
+                if (randomProductDisplay != null) {
+                    nuevaVentana.refreshRandomProducts();
+                }
+                
+                // Show new window and dispose old one
+                nuevaVentana.setVisible(true);
+                frameActual.dispose();
+                
+            } catch (Exception e) {
+                logAndShowError("Error creating new window", e);
+            }
+        });
+        
     } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, 
-            "Error al recargar la ventana: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }   
-    
-
+        logAndShowError("Error reloading window", e);
+    }
     
     }//GEN-LAST:event_recargarActionPerformed
 
