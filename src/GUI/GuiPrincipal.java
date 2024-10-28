@@ -1357,13 +1357,41 @@ public void refreshRandomProducts() {
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         // TODO add your handling code here:
-         // Almacena el tamaño actual de la ventana
-    Dimension currentSize = this.getSize();
+     try {
+        // Obtener la ventana actual
+        Window ventanaActual = SwingUtilities.getWindowAncestor((Component) evt.getSource());
+        
+        if (ventanaActual instanceof GuiPrincipal) {
+            GuiPrincipal frameActual = (GuiPrincipal) ventanaActual;
+            
+            // Guardar la posición y tamaño actuales
+            Point location = frameActual.getLocation();
+            Dimension size = frameActual.getSize();
+            
+            // Crear una nueva instancia totalmente fresca
+            GuiPrincipal nuevaVentana = new GuiPrincipal();
+            
+            // Mantener la misma posición y tamaño
+            nuevaVentana.setLocation(location);
+            nuevaVentana.setSize(size);
+            
+            // Mostrar la nueva ventana
+            nuevaVentana.setVisible(true);
+            
+            // Cerrar la ventana anterior
+            frameActual.dispose();
+            
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, 
+            "Error al recargar la ventana: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    }   
+    
 
-    // Cierra y vuelve a abrir la ventana para recargarla
-    this.dispose(); // Cierra el JFrame actual
-    this.setVisible(true); // Vuelve a hacer visible el JFrame
-    this.setSize(currentSize); // Restaura el tamaño original de la ventana
+    
     }//GEN-LAST:event_recargarActionPerformed
 
     private void añadirFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirFavoritoActionPerformed
