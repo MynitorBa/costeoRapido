@@ -309,7 +309,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(178, 171, 171));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 102, 0));
+        jLabel4.setForeground(new java.awt.Color(0, 144, 47));
         jLabel4.setText("Costeo Rápido");
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
@@ -317,7 +317,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel3.setText("DAI");
 
-        jButton1.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         jButton1.setText("Reset");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,7 +348,7 @@ public class CosteoForm_Ingresar extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         jLabel2.setText("Flete");
 
-        CosteoRapido_calcular.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        CosteoRapido_calcular.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         CosteoRapido_calcular.setText("COSTEO RAPIDO");
         CosteoRapido_calcular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

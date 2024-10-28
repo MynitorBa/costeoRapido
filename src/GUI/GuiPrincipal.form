@@ -106,14 +106,11 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="costeoRapidoButton">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="cc" type="rgb"/>
-            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Trebuchet MS" size="24" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="66" red="66" type="rgb"/>
+              <Color blue="50" green="c0" red="21" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="COSTEO R&#xc1;PIDO"/>
           </Properties>

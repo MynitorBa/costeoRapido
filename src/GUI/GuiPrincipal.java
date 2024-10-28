@@ -616,12 +616,6 @@ private void abrirPerfilUsuario() {
             searchField.setEnabled(true);
         }
     });
-    searchButton.setText("🔍");
-    favoritos.setText("🔖");
-    menuButton.setText("☰");
-    flechaIzquierda.setText("←");
-    flechaDerecha.setText("→");
-    recargar.setText("🔄");
 
     // Crear el menú desplegable
     createPopupMenu();
@@ -814,9 +808,8 @@ private void abrirPerfilUsuario() {
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
 
-        costeoRapidoButton.setBackground(new java.awt.Color(204, 255, 255));
         costeoRapidoButton.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
-        costeoRapidoButton.setForeground(new java.awt.Color(102, 102, 0));
+        costeoRapidoButton.setForeground(new java.awt.Color(33, 192, 80));
         costeoRapidoButton.setText("COSTEO RÁPIDO");
         costeoRapidoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

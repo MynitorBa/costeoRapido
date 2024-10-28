@@ -330,7 +330,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 0));
+        jLabel1.setForeground(new java.awt.Color(0, 144, 47));
         jLabel1.setText("Perfil Usuario");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
@@ -350,7 +350,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
         });
 
         btnEditarCorreo.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
-        btnEditarCorreo.setForeground(new java.awt.Color(102, 102, 0));
+        btnEditarCorreo.setForeground(new java.awt.Color(0, 144, 47));
         btnEditarCorreo.setText("EDITAR");
         btnEditarCorreo.setToolTipText("");
         btnEditarCorreo.setBorderPainted(false);
@@ -372,7 +372,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
         });
 
         btnEditarUsuario.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
-        btnEditarUsuario.setForeground(new java.awt.Color(102, 102, 0));
+        btnEditarUsuario.setForeground(new java.awt.Color(0, 144, 47));
         btnEditarUsuario.setText("EDITAR");
         btnEditarUsuario.setToolTipText("");
         btnEditarUsuario.setBorderPainted(false);
@@ -384,7 +384,7 @@ public class PerfilUsuario extends javax.swing.JFrame {
         });
 
         btnEditarContrasena.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
-        btnEditarContrasena.setForeground(new java.awt.Color(102, 102, 0));
+        btnEditarContrasena.setForeground(new java.awt.Color(0, 144, 47));
         btnEditarContrasena.setText("CAMBIAR CONTRASEÑA");
         btnEditarContrasena.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

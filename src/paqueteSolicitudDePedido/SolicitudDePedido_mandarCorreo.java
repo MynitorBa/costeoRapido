@@ -102,7 +102,6 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         favoritos = new javax.swing.JButton();
         flechaDerecha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        historial = new javax.swing.JButton();
         nombreDescripcionProductoFINAL = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -122,7 +121,6 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         guardar_al_historial = new javax.swing.JButton();
         enviarCorreo = new javax.swing.JButton();
         menuButton1 = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(178, 171, 171));
@@ -157,14 +155,9 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
         flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         flechaDerecha.setText("→");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 0));
+        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 144, 47));
         jLabel1.setText("Solicitud de Pedido");
-
-        historial.setBackground(new java.awt.Color(178, 171, 171));
-        historial.setFont(new java.awt.Font("Segoe UI Variable", 2, 14)); // NOI18N
-        historial.setForeground(new java.awt.Color(51, 51, 0));
-        historial.setText("Historial");
 
         nombreDescripcionProductoFINAL.setEditable(false);
         nombreDescripcionProductoFINAL.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
@@ -258,34 +251,10 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(flechaIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(flechaDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(recargar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(95, 95, 95)
-                        .addComponent(historial)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(menuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(474, 474, 474)
-                        .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(115, 115, 115))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel10)
-                        .addContainerGap())))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -326,9 +295,24 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                         .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(flechaIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(flechaDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(recargar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(183, 183, 183)
+                        .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(menuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(474, 474, 474)
+                        .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,13 +324,10 @@ public class SolicitudDePedido_mandarCorreo extends javax.swing.JFrame {
                     .addComponent(flechaIzquierda)
                     .addComponent(flechaDerecha)
                     .addComponent(recargar)
-                    .addComponent(menuButton1)
-                    .addComponent(historial))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(menuButton1))
+                .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(20, 20, 20)
+                .addGap(33, 33, 33)
                 .addComponent(nombreDescripcionProductoFINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2)
@@ -560,54 +541,6 @@ private void enviarCorreo(String destinatario) {
 
     }//GEN-LAST:event_guardar_al_historialActionPerformed
 
-    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuButtonActionPerformed
-
-    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
-        // TODO add your handling code here:
-        try {
-        // Usamos el FavoritosManager que ya está implementado
-        FavoritosManager favoritosManager = new FavoritosManager();
-        List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
-        
-        if (favoritos.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                "No tienes productos favoritos guardados",
-                "Sin Favoritos",
-                JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        // Crear panel principal con layout vertical
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        
-        // Agregar cada producto favorito al panel
-        for (ProductoFavorito favorito : favoritos) {
-            JPanel productoPanel = crearPanelProductoFavorito(favorito);
-            mainPanel.add(productoPanel);
-            mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre productos
-        }
-
-        // Agregar scroll al panel
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.setPreferredSize(new Dimension(500, 400));
-        
-        // Mostrar el diálogo con los favoritos
-        JOptionPane.showMessageDialog(this, 
-            scrollPane, 
-            "Mis Productos Favoritos", 
-            JOptionPane.PLAIN_MESSAGE);
-            
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-            "Error al cargar favoritos: " + e.getMessage(),
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_favoritosActionPerformed
-
     private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
         
@@ -754,10 +687,55 @@ private void enviarCorreo(String destinatario) {
     // Mostrar el menú
     popupMenu.show(menuButton, 0, menuButton.getHeight());
     }//GEN-LAST:event_menuButton1ActionPerformed
-    private void historialActionPerformed(java.awt.event.ActionEvent evt) {
-        
-        JOptionPane.showMessageDialog(this, "Funcionalidad de historial aún no implementada");
-    }
+
+    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButtonActionPerformed
+
+    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Usamos el FavoritosManager que ya está implementado
+            FavoritosManager favoritosManager = new FavoritosManager();
+            List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
+
+            if (favoritos.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                    "No tienes productos favoritos guardados",
+                    "Sin Favoritos",
+                    JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Crear panel principal con layout vertical
+            JPanel mainPanel = new JPanel();
+            mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+            // Agregar cada producto favorito al panel
+            for (ProductoFavorito favorito : favoritos) {
+                JPanel productoPanel = crearPanelProductoFavorito(favorito);
+                mainPanel.add(productoPanel);
+                mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre productos
+            }
+
+            // Agregar scroll al panel
+            JScrollPane scrollPane = new JScrollPane(mainPanel);
+            scrollPane.setPreferredSize(new Dimension(500, 400));
+
+            // Mostrar el diálogo con los favoritos
+            JOptionPane.showMessageDialog(this,
+                scrollPane,
+                "Mis Productos Favoritos",
+                JOptionPane.PLAIN_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al cargar favoritos: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_favoritosActionPerformed
+    
     
     
     
@@ -907,9 +885,7 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JButton guardar_al_historial;
-    private javax.swing.JButton historial;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

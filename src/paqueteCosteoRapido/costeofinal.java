@@ -151,18 +151,17 @@ public void guardarProductoFavorito() {
         GuardarCosteo = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        flechaIzquierda = new javax.swing.JButton();
-        recargar = new javax.swing.JButton();
-        menuButton = new javax.swing.JButton();
-        favoritos = new javax.swing.JButton();
-        flechaDerecha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         botonVerHistorial = new javax.swing.JButton();
+        menuButton = new javax.swing.JButton();
+        flechaIzquierda = new javax.swing.JButton();
+        flechaDerecha = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(178, 171, 171));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         nombreDescripcionProducto.setEditable(false);
         nombreDescripcionProducto.setBackground(new java.awt.Color(178, 171, 171));
@@ -173,6 +172,7 @@ public void guardarProductoFavorito() {
                 nombreDescripcionProductoActionPerformed(evt);
             }
         });
+        jPanel1.add(nombreDescripcionProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 172, 288, -1));
 
         costoFobUSD$_FINAL.setEditable(false);
         costoFobUSD$_FINAL.setBackground(new java.awt.Color(178, 171, 171));
@@ -182,26 +182,33 @@ public void guardarProductoFavorito() {
                 costoFobUSD$_FINALActionPerformed(evt);
             }
         });
+        jPanel1.add(costoFobUSD$_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 210, 141, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel3.setText("Costo Fob USD$");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 210, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel4.setText("Costo USD$");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 248, -1, -1));
 
         CostoUSD$_FINAL.setEditable(false);
         CostoUSD$_FINAL.setBackground(new java.awt.Color(178, 171, 171));
         CostoUSD$_FINAL.setFont(new java.awt.Font("Segoe UI Variable", 1, 12)); // NOI18N
+        jPanel1.add(CostoUSD$_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 248, 141, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel5.setText("Costo en Quetzales");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 286, -1, -1));
 
         CostoQuetzales_FINAL.setEditable(false);
         CostoQuetzales_FINAL.setBackground(new java.awt.Color(178, 171, 171));
         CostoQuetzales_FINAL.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
+        jPanel1.add(CostoQuetzales_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 288, 141, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel6.setText("Precio de venta");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 327, -1, -1));
 
         PrecioVenta_FINAL.setEditable(false);
         PrecioVenta_FINAL.setBackground(new java.awt.Color(178, 171, 171));
@@ -211,9 +218,11 @@ public void guardarProductoFavorito() {
                 PrecioVenta_FINALActionPerformed(evt);
             }
         });
+        jPanel1.add(PrecioVenta_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 329, 141, -1));
 
         ConIVA_FINAL.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         ConIVA_FINAL.setText("Con IVA");
+        jPanel1.add(ConIVA_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 365, -1, -1));
 
         jTextField6.setEditable(false);
         jTextField6.setBackground(new java.awt.Color(178, 171, 171));
@@ -223,9 +232,11 @@ public void guardarProductoFavorito() {
                 jTextField6ActionPerformed(evt);
             }
         });
+        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 365, 141, -1));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
         jLabel8.setText("Margen");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 406, 141, -1));
 
         margen_FINAL.setEditable(false);
         margen_FINAL.setBackground(new java.awt.Color(178, 171, 171));
@@ -235,6 +246,7 @@ public void guardarProductoFavorito() {
                 margen_FINALActionPerformed(evt);
             }
         });
+        jPanel1.add(margen_FINAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(222, 409, 141, -1));
 
         mandarSolicitudPedido.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
         mandarSolicitudPedido.setText("Mandar solicitud de pedido");
@@ -243,6 +255,7 @@ public void guardarProductoFavorito() {
                 mandarSolicitudPedidoActionPerformed(evt);
             }
         });
+        jPanel1.add(mandarSolicitudPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 453, -1, -1));
 
         ModificarCosteo.setFont(new java.awt.Font("Segoe UI Variable", 0, 12)); // NOI18N
         ModificarCosteo.setText("Modificar");
@@ -251,6 +264,7 @@ public void guardarProductoFavorito() {
                 ModificarCosteoActionPerformed(evt);
             }
         });
+        jPanel1.add(ModificarCosteo, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 491, 126, -1));
 
         GuardarCosteo.setFont(new java.awt.Font("Segoe UI Variable", 0, 12)); // NOI18N
         GuardarCosteo.setText("Guardar");
@@ -259,44 +273,14 @@ public void guardarProductoFavorito() {
                 GuardarCosteoActionPerformed(evt);
             }
         });
+        jPanel1.add(GuardarCosteo, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 491, 130, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Variable", 1, 36)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(51, 102, 0));
+        jLabel7.setForeground(new java.awt.Color(0, 144, 47));
         jLabel7.setText("Costeo Final");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 98, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(178, 171, 171));
-
-        flechaIzquierda.setText("←");
-        flechaIzquierda.setToolTipText("");
-        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flechaIzquierdaActionPerformed(evt);
-            }
-        });
-
-        recargar.setText("🔄");
-        recargar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recargarActionPerformed(evt);
-            }
-        });
-
-        menuButton.setText("☰");
-        menuButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuButtonActionPerformed(evt);
-            }
-        });
-
-        favoritos.setText("❤");
-        favoritos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                favoritosActionPerformed(evt);
-            }
-        });
-
-        flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        flechaDerecha.setText("→");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/blackboxsecurity (2)_1.png"))); // NOI18N
 
@@ -308,6 +292,24 @@ public void guardarProductoFavorito() {
             }
         });
 
+        menuButton.setText("☰");
+        menuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuButtonActionPerformed(evt);
+            }
+        });
+
+        flechaIzquierda.setText("←");
+        flechaIzquierda.setToolTipText("");
+        flechaIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flechaIzquierdaActionPerformed(evt);
+            }
+        });
+
+        flechaDerecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        flechaDerecha.setText("→");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -317,123 +319,30 @@ public void guardarProductoFavorito() {
                 .addComponent(flechaIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(flechaDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(recargar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(botonVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(favoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(menuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 31, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(flechaIzquierda)
-                    .addComponent(flechaDerecha)
-                    .addComponent(favoritos)
-                    .addComponent(menuButton)
-                    .addComponent(recargar)
-                    .addComponent(botonVerHistorial))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addGap(37, 37, 37)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(botonVerHistorial)
+                        .addComponent(menuButton))
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(flechaIzquierda)
+                        .addComponent(flechaDerecha)))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nombreDescripcionProducto)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel6)
-                                            .addComponent(ConIVA_FINAL))
-                                        .addGap(0, 12, Short.MAX_VALUE))
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(margen_FINAL)
-                                    .addComponent(CostoUSD$_FINAL)
-                                    .addComponent(costoFobUSD$_FINAL)
-                                    .addComponent(CostoQuetzales_FINAL)
-                                    .addComponent(PrecioVenta_FINAL)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(mandarSolicitudPedido)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(ModificarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(GuardarCosteo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(70, 70, 70))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel7)
-                        .addGap(37, 120, Short.MAX_VALUE))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addGap(26, 26, 26)
-                .addComponent(nombreDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(ConIVA_FINAL)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(costoFobUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CostoUSD$_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(CostoQuetzales_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(PrecioVenta_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(margen_FINAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(mandarSolicitudPedido)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ModificarCosteo)
-                    .addComponent(GuardarCosteo))
-                .addContainerGap(100, Short.MAX_VALUE))
-        );
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 120));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -443,221 +352,11 @@ public void guardarProductoFavorito() {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botonVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerHistorialActionPerformed
-        // TODO add your handling code here:
-        HistorialViewer viewer = new HistorialViewer(currentUser, this);
-        viewer.setVisible(true);
-
-    }//GEN-LAST:event_botonVerHistorialActionPerformed
-
-    private void favoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoritosActionPerformed
-        // TODO add your handling code here:
-        
-    FavoritosManager favoritosManager = new FavoritosManager();
-    List<ProductoFavorito> favoritos = favoritosManager.obtenerFavoritosUsuario(currentUser);
-    
-    if (favoritos.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-            "No hay productos favoritos guardados",
-            "Sin favoritos",
-            JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-    
-    // Crear diálogo para mostrar favoritos
-    JDialog dialogoFavoritos = new JDialog(this, "Productos Favoritos", true);
-    dialogoFavoritos.setLayout(new BorderLayout());
-    
-    // Crear lista de favoritos
-    DefaultListModel<String> modeloLista = new DefaultListModel<>();
-    favoritos.forEach(f -> modeloLista.addElement(f.getNombre()));
-    JList<String> listaFavoritos = new JList<>(modeloLista);
-    JScrollPane scrollPane = new JScrollPane(listaFavoritos);
-    
-    // Botón para cargar favorito seleccionado
-    JButton botonCargar = new JButton("Cargar Producto");
-    botonCargar.addActionListener(e -> {
-        int indiceSeleccionado = listaFavoritos.getSelectedIndex();
-        if (indiceSeleccionado != -1) {
-            ProductoFavorito favorito = favoritos.get(indiceSeleccionado);
-            
-            // Usar el método existente para cargar los datos
-            cargarCosteoDesdeHistorial(
-                favorito.getNombre(),
-                String.format("%.2f", favorito.getCostoFobUSD()),
-                String.format("%.2f", favorito.getCostoUSDFinal()),
-                String.format("%.2f", favorito.getCostoQuetzales()),
-                String.format("%.2f", favorito.getPrecioVenta()),
-                String.format("%.2f", favorito.getPrecioConIVA()),
-                String.format("%.2f", favorito.getMargen())
-            );
-            
-            dialogoFavoritos.dispose();
-        }
-    });
-    
-    dialogoFavoritos.add(scrollPane, BorderLayout.CENTER);
-    dialogoFavoritos.add(botonCargar, BorderLayout.SOUTH);
-    
-    dialogoFavoritos.setSize(400, 300);
-    dialogoFavoritos.setLocationRelativeTo(this);
-    dialogoFavoritos.setVisible(true);
-    }//GEN-LAST:event_favoritosActionPerformed
-
-    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
-        // TODO add your handling code here:
-        JPopupMenu popupMenu = new JPopupMenu();
-    popupMenu.setBackground(Color.WHITE);
-    popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-
-    // Crear los items del menú
-    JMenuItem inicioItem = new JMenuItem("\uD83C\uDFE0 Inicio");
-    JMenuItem perfilItem = new JMenuItem("\uD83D\uDC64 Perfil");
-    JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
-    JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
-    JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
-    
-    JMenuItem historialItem = new JMenuItem("\uD83D\uDCC3 Historial");
-    JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
-
-    // Personalizar apariencia de los items
-    Font menuFont = new Font("Arial", Font.PLAIN, 14);
-    Color hoverColor = new Color(240, 240, 240);
-    
-    for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem, 
-        productosItem, preguntasItem, historialItem, logoutItem}) {
-        item.setFont(menuFont);
-        item.setBackground(Color.WHITE);
-        item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        item.setOpaque(true);
-        
-        // Efecto hover
-        item.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                item.setBackground(hoverColor);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                item.setBackground(Color.WHITE);
-            }
-        });
-    }
-
-    // Agregar acciones a los items
-    inicioItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new GUI.GuiPrincipal(currentUser).setVisible(true);
-        });
-    });
-
-    perfilItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
-        });
-    });
-
-    costeoItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
-    });
-
-    productosItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new gestionProductos.Gui(currentUser).setVisible(true);
-        });
-    });
-
-    preguntasItem.addActionListener(e -> {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new preguntasFrecuentes.PreguntasFrecuentesForm(currentUser).setVisible(true);
-        });
-    });
-
-    
-
-    historialItem.addActionListener(e -> {
-        // TODO: Implementar vista de historial
-        HistorialViewer viewer = new HistorialViewer(currentUser, this);
-        viewer.setVisible(true);
-    });
-
-    logoutItem.addActionListener(e -> {
-        int confirm = JOptionPane.showConfirmDialog(
-            this,
-            "¿Estás seguro de que quieres cerrar sesión?",
-            "Confirmar Cierre de Sesión",
-            JOptionPane.YES_NO_OPTION
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            SwingUtilities.invokeLater(() -> {
-                new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
-            });
-        }
-    });
-
-    // Agregar items al menú
-    popupMenu.add(inicioItem);
-    popupMenu.addSeparator();
-    popupMenu.add(perfilItem);
-    popupMenu.add(costeoItem);
-    popupMenu.add(productosItem);
-    popupMenu.add(preguntasItem);
-    
-    // Agregar gestión de usuarios solo para admin
-    if ("admin".equals(currentUser)) {
-        JMenuItem adminItem = new JMenuItem("\uD83D\uDC65 Gestión de Usuarios");
-        adminItem.setFont(menuFont);
-        adminItem.setBackground(Color.WHITE);
-        adminItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        adminItem.setOpaque(true);
-        adminItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                adminItem.setBackground(hoverColor);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                adminItem.setBackground(Color.WHITE);
-            }
-        });
-        adminItem.addActionListener(e -> {
-            this.dispose();
-            SwingUtilities.invokeLater(() -> {
-                new gestionUsuarios.GestionUsuarios(currentUser).setVisible(true);
-            });
-        });
-        popupMenu.add(adminItem);
-    }
-    
-    popupMenu.addSeparator();
-
-    popupMenu.add(historialItem);
-    popupMenu.addSeparator();
-    popupMenu.add(logoutItem);
-
-    // Mostrar el menú
-    popupMenu.show(menuButton, 0, menuButton.getHeight());
-    }//GEN-LAST:event_menuButtonActionPerformed
-
-    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new CosteoForm_Ingresar(currentUser).setVisible(true);
-        });
-
-    }//GEN-LAST:event_flechaIzquierdaActionPerformed
 
     private void GuardarCosteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarCosteoActionPerformed
         // TODO add your handling code here:
@@ -732,9 +431,157 @@ public void guardarProductoFavorito() {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreDescripcionProductoActionPerformed
 
-    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
+    private void flechaIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flechaIzquierdaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_recargarActionPerformed
+        this.dispose();
+        SwingUtilities.invokeLater(() -> {
+            new CosteoForm_Ingresar(currentUser).setVisible(true);
+        });
+    }//GEN-LAST:event_flechaIzquierdaActionPerformed
+
+    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
+        // TODO add your handling code here:
+        JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setBackground(Color.WHITE);
+        popupMenu.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+
+        // Crear los items del menú
+        JMenuItem inicioItem = new JMenuItem("\uD83C\uDFE0 Inicio");
+        JMenuItem perfilItem = new JMenuItem("\uD83D\uDC64 Perfil");
+        JMenuItem costeoItem = new JMenuItem("\uD83D\uDCB0 Costeo Rápido");
+        JMenuItem productosItem = new JMenuItem("\uD83D\uDCE6 Productos");
+        JMenuItem preguntasItem = new JMenuItem("❓ Preguntas Frecuentes");
+
+        JMenuItem historialItem = new JMenuItem("\uD83D\uDCC3 Historial");
+        JMenuItem logoutItem = new JMenuItem("\uD83D\uDEAA Cerrar Sesión");
+
+        // Personalizar apariencia de los items
+        Font menuFont = new Font("Arial", Font.PLAIN, 14);
+        Color hoverColor = new Color(240, 240, 240);
+
+        for (JMenuItem item : new JMenuItem[]{inicioItem, perfilItem, costeoItem,
+            productosItem, preguntasItem, historialItem, logoutItem}) {
+        item.setFont(menuFont);
+        item.setBackground(Color.WHITE);
+        item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        item.setOpaque(true);
+
+        // Efecto hover
+        item.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                item.setBackground(hoverColor);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                item.setBackground(Color.WHITE);
+            }
+        });
+        }
+
+        // Agregar acciones a los items
+        inicioItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new GUI.GuiPrincipal(currentUser).setVisible(true);
+            });
+        });
+
+        perfilItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new perfilUsuario.PerfilUsuario(currentUser).setVisible(true);
+            });
+        });
+
+        costeoItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new paqueteCosteoRapido.CosteoForm_Ingresar(currentUser).setVisible(true);
+            });
+        });
+
+        productosItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new gestionProductos.Gui(currentUser).setVisible(true);
+            });
+        });
+
+        preguntasItem.addActionListener(e -> {
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                new preguntasFrecuentes.PreguntasFrecuentesForm(currentUser).setVisible(true);
+            });
+        });
+
+        historialItem.addActionListener(e -> {
+            // TODO: Implementar vista de historial
+            HistorialViewer viewer = new HistorialViewer(currentUser, this);
+            viewer.setVisible(true);
+        });
+
+        logoutItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que quieres cerrar sesión?",
+                "Confirmar Cierre de Sesión",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new paqueteInicioSesion.LoginRegistroForm().setVisible(true);
+                });
+            }
+        });
+
+        // Agregar items al menú
+        popupMenu.add(inicioItem);
+        popupMenu.addSeparator();
+        popupMenu.add(perfilItem);
+        popupMenu.add(costeoItem);
+        popupMenu.add(productosItem);
+        popupMenu.add(preguntasItem);
+
+        // Agregar gestión de usuarios solo para admin
+        if ("admin".equals(currentUser)) {
+            JMenuItem adminItem = new JMenuItem("\uD83D\uDC65 Gestión de Usuarios");
+            adminItem.setFont(menuFont);
+            adminItem.setBackground(Color.WHITE);
+            adminItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            adminItem.setOpaque(true);
+            adminItem.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    adminItem.setBackground(hoverColor);
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    adminItem.setBackground(Color.WHITE);
+                }
+            });
+            adminItem.addActionListener(e -> {
+                this.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new gestionUsuarios.GestionUsuarios(currentUser).setVisible(true);
+                });
+            });
+            popupMenu.add(adminItem);
+        }
+
+        popupMenu.addSeparator();
+
+        popupMenu.add(historialItem);
+        popupMenu.addSeparator();
+        popupMenu.add(logoutItem);
+
+        // Mostrar el menú
+        popupMenu.show(menuButton, 0, menuButton.getHeight());
+    }//GEN-LAST:event_menuButtonActionPerformed
+
+    private void botonVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerHistorialActionPerformed
+        // TODO add your handling code here:
+        HistorialViewer viewer = new HistorialViewer(currentUser, this);
+        viewer.setVisible(true);
+    }//GEN-LAST:event_botonVerHistorialActionPerformed
 
     
 
@@ -841,7 +688,6 @@ public void guardarProductoFavorito() {
     private javax.swing.JTextField PrecioVenta_FINAL;
     private javax.swing.JButton botonVerHistorial;
     private javax.swing.JTextField costoFobUSD$_FINAL;
-    private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
     private javax.swing.JLabel jLabel1;
@@ -858,6 +704,5 @@ public void guardarProductoFavorito() {
     private javax.swing.JTextField margen_FINAL;
     private javax.swing.JButton menuButton;
     private javax.swing.JTextField nombreDescripcionProducto;
-    private javax.swing.JButton recargar;
     // End of variables declaration//GEN-END:variables
 }
