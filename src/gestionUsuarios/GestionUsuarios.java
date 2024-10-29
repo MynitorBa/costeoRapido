@@ -116,7 +116,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnRegresar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         flechaIzquierda = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
@@ -158,13 +157,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnRegresar.setText("Regresar");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
             }
         });
 
@@ -255,10 +247,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnRegresar)
-                .addGap(17, 17, 17))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -291,9 +279,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnEliminar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(btnRegresar)
-                .addGap(18, 18, 18))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -476,14 +462,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
-         SwingUtilities.invokeLater(() -> {
-        new GuiPrincipal(currentUser).setVisible(true);
-    });
-    this.dispose();
-    }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
@@ -933,7 +911,6 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;
