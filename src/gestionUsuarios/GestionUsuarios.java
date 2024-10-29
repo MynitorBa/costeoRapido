@@ -116,7 +116,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnVerProductos = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         flechaIzquierda = new javax.swing.JButton();
@@ -159,13 +158,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnVerProductos.setText("Ver Productos");
-        btnVerProductos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerProductosActionPerformed(evt);
             }
         });
 
@@ -282,9 +274,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnEditar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnEliminar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnVerProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(btnEliminar)))
                                 .addGap(27, 27, 27)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -300,8 +290,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnVerProductos))
+                    .addComponent(btnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(btnRegresar)
                 .addGap(18, 18, 18))
@@ -487,10 +476,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnVerProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerProductosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVerProductosActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
@@ -949,7 +934,6 @@ private void eliminarProductoFavorito(ProductoFavorito favorito) {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton btnVerProductos;
     private javax.swing.JButton favoritos;
     private javax.swing.JButton flechaDerecha;
     private javax.swing.JButton flechaIzquierda;

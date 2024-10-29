@@ -65,8 +65,6 @@
                                           <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="btnVerProductos" min="-2" pref="169" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -91,7 +89,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnVerProductos" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="91" max="32767" attributes="0"/>
                   <Component id="btnRegresar" min="-2" max="-2" attributes="0"/>
@@ -147,14 +144,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnVerProductos">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ver Productos"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerProductosActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnRegresar">
